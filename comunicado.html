@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='icon' href='src/img/kmd-16x16.png' type='image/png'>
+    <title>Gerador de Comunicado | Portal Unificado</title>
+    <link rel="stylesheet" href="https://unpkg.com/phosphor-icons@1.4.2/src/css/icons.css">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --accent: #6366f1;
+            --success: #059669;
+            --danger: #dc2626;
+            --slate: #475569;
+        }
+
+        /* --- RESET E BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background: #f8fafc; 
+            color: #334155; 
+        }
+
+        .container { 
+            display: grid; 
+            grid-template-columns: 280px 1fr 200px; 
+            min-height: 100vh; 
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar { 
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%); 
+            padding: 30px 20px; 
+            color: white; 
+            position: sticky; 
+            top: 0; 
+            height: 100vh; 
+            overflow-y: auto; 
+        }
+
+        .logo { text-align: center; margin-bottom: 40px; }
+        .logo h2 { font-size: 18px; font-weight: 800; color: #f8fafc; }
+
+        .menu { list-style: none; }
+        .menu-label { 
+            font-size: 10px; 
+            color: #94a3b8; 
+            margin: 25px 0 10px 0; 
+            letter-spacing: 1.5px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+        }
+
+        .menu a { 
+            display: block; 
+            color: #cbd5e1; 
+            text-decoration: none; 
+            padding: 12px 15px; 
+            border-radius: 8px; 
+            margin-bottom: 5px; 
+            transition: 0.2s; 
+            font-size: 14px; 
+            font-weight: 500; 
+        }
+
+        .menu a:hover, .menu a.active { 
+            background: #6366f1; 
+            color: white; 
+        }
+
+        .menu a i { margin-right: 10px; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content { 
+            padding: 30px; 
+            background: white; 
+            overflow-y: auto; 
+        }
+
+        .top-info { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 30px; 
+            padding-bottom: 20px; 
+            border-bottom: 1px solid #e2e8f0; 
+        }
+
+        .top-info h1 { 
+            font-size: 28px; 
+            color: #1e293b; 
+            margin: 0; 
+        }
+
+        .top-info p { 
+            color: #64748b; 
+            font-size: 14px; 
+            margin: 5px 0 0 0; 
+        }
+
+        .badge { 
+            background: #f1f5f9; 
+            padding: 8px 15px; 
+            border-radius: 20px; 
+            font-size: 12px; 
+            font-weight: 700; 
+            color: #475569; 
+        }
+
+        /* --- SIDEBAR RIGHT --- */
+        .sidebar-right { 
+            background: white; 
+            padding: 30px 20px; 
+            border-left: 1px solid #e2e8f0; 
+        }
+
+        .sidebar-right h4 { 
+            font-size: 10px; 
+            color: #94a3b8; 
+            margin-bottom: 20px; 
+            letter-spacing: 1.5px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+        }
+
+        .sidebar-right a { 
+            text-decoration: none; 
+            color: inherit; 
+            display: block; 
+            margin-bottom: 10px; 
+        }
+
+        .sidebar-right div { 
+            background: white; 
+            padding: 15px; 
+            border-radius: 12px; 
+            border: 1px solid #e2e8f0; 
+            text-align: center; 
+            transition: 0.2s; 
+        }
+
+        .sidebar-right div:hover { 
+            background: #f8fafc; 
+            border-color: #cbd5e1; 
+        }
+
+        .sidebar-right i { 
+            font-size: 24px; 
+            color: #6366f1; 
+            display: block; 
+            margin-bottom: 5px; 
+        }
+
+        .sidebar-right p { 
+            font-size: 11px; 
+            font-weight: 700; 
+            margin: 0; 
+        }
+
+        /* --- FORM STYLES --- */
+        .form-container { 
+            background: white; 
+            border-radius: 16px; 
+            padding: 30px; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+            border: 1px solid #e2e8f0; 
+            margin-bottom: 30px; 
+        }
+
+        .form-container h2 { 
+            text-align: center; 
+            margin-top: 0; 
+            color: #1e293b; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            font-size: 24px; 
+            border-bottom: 2px solid #f0f0f0; 
+            padding-bottom: 15px; 
+            margin-bottom: 20px; 
+        }
+
+        /* FORMULÁRIO */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .input-box { display: flex; flex-direction: column; }
+        .full-width { grid-column: span 2; }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #555;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        select, input, textarea {
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            border-color: #6366f1;
+            background: white;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        textarea { height: 110px; resize: none; line-height: 1.5; font-size: 13px; }
+
+        /* BOTÕES */
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-gerar { background: #22c55e; color: white; }
+        .btn-whatsapp { background: #25D366; color: white; }
+        button:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        /* LOG TABLE */
+        .log-container { 
+            background: white; 
+            border-radius: 16px; 
+            padding: 30px; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+            border: 1px solid #e2e8f0; 
+        }
+
+        .log-container h3 { 
+            text-align: center; 
+            margin-top: 0; 
+            color: #1e293b; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            font-size: 20px; 
+            border-bottom: 2px solid #f0f0f0; 
+            padding-bottom: 15px; 
+            margin-bottom: 20px; 
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+        
+        th {
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 11px;
+            text-transform: uppercase;
+            padding: 12px;
+            border-bottom: 2px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+        }
+
+        td { padding: 12px; font-size: 13px; border-bottom: 1px solid #f1f5f9; text-align: center; }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            background: #f1f5f9;
+            display: inline-block;
+        }
+        .badge-liberacao { background: #dbeafe; color: #1d4ed8; }
+        .badge-chegada { background: #dcfce7; color: #166534; }
+        .badge-coleta { background: #fef3c7; color: #92400e; }
+        .badge-info { background: #f3e8ff; color: #7c3aed; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) { 
+            .container { grid-template-columns: 250px 1fr; } 
+            .sidebar-right { display: none; } 
+        }
+
+        @media (max-width: 768px) { 
+            .container { grid-template-columns: 1fr; } 
+            .sidebar { display: none; } 
+            .main-content { padding: 20px; } 
+            .form-grid { grid-template-columns: 1fr; } 
+            .button-group { grid-template-columns: 1fr; } 
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <aside class="sidebar">
+        <div class="logo"><h2>PA - Campinas</h2></div>
+        <nav class="menu">
+            <p class="menu-label">Monitoramento</p>
+            <a href="index.html"><i class="ph ph-gauge"></i> Dashboard Principal</a>
+            <a href="torre.html"><i class="ph ph-broadcast"></i> Torre de Controle</a>
+            <a href="posicao.html"><i class="ph ph-map-pin"></i> Posição Escolta</a>
+            <a href="solicitacao-escolta.html"><i class="ph ph-shield-plus"></i> Solicitação Escolta</a>
+            
+            <p class="menu-label">Operação</p>
+            <a href="cftv.html"><i class="ph ph-video-camera"></i> Auditoria CFTV</a>
+            <a href="cftv-email.html"><i class="ph ph-envelope"></i> E-mail CFTV</a>
+            <a href="brief.html"><i class="ph ph-clipboard-text"></i> Briefing Digital</a>
+            <a href="registros-saidas.html"><i class="ph ph-sign-out"></i> Registro de Saídas</a>
+            <a href="comunicado.html" class="active"><i class="ph ph-whatsapp-logo"></i> Gerador de Comunicado</a>
+            <a href="conhecimento.html"><i class="ph ph-book-open"></i> Para Conhecimento</a>
+
+            <p class="menu-label">Capacitação</p>
+            <a href="Treinamento_Komando_Completo.html"><i class="ph ph-graduation-cap"></i> Avaliação do Treinamento</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="top-info">
+            <div>
+                <h1>Gerador de Comunicado</h1>
+                <p id="greetingMessage"></p>
+            </div>
+            <div class="badge">Comunicação</div>
+        </div>
+
+        <div class="form-container">
+            <h2>Gerador Operacional</h2>
+
+            <div class="form-grid">
+                <div class="input-box">
+                    <label>Responsável Contato</label>
+                    <select id="responsavel">
+                        <option value="">Selecione</option>
+                        <option>Ana Claudia</option>
+                        <option>Joel</option>
+                        <option>Pedro Otávio</option>
+                        <option>Noele</option>
+                        <option>Tainá</option>
+                    </select>
+                </div>
+
+                <div class="input-box">
+                    <label>Turno</label>
+                    <select id="turno">
+                        <option value='T1'>T1 - Manhã</option>
+                        <option value='T2'>T2 - Tarde/Noite</option>
+                    </select>
+                </div>
+
+                <div class="input-box">
+                    <label>Tipo de Evento</label>
+                    <select id="tipo_evento">
+                        <option>COLETAS SP</option>
+                        <option>LIBERAÇÃO</option>
+                        <option>CHEGADA</option>
+                        <option>COLETAS CPQ</option>
+                        <option>INFORMAÇÃO</option>
+                    </select>
+                </div>
+
+                <div class="input-box">
+                    <label>Operação SS</label>
+                    <select id="doc_responsavel_ssonic">
+                        <option value="">Selecione o contato</option>
+                        <option>Angélica</option>
+                        <option>Adrian</option>
+                        <option>Douglas</option>
+                        <option>Edson Souza</option>
+                        <option>Elizeu</option>
+                        <option>Fabio Antonio</option>
+                    </select>
+                </div>
+
+                <div class="input-box">
+                    <label>Valor Mínimo</label>
+                    <input type="text" id="valor" value="100.000,00">
+                </div>
+
+                <div class="input-box">
+                    <label>Base Supersonic</label>
+                    <select id="base">
+                        <option>Campinas / SP</option>
+                        <option>São Paulo / SP</option>
+                        <option>Belém / PA</option>
+                    </select>
+                </div>
+
+                <div class="input-box full-width">
+                    <label>Mensagem para Envio</label>
+                    <textarea id="mensagem" readonly placeholder="Aguardando geração..."></textarea>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="btn-gerar" onclick="gerarMensagem()">⚙️ Gerar Mensagem</button>
+                <button type="button" class="btn-whatsapp" id="btnWhatsapp" onclick="enviarWhatsApp()">📱 Enviar WhatsApp</button>
+            </div>
+        </div>
+
+        <div class="log-container">
+            <h3>Log (Últimas 24h)</h3>
+            <table id="logTable">
+                <thead>
+                    <tr>
+                        <th>Hora</th>
+                        <th>Responsável</th>
+                        <th>Operação</th>
+                        <th>Evento</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </main>
+
+    <aside class="sidebar-right">
+        <h4 style="font-size: 10px; color: #94a3b8; margin-bottom: 20px; letter-spacing: 1.5px; font-weight: 800;">FERRAMENTAS</h4>
+        <a href="comunicado.html" style="text-decoration:none; color:inherit;">
+            <div style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 10px; text-align:center;">
+                <i class="ph ph-whatsapp-logo" style="font-size: 24px; color: #25D366;"></i>
+                <p style="font-size: 11px; font-weight: 700; margin-top:5px;">GERADOR ZAP</p>
+            </div>
+        </a>
+        <a href="torre.html" style="text-decoration:none; color:inherit;">
+            <div style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; text-align:center;">
+                <i class="ph ph-broadcast" style="font-size: 24px; color: #6366f1;"></i>
+                <p style="font-size: 11px; font-weight: 700; margin-top:5px;">TORRE 360</p>
+            </div>
+        </a>
+    </aside>
+</div>
+
+<script>
+        // Saudação dinâmica
+        function updateGreeting() {
+            const now = new Date();
+            const hour = now.getHours();
+            const greeting = hour < 12 ? 'Bom dia' : hour < 18 ? 'Boa tarde' : 'Boa noite';
+            const timeString = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('greetingMessage').textContent = `${greeting}! Agora são ${timeString}.`;
+        }
+        updateGreeting();
+        setInterval(updateGreeting, 60000); // Atualiza a cada minuto
+
+        // Carregar logs locais ao abrir a página
+        window.onload = carregarLogs;
+
+        function obterSaudacao() {
+            const hora = new Date().getHours();
+            if (hora >= 5 && hora < 12) return "Bom dia";
+            if (hora >= 12 && hora < 18) return "Boa tarde";
+            return "Boa noite";
+        }
+
+        function gerarMensagem() {
+            const resp = document.getElementById("responsavel").value;
+            const oper = document.getElementById("doc_responsavel_ssonic").value;
+            const val = document.getElementById("valor").value;
+            const bse = document.getElementById("base").value;
+            const tipo = document.getElementById("tipo_evento").value;
+
+            if (!resp || !oper) {
+                alert("Selecione os responsáveis antes de gerar.");
+                return;
+            }
+
+            const saudacao = obterSaudacao();
+            const texto = `${saudacao} ${oper},
+
+Aqui é ${resp} da GR Komando, tudo bem?
+
+Por favor, peço que nos informe as coletas do dia e quais os motoristas.
+
+As viagens com valor acima de R$ ${val} devem ser monitoradas por esta GR. Para isto, preciso que seja criada a Solicitação de Monitoramento (SM) em nossa plataforma.
+
+Caso tenha alguma dúvida, o pessoal do GR daqui de ${bse} pode te auxiliar.
+
+Agradeço a atenção e me coloco à disposição.`;
+
+            document.getElementById("mensagem").value = texto;
+            
+            // Registra no Log visual (Local Storage)
+            salvarERegistrarLog(resp, oper, tipo);
+        }
+
+        function salvarERegistrarLog(resp, oper, tipo) {
+            const agora = new Date();
+            const logEntry = {
+                timestamp: agora.getTime(),
+                hora: agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+                resp: resp,
+                oper: oper,
+                tipo: tipo
+            };
+
+            let logs = JSON.parse(localStorage.getItem('gr_logs') || '[]');
+            logs.unshift(logEntry);
+            localStorage.setItem('gr_logs', JSON.stringify(logs));
+
+            renderizarTabela();
+        }
+
+        function renderizarTabela() {
+            const tbody = document.querySelector("#logTable tbody");
+            tbody.innerHTML = "";
+            
+            let logs = JSON.parse(localStorage.getItem('gr_logs') || '[]');
+            const vinteQuatroHoras = 24 * 60 * 60 * 1000;
+            const agora = new Date().getTime();
+
+            logs = logs.filter(log => (agora - log.timestamp) < vinteQuatroHoras);
+            localStorage.setItem('gr_logs', JSON.stringify(logs));
+
+            logs.forEach(log => {
+                let badgeClass = "";
+                const tipoUpper = (log.tipo || "").toUpperCase();
+                if (tipoUpper.includes("LIBERA")) badgeClass = "badge-liberacao";
+                else if (tipoUpper.includes("CHEGAD")) badgeClass = "badge-chegada";
+                else if (tipoUpper.includes("COLET")) badgeClass = "badge-coleta";
+                else if (tipoUpper.includes("INFORMA")) badgeClass = "badge-info";
+
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td style="color:#888; font-weight:bold;">${log.hora}</td>
+                    <td>${log.resp}</td>
+                    <td style="font-weight:500;">${log.oper}</td>
+                    <td><span class="badge ${badgeClass}">${log.tipo}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function carregarLogs() {
+            renderizarTabela();
+            // Limpa campos sensíveis ao carregar/recarregar a página
+            document.getElementById("doc_responsavel_ssonic").value = "";
+            document.getElementById("mensagem").value = "";
+        }
+
+        // FUNÇÃO UNIFICADA: Envia para o WhatsApp, Planilha e LIMPA campos
+        async function enviarWhatsApp() {
+            const msg = document.getElementById("mensagem").value;
+            const btn = document.getElementById("btnWhatsapp");
+
+            if (!msg) {
+                alert("⚠️ Gere a mensagem primeiro antes de enviar!");
+                return;
+            }
+
+            // Abre o WhatsApp imediatamente e envia a planilha em background.
+            window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+            enviarParaPlanilha();
+
+            // LIMPEZA APÓS ENVIO:
+            document.getElementById("doc_responsavel_ssonic").value = "";
+            document.getElementById("mensagem").value = "";
+        }
+
+        async function enviarParaPlanilha() {
+            const btn = document.getElementById("btnWhatsapp");
+            const originalText = btn.innerHTML;
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+            const dados = {
+                hora_log: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+                responsavel: document.getElementById("responsavel").value,
+                turno: document.getElementById("turno").value,
+                tipo_evento: document.getElementById("tipo_evento").value,
+                operacao_ss: document.getElementById("doc_responsavel_ssonic").value,
+                valor_minimo: document.getElementById("valor").value,
+                base: document.getElementById("base").value,
+                mensagem: document.getElementById("mensagem").value
+            };
+
+            btn.innerHTML = "⏳ Gravando na Planilha...";
+            btn.disabled = true;
+
+            const url = "https://script.google.com/macros/s/AKfycbxJ9UnKOL0T0CT2dmlN0Cf4OS4NWTL0aNFTZjitjxrUFr6CpKflrIMx3SgFTylWJPax_g/exec";
+
+            try {
+                await fetch(url, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    signal: controller.signal,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dados)
+                });
+            } catch (error) {
+                console.error("Erro ao enviar para planilha:", error);
+            } finally {
+                clearTimeout(timeoutId);
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }, 1000);
+            }
+        }
+    </script>
+    
+</body>
+</html>

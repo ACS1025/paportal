@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Principal | Portal Unificado</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel='icon' href='src/img/kmd-16x16.png' type='image/png'>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        /* Estilos do Painel de Controle Superior */
+        .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-top: 20px; }
+        @media (max-width: 1400px) { .kpi-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 900px) { .kpi-grid { grid-template-columns: 1fr 1fr; } }
+        
+        .kpi-card { 
+            background: white; padding: 20px; border-radius: 12px; border-top: 4px solid #6366f1; 
+            text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.2s;
+        }
+        .kpi-card p { font-size: 10px; text-transform: uppercase; color: #94a3b8; margin-bottom: 8px; font-weight: 800; }
+        .kpi-card h2 { font-size: 32px; color: #1e293b; margin: 0; font-weight: 800; }
+        .card-transito { border-top-color: #22c55e; }
+        .card-aguardando { border-top-color: #f59e0b; }
+        .card-atraso { border-top-color: #ef4444; }
+
+        /* Estilos da Torre de Controle (Neon) */
+        .container-cards-torre { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 20px; }
+        .card-neon { 
+            background: #1e293b; color: white; border-radius: 12px; padding: 15px; 
+            text-align: center; border-top: 4px solid #94a3b8; 
+        }
+        .card-neon h3 { font-size: 0.7rem; text-transform: uppercase; margin-bottom: 5px; color: #94a3b8; }
+        .card-neon .valor { font-size: 1.5rem; font-weight: bold; }
+        .longe { border-color: #6366f1; }
+        .medio { border-color: #f59e0b; }
+        .proximo { border-color: #ef4444; }
+        .encontro { border-top-color: #a855f7 !important; }
+        .chegada { border-top-color: #22c55e !important; }
+
+        #map { height: 450px; width: 100%; border-radius: 12px; border: 1px solid #e2e8f0; margin-top: 20px; z-index: 1; }
+        
+        .tabela-dark { width: 100%; border-collapse: collapse; background: #1e293b; color: white; border-radius: 10px; overflow: hidden; margin-top: 15px; }
+        .tabela-dark th { background: #334155; text-align: left; padding: 12px; color: #94a3b8; font-size: 0.8rem; }
+        .tabela-dark td { padding: 10px; border-bottom: 1px solid #334155; font-size: 13px; }
+
+        .status-indicator { display: flex; align-items: center; gap: 10px; background: white; padding: 8px 16px; border-radius: 30px; border: 1px solid #e2e8f0; font-size: 12px; font-weight: 700; }
+        .dot { width: 10px; height: 10px; background: #cbd5e0; border-radius: 50%; display: inline-block; }
+        .dot.online { background: #22c55e; box-shadow: 0 0 10px rgba(34, 197, 94, 0.5); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo"><h2>PA - Campinas</h2></div>
+            <nav class="menu">
+                <p class="menu-label">Monitoramento</p>
+                <a href="index.html" class="active"><i class="ph ph-gauge"></i> Dashboard Principal</a>
+                <a href="torre.html"><i class="ph ph-broadcast"></i> Torre de Controle</a>
+                <a href="posicao.html"><i class="ph ph-map-pin"></i> Posição Escolta</a>
+                <a href="solicitacao-escolta.html"><i class="ph ph-shield-plus"></i> Solicitação Escolta</a>
+                
+                <p class="menu-label">Operação</p>
+                <a href="cftv.html"><i class="ph ph-video-camera"></i> Auditoria CFTV</a>
+                <a href="cftv-email.html"><i class="ph ph-envelope"></i> E-mail CFTV</a>
+                <a href="brief.html"><i class="ph ph-clipboard-text"></i> Briefing Digital</a>
+                <a href="registros-saidas.html"><i class="ph ph-sign-out"></i> Registro de Saídas</a>
+                <a href="comunicado.html"><i class="ph ph-whatsapp-logo"></i> Gerador de Comunicado</a>
+                <a href="conhecimento.html"><i class="ph ph-book-open"></i> Para Conhecimento</a>
+
+                <p class="menu-label">Capacitação</p>
+                <a href="Treinamento_Komando_Completo.html"><i class="ph ph-graduation-cap"></i> Avaliação do Treinamento</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div style="display: flex; justify-content:建设; gap: 10px; margin-bottom: 10px;">
+    <button onclick="toggleSidebar('left')" class="btn-toggle"><i class="ph ph-sidebar-simple"></i> Menu</button>
+    <button onclick="toggleSidebar('right')" class="btn-toggle"><i class="ph ph-wrench"></i> Ferramentas</button>
+</div>
+            <div class="top-info">
+                <div>
+                    <h1 style="font-size: 24px; color: #1e293b; margin: 0; text-transform: uppercase; font-weight: 800;">Painel de Controle</h1>
+                    <p style="color: #64748b; font-size: 14px;"><span id="greetingMessage"></span></p>
+                </div>
+                <div id="status-sincro" class="status-indicator">
+                    <span id="status-dot" class="dot"></span>
+                    <span id="status-com">SINCRO...</span>
+                </div>
+            </div>
+                
+            <div class="kpi-grid">
+                <div class="kpi-card"><p>Monitorados</p><h2 id="big-monitorado">--</h2></div>
+                <div class="kpi-card"><p>Nova Solicitação</p><h2 id="big-nova">--</h2></div>
+                <div class="kpi-card card-transito"><p>Em Trânsito</p><h2 id="big-transito">--</h2></div>
+                <div class="kpi-card card-aguardando"><p>Aguardando Início</p><h2 id="big-aguardando">--</h2></div>
+                <div class="kpi-card card-atraso"><p>Início em Atraso</p><h2 id="big-atraso">--</h2></div>
+            </div>
+
+            <hr style="margin: 40px 0; border: 0; border-top: 1px solid #e2e8f0;">
+
+            <div class="header-torre">
+                <h1 style="color: #1e293b; font-size: 1.5rem; font-weight: 800; text-transform: uppercase;">Torre de Controle | Status de Viagens Escolta</h1>
+                <p style="color: #64748b; font-size: 14px; margin-bottom: 20px;">Localização em tempo real e proximidade do destino</p>
+            </div>
+
+            <div class="container-cards-torre">
+                <div class="card-neon longe"><h3>Longe</h3><div id="emAndamentoLonge" class="valor">--</div></div>
+                <div class="card-neon medio"><h3>Médio</h3><div id="emAndamentoMedio" class="valor">--</div></div>
+                <div class="card-neon proximo"><h3>Próximo</h3><div id="emAndamentoProximo" class="valor">--</div></div>
+                <div class="card-neon encontro"><h3>Em Encontro</h3><div id="statusEncontro" class="valor">--</div></div>
+                <div class="card-neon chegada"><h3>Chegada</h3><div id="statusChegada" class="valor">--</div></div>
+            </div>
+
+            <div id="map"></div>
+
+            <h2 style="color: #64748b; font-size: 1rem; margin-top: 30px; text-transform: uppercase; font-weight: 800;">Veículos Chegando (Crítico)</h2>
+            <table class="tabela-dark">
+                <thead>
+                    <tr><th>Veículo</th><th>Motorista</th><th>Distância</th></tr>
+                </thead>
+                <tbody id="tabelaProximos"></tbody>
+            </table>
+        </main>
+
+        <aside class="sidebar-right">
+            <h4 style="font-size: 10px; color: #94a3b8; margin-bottom: 20px; letter-spacing: 1.5px; font-weight: 800;">FERRAMENTAS</h4>
+            <a href="comunicado.html" style="text-decoration:none; color:inherit;">
+                <div class="icon-link" style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 10px; text-align:center;">
+                    <i class="ph ph-whatsapp-logo" style="font-size: 24px; color: #25D366;"></i>
+                    <p style="font-size: 11px; font-weight: 700; margin-top:5px;">GERADOR ZAP</p>
+                </div>
+            </a>
+            <a href="torre.html" style="text-decoration:none; color:inherit;">
+                <div class="icon-link" style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; text-align:center;">
+                    <i class="ph ph-broadcast" style="font-size: 24px; color: #6366f1;"></i>
+                    <p style="font-size: 11px; font-weight: 700; margin-top:5px;">TORRE 360</p>
+                </div>
+            </a>
+        </aside>
+    </div>
+
+    <script>
+        // 1. CONFIGURAÇÃO DO LINK FIXO DO ROBÔ
+    const urlPython = "https://torre-campinas-ana.loca.lt/dados"; 
+    
+    const hour = new Date().getHours();
+    document.getElementById("greetingMessage").textContent = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
+
+    var map = L.map('map').setView([-15.78, -47.92], 4); 
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    var markers = [];
+
+    async function refreshData() {
+        // A. Atualiza Painel Superior (DADOS DO SEU ROBÔ PYTHON)
+        try {
+            const res = await fetch(urlPython, { 
+                headers: { 
+                    'bypass-tunnel-reminder': 'true' // Pula o aviso do Localtunnel
+                } 
+            });
+            
+            const dados = await res.json();
+            
+            if(dados && dados.monitorados > 0) {
+                document.getElementById('big-monitorado').innerText = dados.monitorados || "0";
+                document.getElementById('big-nova').innerText = dados.nova_solicitacao ?? "0";
+                document.getElementById('big-transito').innerText = dados.em_transito || "0";
+                document.getElementById('big-aguardando').innerText = dados.aguardando_inicio || "0";
+                document.getElementById('big-atraso').innerText = dados.inicio_atraso || "0";
+                
+                // Feedback visual de conexão OK
+                document.getElementById('status-com').innerText = "SINCRO OK";
+                document.getElementById('status-dot').className = "dot online";
+            }
+        } catch (err) {
+            console.error("Erro ao ler robô:", err);
+            document.getElementById('status-com').innerText = "OFFLINE";
+            document.getElementById('status-dot').className = "dot offline";
+        }
+
+            // B. Atualiza Torre de Controle (Sheets) - 5 Cards
+            google.script.run.withSuccessHandler(function(stats) {
+                document.getElementById('emAndamentoLonge').innerText = stats.emAndamentoLonge || "0";
+                document.getElementById('emAndamentoMedio').innerText = stats.emAndamentoMedio || "0";
+                document.getElementById('emAndamentoProximo').innerText = stats.emAndamentoProximo || "0";
+                document.getElementById('statusEncontro').innerText = stats.emEncontro || "0";
+                document.getElementById('statusChegada').innerText = stats.chegada || "0";
+
+                let tabela = document.getElementById('tabelaProximos');
+                tabela.innerHTML = "";
+                markers.forEach(m => map.removeLayer(m));
+                markers = [];
+
+                if (stats.veiculosProximos) {
+                    stats.veiculosProximos.forEach(item => {
+                        let statusTexto = item.status ? item.status.toUpperCase() : "";
+                        
+                        // Tabela foca no Crítico (Próximo ou Encontro)
+                        if(statusTexto.includes("PRÓXIMO") || statusTexto.includes("ENCONTRO")) {
+                            tabela.innerHTML += `<tr><td>${item.veiculo}</td><td>${item.motorista}</td><td style="color:#ef4444; font-weight:bold;">${item.distancia} km</td></tr>`;
+                        }
+
+                        // Marcadores no Mapa com 5 cores
+                        if (item.lat && item.lat !== 0) {
+                            let cor = "#6366f1"; // Longe
+                            if(statusTexto.includes("MÉDIO")) cor = "#f59e0b";
+                            if(statusTexto.includes("PRÓXIMO")) cor = "#ef4444";
+                            if(statusTexto.includes("ENCONTRO")) cor = "#a855f7";
+                            if(statusTexto.includes("CHEGADA")) cor = "#22c55e";
+
+                            let marker = L.circleMarker([item.lat, item.lng], { color: "white", fillColor: cor, fillOpacity: 0.9, weight: 2, radius: 10 }).addTo(map);
+                            marker.bindTooltip(`<b>${item.veiculo}</b><br>${statusTexto}<br>${item.distancia} km`);
+                            markers.push(marker);
+                        }
+                    });
+                    if (markers.length > 0) map.fitBounds(new L.featureGroup(markers).getBounds().pad(0.2));
+                }
+            }).getDadosDashboard();
+        }
+
+        window.onload = () => {
+            refreshData();
+            setInterval(refreshData, 60000); 
+        };
+        function toggleSidebar(side) {
+    if (side === 'left') {
+        const sidebar = document.querySelector('.sidebar');
+        sidebar.classList.toggle('hidden');
+    } else {
+        const sidebarRight = document.querySelector('.sidebar-right');
+        sidebarRight.classList.toggle('hidden');
+    }
+    
+    // Força o mapa a se reajustar ao novo tamanho da tela após 300ms (tempo da transição)
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 300);
+}
+    </script>
+</body>
+</html>

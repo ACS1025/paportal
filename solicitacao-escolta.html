@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
+    <title>Solicitação Escolta | Portal Unificado</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        /* Ajustes específicos para o formulário de solicitação de escolta */
+        .form-container {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .form-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; row-gap: 25px; }
+
+        .form-group { display: flex; flex-direction: column; gap: 5px; min-width: 180px; }
+        
+        label { font-size: 12px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        input, select, textarea {
+            padding: 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus { border-color: #6366f1; outline: none; }
+
+        .full-width { grid-column: span 4; }
+
+        .btn-enviar {
+            background-color: #6366f1;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            grid-column: span 4;
+            transition: background 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-enviar:hover { background-color: #4f46e5; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <aside class="sidebar">
+        <div class="logo"><h2>PA - Campinas</h2></div>
+        <nav class="menu">
+            <p class="menu-label">Monitoramento</p>
+            <a href="index.html"><i class="ph ph-gauge"></i> Dashboard Principal</a>
+            <a href="torre.html"><i class="ph ph-broadcast"></i> Torre de Controle</a>
+            <a href="posicao.html"><i class="ph ph-map-pin"></i> Posição Escolta</a>
+            <a href="solicitacao-escolta.html" class="active"><i class="ph ph-shield-plus"></i> Solicitação Escolta</a>
+            
+            <p class="menu-label">Operação</p>
+            <a href="cftv.html"><i class="ph ph-video-camera"></i> Auditoria CFTV</a>
+            <a href="cftv-email.html"><i class="ph ph-envelope"></i> E-mail CFTV</a>
+            <a href="brief.html"><i class="ph ph-clipboard-text"></i> Briefing Digital</a>
+            <a href="registros-saidas.html"><i class="ph ph-sign-out"></i> Registro de Saídas</a>
+            <a href="comunicado.html"><i class="ph ph-whatsapp-logo"></i> Gerador de Comunicado</a>
+            <a href="conhecimento.html"><i class="ph ph-book-open"></i> Para Conhecimento</a>
+
+            <p class="menu-label">Capacitação</p>
+            <a href="Treinamento_Komando_Completo.html"><i class="ph ph-graduation-cap"></i> Avaliação do Treinamento</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="top-info">
+            <div>
+                <h1 style="font-size: 24px; color: #1e293b; margin: 0;">Solicitação de Escolta</h1>
+                <p style="color: #64748b; font-size: 14px;"><span id="greetingMessage"></span></p>
+            </div>
+            <div style="background: #f1f5f9; padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700;">
+                Operações de Campo
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form id="formOcorrencia">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Data/Hora</label>
+                        <input type="datetime-local" id="dataHora" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Ocorrência</label>
+                        <select id="ocorrencia">
+                            <option value="PERDA DE SINAL">PERDA DE SINAL</option>
+                            <option value="ALERTA DESENGATE">ALERTA DESENGATE</option>
+                            <option value="FALHA NO EQUIPAMENTO">FALHA NO EQUIPAMENTO</option>
+                            <option value="ENVOLVIDO EM ACIDENTE">ENVOLVIDO EM ACIDENTE</option>
+                            <option value="ENVOLVIDO EM SINISTRO">ENVOLVIDO EM SINISTRO</option>
+                            <option value="PARADA PARA MANUTENÇÃO">PARADA PARA MANUTENÇÃO</option>
+                            <option value="VEÍCULO QUEBRADO">VEÍCULO QUEBRADO</option>
+                            <option value="VEÍCULO QUEBRADO NA VIA">VEÍCULO QUEBRADO NA VIA</option>
+                            <option value="VEÍCULO EM MANUTENÇÃO">VEÍCULO EM MANUTENÇÃO</option>
+                            <option value="DESCUMPRIMENTO DE NORMAS DE GR">DESCUMPRIMENTO DE NORMAS DE GR</option>
+                            <option value="PARADA FERIADO">PARADA FERIADO</option>
+                            <option value="PARADA POSTO FISCAL">PARADA POSTO FISCAL</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Veículo</label>
+                        <input type="text" id="veiculo">
+                    </div>
+                    <div class="form-group">
+                        <label>Motorista</label>
+                        <input type="text" id="motorista">
+                    </div>
+                    <div class="form-group">
+                        <label>Rota</label>
+                        <input type="text" id="rota">
+                    </div>
+                    <div class="form-group">
+                        <label>Última Posição</label>
+                        <input type="text" id="ultimaPosicao">
+                    </div>
+                    <div class="form-group">
+                        <label>Lat/Long</label>
+                        <input type="text" id="latLong">
+                    </div>
+                    <div class="form-group">
+                        <label>Grupo de Escolta</label>
+                        <select id="escolta">
+                            <option value="TM SEG">TM SEG</option>
+                            <option value="ÁGORA">ÁGORA</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Link: localização google maps</label>
+                        <textarea id="link" rows="3"></textarea>
+                    </div>
+                    
+                    <button type="button" class="btn-enviar" id="btnEnviar" onclick="enviarTudo()">
+                        <i class="ph ph-paper-plane-right"></i> Enviar Solicitação
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <aside class="sidebar-right">
+        <h4 style="font-size: 10px; color: #94a3b8; margin-bottom: 20px; letter-spacing: 1.5px; font-weight: 800;">FERRAMENTAS</h4>
+        <a href="comunicado.html" style="text-decoration:none; color:inherit;">
+            <div style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 10px; text-align:center;">
+                <i class="ph ph-whatsapp-logo" style="font-size: 24px; color: #25D366;"></i>
+                <p style="font-size: 11px; font-weight: 700; margin-top:5px;">GERADOR ZAP</p>
+            </div>
+        </a>
+        <a href="torre.html" style="text-decoration:none; color:inherit;">
+            <div style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; text-align:center;">
+                <i class="ph ph-broadcast" style="font-size: 24px; color: #6366f1;"></i>
+                <p style="font-size: 11px; font-weight: 700; margin-top:5px;">TORRE 360</p>
+            </div>
+        </a>
+    </aside>
+</div>
+
+<script>
+// Mantive toda a sua lógica funcional abaixo
+const hour = new Date().getHours();
+const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
+document.getElementById("greetingMessage").textContent = greeting;
+
+const agora = new Date();
+agora.setMinutes(agora.getMinutes() - agora.getTimezoneOffset());
+document.getElementById("dataHora").value = agora.toISOString().slice(0, 16);
+
+function enviarTudo() {
+    const btn = document.getElementById("btnEnviar");
+    const veiculo = document.getElementById("veiculo").value.trim();
+    const link = document.getElementById("link").value.trim();
+
+    if (!veiculo || !link) {
+        alert("Por favor, preencha os campos obrigatórios: Veículo e Link de Localização.");
+        return; 
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = "<i class='ph ph-spinner-gap-bold'></i> Gravando...";
+
+    const rawData = document.getElementById("dataHora").value;
+    let dataBrasil = rawData;
+    if (rawData) {
+        const [data, hora] = rawData.split('T');
+        const [ano, mes, dia] = data.split('-');
+        dataBrasil = `${dia}/${mes}/${ano} ${hora}`;
+    }
+
+    const dados = {
+        dataHora: dataBrasil,
+        ocorrencia: document.getElementById("ocorrencia").value,
+        veiculo: veiculo,
+        motorista: document.getElementById("motorista").value,
+        rota: document.getElementById("rota").value,
+        ultimaPosicao: document.getElementById("ultimaPosicao").value,
+        latLong: document.getElementById("latLong").value,
+        link: link, 
+        escolta: document.getElementById("escolta").value
+    };
+
+    const urlScript = "https://script.google.com/macros/s/AKfycbxPjiy-kvGjxhOD3rMxGW-Yz5zZ35tPgFhO_a6UeotkpkBKU2ljrI9_l-3BBdQpUvZZUg/exec";
+
+    // Envio para Planilha
+    fetch(urlScript, {
+        method: "POST",
+        mode: "no-cors",
+        cache: "no-cache",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dados)
+    }).then(() => {
+        console.log("Comando de envio enviado.");
+    }).catch(err => console.error("Erro na planilha:", err));
+
+    // WhatsApp
+    const msg = `*Solicitação de Pronto Atendimento*\n\n` +
+                `${greeting}\n\n` +
+                `Temos agentes na localização disponível para atendimento?\n\n` +
+                `*Link Maps:* ${dados.link}\n` +
+                `*Veículo:* ${dados.veiculo}\n` +
+                `*Ocorrência:* ${dados.ocorrencia}\n` +
+                `*Escolta:* ${dados.escolta}`;
+
+    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+    
+    setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = "<i class='ph ph-paper-plane-right'></i> Enviar Solicitação";
+    }, 2000);
+}
+</script>
+</body>
+</html>

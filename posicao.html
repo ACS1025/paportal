@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
+    <title>Confirmação de Escolta | Portal Unificado</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        /* Ajustes específicos para o formulário de posição */
+        .form-container {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        
+        label { font-size: 12px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        input, select, textarea {
+            padding: 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus { border-color: #6366f1; outline: none; }
+
+        #latLongEncontro { background-color: #fff1f2; color: #991b1b; font-weight: 600; }
+
+        .full-width { grid-column: 1 / -1; }
+
+        #distanciaBox {
+            grid-column: 1 / -1;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+            border: 1px solid transparent;
+        }
+
+        .btn-enviar {
+            background-color: #6366f1;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            grid-column: 1 / -1;
+            transition: background 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-enviar:hover { background-color: #4f46e5; }
+        
+        .top-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <aside class="sidebar">
+        <div class="logo"><h2>PA - Campinas</h2></div>
+        <nav class="menu">
+            <p class="menu-label">Monitoramento</p>
+            <a href="index.html"><i class="ph ph-gauge"></i> Dashboard Principal</a>
+            <a href="torre.html"><i class="ph ph-broadcast"></i> Torre de Controle</a>
+            <a href="posicao.html" class="active"><i class="ph ph-map-pin"></i> Posição Escolta</a>
+            <a href="solicitacao-escolta.html"><i class="ph ph-shield-plus"></i> Solicitação Escolta</a>
+            
+            <p class="menu-label">Operação</p>
+            <a href="cftv.html"><i class="ph ph-video-camera"></i> Auditoria CFTV</a>
+            <a href="cftv-email.html"><i class="ph ph-envelope"></i> E-mail CFTV</a>
+            <a href="brief.html"><i class="ph ph-clipboard-text"></i> Briefing Digital</a>
+            <a href="registros-saidas.html"><i class="ph ph-sign-out"></i> Registro de Saídas</a>
+            <a href="comunicado.html"><i class="ph ph-whatsapp-logo"></i> Gerador de Comunicado</a>
+            <a href="conhecimento.html"><i class="ph ph-book-open"></i> Para Conhecimento</a>
+
+            <p class="menu-label">Capacitação</p>
+            <a href="Treinamento_Komando_Completo.html"><i class="ph ph-graduation-cap"></i> Avaliação do Treinamento</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="top-info">
+            <div>
+                <h1 style="font-size: 24px; color: #1e293b; margin: 0;">Posição para Escolta</h1>
+                <p style="color: #64748b; font-size: 14px;"><span id="greetingMessage"></span></p>
+            </div>
+            <div style="background: #f1f5f9; padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700;">
+                Logística Operacional
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form id="formOcorrencia">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Data/Hora</label>
+                        <input type="datetime-local" id="dataHora" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ordem de Serviço</label>
+                        <select id="ordem">
+                            <option value="Selecione">Selecione</option>
+                            <option value="CPQ x BEL">CPQ x BEL</option>
+                            <option value="CPQ x CAJ">CPQ x CAJ</option>
+                            <option value="BEL X CPQ">BEL X CPQ</option>
+                            <option value="BEL X CAJ">BEL X CAJ</option>
+                            <option value="BEL X SRR">BEL X SRR</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Motorista</label>
+                        <input type="text" id="motorista">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Veículo / Placa</label>
+                        <input type="text" id="veiculo">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Manifesto</label>
+                        <input type="text" id="manifesto">
+                    </div>
+
+                    <div class="form-group">
+                        <label>KM Destino</label>
+                        <select id="km">
+                            <option value="ORIGEM">ORIGEM</option>
+                            <option value="100">100</option>
+                            <option value="150">150</option>
+                            <option value="250">250</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Lat/Long Veículo</label>
+                        <input type="text" id="latLong" placeholder="-18.090, -49.271">
+                    </div>
+
+                    <div class="form-group">
+                    <label>Rota</label>
+                    <input type="text" id="rota">
+                    </div>
+
+                    <div class="form-group">
+                    <label>Cliente</label>
+                    <input type="text" id="cliente">
+                    </div>
+
+                    <div class="form-group">
+                    <label>Última Posição</label>
+                    <input type="text" id="ultimaPosicao">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Lat/Long Encontro</label>
+                        <input type="text" id="latLongEncontro" placeholder="Selecione o ponto abaixo" readonly>
+                    </div>
+
+                    
+                    <div id="distanciaBox"></div>
+
+                    <div class="form-group full-width">
+                        <label>Ponto de Encontro</label>
+                        <select id="pontoSelect">
+                            <option value="">Selecione um ponto estratégico...</option>
+                            <option value="-22.3577,-47.3849|Rod. Anhanguera, KM 164 - S/N - Jardim Europa, Araras - SP, 13600-780">Posto 7 - Araras - SP</option>
+                            <option value="-21.4673,-47.5756|Rod. Anhanguera, KM 266 + 630 metros - Zona Rural, São Simão - SP, 14200-000">Posto do Tim - São Simão - SP</option>
+                            <option value="-21.6841,-47.5002|Rod. Anhanguera, KM 248 - S/N - Zona Rural, Santa Rita do Passa Quatro - SP, 13670-000">Posto Anhanguera - Santa Rita do Passa Quatro - SP</option>
+                            <option value="-21.6402,-47.7543|Auto Posto Gironda, SP-253, 1 - Gironda, Luís Antônio - SP">Auto Posto Gironda - SP</option>
+                            <option value="-23.3331,-46.8425|Avenida Marginal do Ribeirão dos Cristais, Cajamar - SP">DHL - Cajamar - SP (Jordanésia)</option>
+                            <option value="-22.2536,-47.3828|Rod. Anhangüera, KM 186 - S/N - Serelepe, Leme - SP, 13610-000">Posto Pica Pau (Petrobras) - Leme - SP</option>
+                            <option value="-23.0185,-47.1354|Av. Br. Smith de Vasconcelos, 630 - Distrito Industrial, Campinas - SP, 13054-740">Supersonic - Campinas - SP</option>
+                            <option value="-23.3558,-46.8756|Cajamar - Centro">Cajamar - Centro- CLIENTE: DHL </option>
+                            <option value="-21.6881,-47.5029|Rod. Anhanguera, KM 250 - S/N - Santa Rita do Passa Quatro - SP, 13670-000">Auto Posto Vassununga - Santa Rita do Passa Quatro - SP</option>
+                            <option value="-20.7228022,-47.8926955|Auto Posto Estoril de Orlândia, Av. Marginal Esquerda, 313 - Centro, Orlândia - SP, 14620-000">Auto Posto Estoril de Orlândia</option>
+                            <option value="-20.9317,-48.4984|Auto Posto Delevatti">Auto Posto Delevatti - Bebedouro - SP</option>
+                            <option value="-21.0736637,-48.4116492|AUTO POSTO CASULO TAQUARAL LTDA, R. São Paulo, 08 - Centro, Taquaral - SP, 14765-000">AUTO POSTO CASULO TAQUARAL LTDA</option>
+                            <option value="-22.8837,-47.1627|Av. Antônio Boscato, 230 - Terminal Intermodal de Cargas (Tic), Campinas - SP, 13069-119">BYD - Campinas - SP</option>
+                            <option value="-19.1972983,-40.097984|Posto Reserva, Rod. Governador Mário Covas, 13709, Sooretama - ES, 29927-000, Brasil">Posto Reserva - CLIENTE: DIS COMERCIO DE ELETROMESTICOS S/A</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Endereço Completo do Ponto</label>
+                        <input type="text" id="postoApoio" readonly placeholder="Endereço aparecerá automaticamente">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Link Google Maps</label>
+                        <textarea id="link" rows="2" placeholder="Cole o link da localização aqui"></textarea>
+                    </div>
+
+                    <button type="button" class="btn-enviar" id="btnEnviar" onclick="enviarTudo()">
+                        <i class="ph ph-paper-plane-right"></i> Enviar Posição para WhatsApp
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <aside class="sidebar-right">
+        <h4 style="font-size: 10px; color: #94a3b8; margin-bottom: 20px; letter-spacing: 1.5px; font-weight: 800;">FERRAMENTAS</h4>
+        <a href="comunicado.html" style="text-decoration:none; color:inherit;">
+            <div style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 10px; text-align:center;">
+                <i class="ph ph-whatsapp-logo" style="font-size: 24px; color: #25D366;"></i>
+                <p style="font-size: 11px; font-weight: 700; margin-top:5px;">GERADOR ZAP</p>
+            </div>
+        </a>
+        <a href="torre.html" style="text-decoration:none; color:inherit;">
+            <div style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; text-align:center;">
+                <i class="ph ph-broadcast" style="font-size: 24px; color: #6366f1;"></i>
+                <p style="font-size: 11px; font-weight: 700; margin-top:5px;">TORRE 360</p>
+            </div>
+        </a>
+    </aside>
+</div>
+
+<script>
+// Mantive toda a sua lógica funcional abaixo
+const hour = new Date().getHours();
+const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
+document.getElementById("greetingMessage").textContent = greeting;
+
+const agora = new Date();
+agora.setMinutes(agora.getMinutes() - agora.getTimezoneOffset());
+document.getElementById("dataHora").value = agora.toISOString().slice(0, 16);
+
+let distanciaCalculada = 0;
+
+function calcularDistancia(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+}
+
+document.getElementById("pontoSelect").addEventListener("change", function () {
+    const select = this.value;
+    const latLongInput = document.getElementById("latLongEncontro");
+    if (!select) {
+        latLongInput.value = "";
+        document.getElementById("postoApoio").value = "";
+        atualizarDistancia();
+        return;
+    }
+    const partes = select.split("|");
+    latLongInput.value = partes[0];
+    document.getElementById("postoApoio").value = partes[1];
+    atualizarDistancia();
+});
+
+function atualizarDistancia() {
+    const box = document.getElementById("distanciaBox");
+    try {
+        const latLongValue = document.getElementById("latLong").value;
+        const latLongEncontroValue = document.getElementById("latLongEncontro").value;
+        const [lat1, lon1] = latLongValue.split(',').map(v => parseFloat(v.trim()));
+        const [lat2, lon2] = latLongEncontroValue.split(',').map(v => parseFloat(v.trim()));
+
+        if (!isNaN(lat1) && !isNaN(lon1) && !isNaN(lat2) && !isNaN(lon2)) {
+            const distancia = calcularDistancia(lat1, lon1, lat2, lon2);
+            const km = Math.round(distancia);
+            distanciaCalculada = km;
+            const tempo = (distancia / 80).toFixed(1);
+
+            let status = ""; let cor = ""; let textCor = "";
+            if (km <= 150) { status = "🟢 PRÓXIMO"; cor = "#dcfce7"; textCor = "#166534"; } 
+            else if (km <= 500) { status = "🟡 MÉDIO"; cor = "#fef9c3"; textCor = "#854d0e"; } 
+            else { status = "🔴 LONGE"; cor = "#fee2e2"; textCor = "#991b1b"; }
+
+            box.style.display = "block";
+            box.style.background = cor;
+            box.style.color = textCor;
+            box.style.border = `1px solid ${textCor}44`;
+            box.innerHTML = `<strong>${status}</strong> | 🚛 Veículo a <strong>${km} km</strong> | ⏱ ETA: ${tempo}h`;
+        } else { box.style.display = "none"; }
+    } catch (e) { box.style.display = "none"; }
+}
+
+document.getElementById("latLong").addEventListener("input", atualizarDistancia);
+
+function enviarTudo() {
+    const btn = document.getElementById("btnEnviar");
+    btn.disabled = true;
+    btn.innerHTML = "<i class='ph ph-spinner-gap-bold'></i> Gravando...";
+
+    const rawData = document.getElementById("dataHora").value;
+    const [data, hora] = rawData.split('T');
+    const [ano, mes, dia] = data.split('-');
+    const dataBrasil = `${dia}/${mes}/${ano} ${hora}`;
+
+    const dados = {
+        dataHora: dataBrasil,
+        ordem: document.getElementById("ordem").value,
+        motorista: document.getElementById("motorista").value,
+        veiculo: document.getElementById("veiculo").value,
+        manifesto: document.getElementById("manifesto").value,
+        kmDestino: document.getElementById("km").value,
+        cliente: document.getElementById("cliente").value,
+        latLong: document.getElementById("latLong").value,
+        distanciaKM: distanciaCalculada,
+        linkGoogle: document.getElementById("link").value,
+        pontoEncontro: document.getElementById("pontoSelect").options[document.getElementById("pontoSelect").selectedIndex].text,
+        enderecoPonto: document.getElementById("postoApoio").value
+    };
+
+    fetch("https://script.google.com/macros/s/AKfycbw5g_z2JCFT-l1sd9rpyiSoEUlIN00kcO-4NGm4goAtWC519PzKLVVeACj9dwUncwmg/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(dados)
+    })
+    .then(() => {
+        const msg = `*Posição para Escolta*\n\n${greeting}\n\n` +
+        (distanciaCalculada ? `🚛 *Veículo a ${distanciaCalculada} km do ponto de encontro*\n\n` : "") +
+        `*Data/Hora:* ${dados.dataHora}\n` +
+        `*Ordem:* ${dados.ordem}\n` +
+        `*Motorista:* ${dados.motorista}\n` +
+        `*Veículo:* ${dados.veiculo}\n` +
+        `*Cliente:* ${dados.cliente}\n` +
+        `📍 *Link Mapa:* ${dados.linkGoogle}\n\n` +
+        `*Ponto:* ${dados.pontoEncontro}`;
+
+        window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+        btn.disabled = false;
+        btn.innerHTML = "<i class='ph ph-paper-plane-right'></i> Enviar";
+        alert("Dados enviados com sucesso!");
+    })
+    .catch(() => {
+        alert("Erro ao salvar dados.");
+        btn.disabled = false;
+        btn.innerHTML = "<i class='ph ph-paper-plane-right'></i> Enviar";
+    });
+}
+</script>
+</body>
+</html>

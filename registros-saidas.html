@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='icon' href='src/img/kmd-16x16.png' type='image/png'>
+    <title>Registro de Saídas | Portal Unificado</title>
+    <link rel="stylesheet" href="https://unpkg.com/phosphor-icons@1.4.2/src/css/icons.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --accent: #6366f1;
+            --success: #059669;
+            --danger: #dc2626;
+            --slate: #475569;
+        }
+
+        /* --- RESET E BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background: #f8fafc; 
+            color: #334155; 
+        }
+
+        .container { 
+            display: grid; 
+            grid-template-columns: 280px 1fr 200px; 
+            min-height: 100vh; 
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar { 
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%); 
+            padding: 30px 20px; 
+            color: white; 
+            position: sticky; 
+            top: 0; 
+            height: 100vh; 
+            overflow-y: auto; 
+        }
+
+        .logo { text-align: center; margin-bottom: 40px; }
+        .logo h2 { font-size: 18px; font-weight: 800; color: #f8fafc; }
+
+        .menu { list-style: none; }
+        .menu-label { 
+            font-size: 10px; 
+            color: #94a3b8; 
+            margin: 25px 0 10px 0; 
+            letter-spacing: 1.5px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+        }
+
+        .menu a { 
+            display: block; 
+            color: #cbd5e1; 
+            text-decoration: none; 
+            padding: 12px 15px; 
+            border-radius: 8px; 
+            margin-bottom: 5px; 
+            transition: 0.2s; 
+            font-size: 14px; 
+            font-weight: 500; 
+        }
+
+        .menu a:hover, .menu a.active { 
+            background: #6366f1; 
+            color: white; 
+        }
+
+        .menu a i { margin-right: 10px; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content { 
+            padding: 30px; 
+            background: white; 
+            overflow-y: auto; 
+        }
+
+        .top-info { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 30px; 
+            padding-bottom: 20px; 
+            border-bottom: 1px solid #e2e8f0; 
+        }
+
+        .top-info h1 { 
+            font-size: 28px; 
+            color: #1e293b; 
+            margin: 0; 
+        }
+
+        .top-info p { 
+            color: #64748b; 
+            font-size: 14px; 
+            margin: 5px 0 0 0; 
+        }
+
+        .badge { 
+            background: #f1f5f9; 
+            padding: 8px 15px; 
+            border-radius: 20px; 
+            font-size: 12px; 
+            font-weight: 700; 
+            color: #475569; 
+        }
+
+        /* --- SIDEBAR RIGHT --- */
+        .sidebar-right { 
+            background: white; 
+            padding: 30px 20px; 
+            border-left: 1px solid #e2e8f0; 
+        }
+
+        .sidebar-right h4 { 
+            font-size: 10px; 
+            color: #94a3b8; 
+            margin-bottom: 20px; 
+            letter-spacing: 1.5px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+        }
+
+        .sidebar-right a { 
+            text-decoration: none; 
+            color: inherit; 
+            display: block; 
+            margin-bottom: 10px; 
+        }
+
+        .sidebar-right div { 
+            background: white; 
+            padding: 15px; 
+            border-radius: 12px; 
+            border: 1px solid #e2e8f0; 
+            text-align: center; 
+            transition: 0.2s; 
+        }
+
+        .sidebar-right div:hover { 
+            background: #f8fafc; 
+            border-color: #cbd5e1; 
+        }
+
+        .sidebar-right i { 
+            font-size: 24px; 
+            color: #6366f1; 
+            display: block; 
+            margin-bottom: 5px; 
+        }
+
+        .sidebar-right p { 
+            font-size: 11px; 
+            font-weight: 700; 
+            margin: 0; 
+        }
+
+        /* --- FORM STYLES --- */
+        .form-container { 
+            background: white; 
+            border-radius: 16px; 
+            padding: 30px; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+            border: 1px solid #e2e8f0; 
+            margin-bottom: 30px; 
+        }
+
+        .form-container h2 { 
+            text-align: center; 
+            margin-top: 0; 
+            color: #1e293b; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            font-size: 24px; 
+            border-bottom: 2px solid #f0f0f0; 
+            padding-bottom: 15px; 
+            margin-bottom: 20px; 
+        }
+
+        /* FORMULÁRIO */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            row-gap: 25px;
+        }
+
+        .form-group { min-width: 180px; }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #555;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            border-color: #6366f1;
+            background: white;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        textarea { height: 80px; resize: none; line-height: 1.5; font-size: 13px; }
+
+        .full-width { grid-column: span 4; }
+
+        /* BOTÕES */
+        button {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            grid-column: span 4;
+        }
+
+        button { background: #059669; color: white; }
+        button:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        /* TABELA CARRETAS */
+        .carreta-table {
+            width: 100%;
+            max-height: 400px;
+            background-color: rgba(158, 233, 181, 0.815);
+            border-collapse: collapse;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            display: block;
+        }
+
+        .carreta-table th, .carreta-table td {
+            padding: 10px;
+            border: 1px solid #000;
+        }
+
+        .carreta-table th {
+            background-color: rgba(245, 245, 26, 0.842);
+        }
+
+        .carreta-table td {
+            white-space: nowrap;
+        }
+
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: #d6eaf8;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* AUTOCOMPLETE */
+        ul.autocomplete-list {
+            border: 1px solid #ccc;
+            max-height: 150px;
+            overflow-y: auto;
+            padding-left: 0;
+            margin-top: 0;
+            list-style: none;
+            position: absolute;
+            background: white;
+            width: 200px;
+            z-index: 1000;
+        }
+        ul.autocomplete-list li {
+            padding: 5px;
+            cursor: pointer;
+        }
+        ul.autocomplete-list li:hover {
+            background-color: #ddd;
+        }
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) { 
+            .container { grid-template-columns: 250px 1fr; } 
+            .sidebar-right { display: none; } 
+        }
+
+        @media (max-width: 768px) { 
+            .container { grid-template-columns: 1fr; } 
+            .sidebar { display: none; } 
+            .main-content { padding: 20px; } 
+            .form-grid { grid-template-columns: repeat(2, 1fr); } 
+        }
+
+        @media (max-width: 480px) { 
+            .form-grid { grid-template-columns: 1fr; } 
+            .full-width, button { grid-column: span 1; } 
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <aside class="sidebar">
+        <div class="logo"><h2>PA - Campinas</h2></div>
+        <nav class="menu">
+            <p class="menu-label">Monitoramento</p>
+            <a href="index.html"><i class="ph ph-gauge"></i> Dashboard Principal</a>
+            <a href="torre.html"><i class="ph ph-broadcast"></i> Torre de Controle</a>
+            <a href="posicao.html"><i class="ph ph-map-pin"></i> Posição Escolta</a>
+            <a href="solicitacao-escolta.html"><i class="ph ph-shield-plus"></i> Solicitação Escolta</a>
+            
+            <p class="menu-label">Operação</p>
+            <a href="cftv.html"><i class="ph ph-video-camera"></i> Auditoria CFTV</a>
+            <a href="cftv-email.html"><i class="ph ph-envelope"></i> E-mail CFTV</a>
+            <a href="brief.html"><i class="ph ph-clipboard-text"></i> Briefing Digital</a>
+            <a href="registros-saidas.html" class="active"><i class="ph ph-sign-out"></i> Registro de Saídas</a>
+            <a href="comunicado.html"><i class="ph ph-whatsapp-logo"></i> Gerador de Comunicado</a>
+            <a href="conhecimento.html"><i class="ph ph-book-open"></i> Para Conhecimento</a>
+
+            <p class="menu-label">Capacitação</p>
+            <a href="Treinamento_Komando_Completo.html"><i class="ph ph-graduation-cap"></i> Avaliação do Treinamento</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="top-info">
+            <div>
+                <h1>Registro de Saídas</h1>
+                <p id="greetingMessage"></p>
+            </div>
+            <div class="badge">Operação</div>
+        </div>
+
+        <div class="form-container">
+            <h2>Registro de Saídas</h2>
+
+            <form id="registro-saidas-form" action="https://script.google.com/macros/s/AKfycbwS8B4OjAhwd5bIkfG7hluLGXgtQyIYeCtbVb4AnUEnvRLPRDDsmN62lpm1avXsInXH/exec" method="POST">
+                <input type="hidden" name="linkBase" value="PA_Campinas">
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="responsavel">Responsável pelo registro:</label>
+                        <select id="responsavel" name="responsavel" required>
+                            <option value="">Selecione o responsável</option>
+                            <option value="ANA CLAUDIA">ANA CLAUDIA</option>
+                            <option value="PEDRO OTÁVIO">PEDRO OTÁVIO</option>
+                            <option value="NOELE">NOELE</option>
+                            <option value="TAINÁ">TAINÁ</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="data_emissao">Data da emissão:</label>
+                        <input type="date" id="data_emissao" name="data_emissao">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="doc_saida">Doc. saída:</label>
+                        <select id="doc_saida" name="doc_saida" onchange="atualizarCarretaStatus()" required>
+                            <option value="">Selecione tipo de saída</option>
+                            <option value="ORDEM DE COLETA">ORDEM DE COLETA</option>
+                            <option value="AUT. SAÍDA">AUT. SAÍDA</option>
+                            <option value="AUTORIZAÇÃO DE SAÍDA">AUTORIZAÇÃO DE SAÍDA</option>
+                            <option value="MANIFESTO">MANIFESTO</option>
+                            <option value="MANUTENÇÃO">MANUTENÇÃO</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ordem">Ordem:</label>
+                        <input type="text" id="ordem" name="ordem">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="doc_placa">Placa:</label>
+                        <input type="text" id="doc_placa" name="placa" autocomplete="off" oninput="buscarPlacas(this.value)" />
+                        <ul id="lista-placa" class="autocomplete-list"></ul>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="frota">Frota:</label>
+                        <input type="text" id="frota" name="frota">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="doc_carreta">Carreta:</label>
+                        <input type="text" id="doc_carreta" name="doc_carreta" autocomplete="off" oninput="buscarCarretas(this.value)" />
+                        <ul id="lista-carreta" class="autocomplete-list"></ul>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="doc_motorista">Motorista:</label>
+                        <input type="text" id="doc_motorista" name="doc_motorista" placeholder="Digite o nome do motorista" oninput="buscarMotoristas(this.value)">
+                        <ul id="lista-motorista" class="autocomplete-list"></ul>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="doc_cliente">Cliente:</label>
+                        <input type="text" id="clienteInput" name="doc_cliente" required oninput="buscarClientes(this.value, 'cliente')" />
+                        <ul id="lista-cliente" class="autocomplete-list"></ul>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="filial">Filial:</label>
+                        <select id="filial" name="doc_filial">
+                            <option value="">Selecione a filial</option>
+                            <option value="CAMPINAS/ SP">CAMPINAS/ SP</option>
+                            <option value="MANAUS/ AM">MANAUS/ AM</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="doc_origem">Origem:</label>
+                        <input type="text" id="doc_origem" name="doc_origem" placeholder="Digite a cidade" 
+                               oninput="buscarCidades(this.value, 'origem'); updateRoute();">
+                        <ul id="lista-origem"></ul>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="doc_destino">Destino:</label>
+                        <input type="text" id="doc_destino" name="doc_destino" placeholder="Digite a cidade" 
+                               oninput="buscarCidades(this.value, 'destino'); updateRoute();">
+                        <ul id="lista-destino"></ul>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rota">Rota:</label>
+                        <input type="text" id="rota" name="rota" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="doc_viagem_rastreada">Viagem rastreada:</label>
+                        <select id="doc_viagem_rastreada" name="doc_viagem_rastreada">
+                            <option value="">Selecione GR</option>
+                            <option value="KMD" selected>KMD</option>
+                            <option value="BR RISK">BR RISK</option>
+                            <option value="KRONA">KRONA</option>
+                            <option value="OPENTECH">OPENTECH</option>
+                            <option value="BUONNY">BUONNY</option>
+                            <option value="TECNORISK">TECNORISK</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="valor">Valor:</label>
+                        <input type="text" id="valor" name="valor" onkeyup="formatarMoeda(this)">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cod_sm">Cód. SM:</label>
+                        <input type="text" id="cod_sm" name="cod_sm">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="carreta_status">Carreta status:</label>
+                        <select id="doc_carreta_status" name="carreta_status">
+                            <option value="">Selecione o status</option>
+                            <option value="VAZIO">VAZIO</option>
+                            <option value="CARREGADO">CARREGADO</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="doc_turno">Turno:</label>
+                        <select id="doc_turno" name="doc_turno">
+                            <option value="">Selecione o turno de saída</option>
+                            <option value="T1">T1</option>
+                            <option value="T2">T2</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="doc_responsavel_ssonic">Responsável SS:</label>
+                        <select id="doc_responsavel_ssonic" name="doc_responsavel_ssonic">
+                            <option value="">Selecione o responsável SSONIC</option>
+                            <option value="ADRIAN FERREIRA">ADRIAN FERREIRA</option>
+                            <option value="ADRIANO">ADRIANO</option>
+                            <option value="ALTAIR">ALTAIR</option>
+                            <option value="EDSON CAETANO">EDSON CAETANO</option>
+                            <option value="CLEMENTE SILVA">CLEMENTE SILVA</option>
+                            <option value="CARLOS">CARLOS</option>
+                            <option value="DAMIÃO">DAMIÃO</option>
+                            <option value="DOUGLAS SANTIAGO">DOUGLAS SANTIAGO</option>
+                            <option value="EDSON SOUZA">EDSON SOUZA</option>
+                            <option value="ELIZEU">ELIZEU</option>
+                            <option value="FABIO ANTONIO">FABIO ANTONIO</option>
+                            <option value="ELTON">ELTON</option>
+                            <option value="GUSTAVO VANZEI">GUSTAVO VANZEI</option>
+                            <option value="IRLAN">IRLAN</option>
+                            <option value="JHONATAS">JHONATAS</option>
+                            <option value="JUSCELINO">JUSCELINO</option>
+                            <option value="HENDRIX">HENDRIX</option>
+                            <option value="LUCAS LIMA">LUCAS LIMA</option>
+                            <option value="MARCELO MORAES">MARCELO MORAES</option>
+                            <option value="MAURICIO">MAURICIO</option>
+                            <option value="ROGÉRIO">ROGÉRIO</option>
+                            <option value="RONEY CASSIO">RONEY CASSIO</option>
+                            <option value="RUY">RUY</option>
+                            <option value="TARSICIO">TARSICIO</option>
+                            <option value="REVISAR">REVISAR</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="data_saida">Data da saída:</label>
+                        <input type="date" id="data_saida" name="data_saida">
+                    </div>
+
+                    <button type="submit" class="btn-enviar">📤 Enviar</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tabela para Liberação Carreta Manaus -->
+        <div class="form-container">
+            <table class="carreta-table">
+                <thead>
+                    <tr class="sticky-header">
+                        <th colspan="2">
+                            <h3>CARRETAS LIBERADAS - MANAUS</h3>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>SAÍDA ESPORÁDICA</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <aside class="sidebar-right">
+        <h4 style="font-size: 10px; color: #94a3b8; margin-bottom: 20px; letter-spacing: 1.5px; font-weight: 800;">FERRAMENTAS</h4>
+        <a href="registros-saidas.html" style="text-decoration:none; color:inherit;">
+            <div style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 10px; text-align:center;">
+                <i class="ph ph-sign-out" style="font-size: 24px; color: #6366f1;"></i>
+                <p style="font-size: 11px; font-weight: 700; margin-top:5px;">REGISTRO SAÍDAS</p>
+            </div>
+        </a>
+        <a href="torre.html" style="text-decoration:none; color:inherit;">
+            <div style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; text-align:center;">
+                <i class="ph ph-broadcast" style="font-size: 24px; color: #6366f1;"></i>
+                <p style="font-size: 11px; font-weight: 700; margin-top:5px;">TORRE 360</p>
+            </div>
+        </a>
+    </aside>
+</div>
+                      
+<script>
+// Script de saudação
+function updateGreeting() {
+    const now = new Date();
+    const hour = now.getHours();
+    const dayOfWeek = now.toLocaleDateString('pt-BR', { weekday: 'long' });
+    const date = now.toLocaleDateString('pt-BR');
+
+    let greeting;
+    if (hour < 12) {
+        greeting = 'Bom dia';
+    } else if (hour < 18) {
+        greeting = 'Boa tarde';
+    } else {
+        greeting = 'Boa noite';
+    }
+
+    document.getElementById('greetingMessage').textContent = `${greeting}! Hoje é ${dayOfWeek}, ${date}.`;
+}
+
+updateGreeting();
+setInterval(updateGreeting, 60000); // Atualiza a cada minuto
+
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById('registro-saidas-form');
+    const briefingEndpoint = 'https://script.google.com/macros/s/AKfycbza5JvFIsbbxkYQM7TfRgvq3x3-Hy37QaiXtlqWk50f6uJ2gaP2md_pVkD7ZXVAQVp1/exec';
+
+    // --- TODAS AS SUAS FUNÇÕES DE PREENCHIMENTO E REGRAS (MANTIDAS) ---
+    window.atualizarCarretaStatus = function () {
+        const docSaida = document.getElementById('doc_saida').value;
+        const carretaStatus = document.getElementById('doc_carreta_status');
+        if (carretaStatus) {
+            carretaStatus.value = (docSaida === 'MANIFESTO') ? 'CARREGADO' : 'VAZIO';
+        }
+    };
+
+    function autoPreencherTurno() {
+        const turnoSelect = document.getElementById('doc_turno');
+        if (!turnoSelect) return;
+        const hour = new Date().getHours();
+        turnoSelect.value = (hour >= 6 && hour < 18) ? 'T1' : 'T2';
+    }
+
+    function autoPreencherDataSaida() {
+        const campoData = document.getElementById('data_saida');
+        if (!campoData) return;
+        const dataAtual = new Date();
+        campoData.value = dataAtual.toISOString().split('T')[0];
+    }
+
+    const selectViagem = document.getElementById('doc_viagem_rastreada');
+    if (selectViagem && selectViagem.value === '') {
+        selectViagem.value = 'KMD';
+    }
+
+    window.formatarMoeda = function(elemento) {
+        let valor = elemento.value.replace(/\D/g, '');
+        valor = (parseFloat(valor) / 100).toFixed(2);
+        elemento.value = 'R$ ' + valor.replace('.', ',');
+    };
+
+    autoPreencherTurno();
+    autoPreencherDataSaida();
+
+    // --- TODAS AS SUAS LISTAS E BUSCAS (MANTIDAS) ---
+    let listaPlacas = [], listaCarretas = [], listaNomes = [], listaCidades = [], listaClientes = [];
+
+    fetch('https://script.google.com/macros/s/AKfycbwVgeU9_XIMyqqyJ_rLcLxK7xoHrh2SJNoW0m0hmEUV6MB81YqejiE3TZuSKt5kx7Mo/exec')
+        .then(res => res.json()).then(data => {
+            listaPlacas = data.cavalos || [];
+            listaCarretas = data.carretas || [];
+        });
+
+    fetch('https://script.google.com/macros/s/AKfycbyqlZzCWCtusuEk5ih6A8MRAk2OplQ8ePbQjLUt2bBFhcEAWTza__H8EkKV8Cc6vVUV/exec')
+        .then(res => res.json()).then(data => listaNomes = data.nomes || []);
+
+    fetch('https://script.google.com/macros/s/AKfycbyKG_WsFoMc7l_Gp9BHYhf3rOxQxNWTSagLmqff16eejGVvOje_Hhjhc6_GJeEM8wHRdA/exec')
+        .then(res => res.json()).then(data => listaCidades = data);
+
+    fetch('https://drive.google.com/uc?export=download&id=1xmohBNnPTx-o8wwKOcFNExryEFV16Mhi')
+        .then(res => res.json()).then(data => listaClientes = data)
+        .catch(err => console.error('Erro ao carregar clientes:', err));
+
+    window.buscarPlacas = function(valor) {
+        const lista = document.getElementById('lista-placa');
+        lista.innerHTML = '';
+        if (!valor) return;
+        listaPlacas.filter(p => p.toLowerCase().startsWith(valor.toLowerCase()))
+            .forEach(p => {
+                const li = document.createElement('li');
+                li.textContent = p;
+                li.onclick = () => { document.getElementById('doc_placa').value = p; lista.innerHTML = ''; };
+                lista.appendChild(li);
+            });
+    };
+
+    window.buscarCarretas = function(valor) {
+        const lista = document.getElementById('lista-carreta');
+        lista.innerHTML = '';
+        if (!valor) return;
+        listaCarretas.filter(c => c.toLowerCase().startsWith(valor.toLowerCase()))
+            .forEach(c => {
+                const li = document.createElement('li');
+                li.textContent = c;
+                li.onclick = () => { document.getElementById('doc_carreta').value = c; lista.innerHTML = ''; };
+                lista.appendChild(li);
+            });
+    };
+
+    window.buscarMotoristas = function(valor) {
+        const lista = document.getElementById('lista-motorista');
+        lista.innerHTML = '';
+        if (!valor) return;
+        listaNomes.filter(n => n.toLowerCase().startsWith(valor.toLowerCase()))
+            .forEach(n => {
+                const li = document.createElement('li');
+                li.textContent = n;
+                li.onclick = () => { document.getElementById('doc_motorista').value = n; lista.innerHTML = ''; };
+                lista.appendChild(li);
+            });
+    };
+
+    window.buscarCidades = function(input, tipo) {
+        const lista = document.getElementById(tipo === 'origem' ? 'lista-origem' : 'lista-destino');
+        lista.innerHTML = '';
+        if (!input) return lista.style.display = 'none';
+        const filtradas = listaCidades.filter(c => c.toLowerCase().includes(input.toLowerCase()));
+        if (!filtradas.length) return lista.style.display = 'none';
+        lista.style.display = 'block';
+        filtradas.forEach(cidade => {
+            const li = document.createElement('li');
+            li.textContent = cidade;
+            li.onclick = () => selecionarCidade(cidade, tipo);
+            lista.appendChild(li);
+        });
+    };
+
+    window.selecionarCidade = function(cidade, tipo) {
+        const campo = document.getElementById(tipo === 'origem' ? 'doc_origem' : 'doc_destino');
+        campo.value = cidade;
+        const lista = document.getElementById(tipo === 'origem' ? 'lista-origem' : 'lista-destino');
+        lista.innerHTML = '';
+        lista.style.display = 'none';
+        window.updateRoute();
+    };
+
+    window.buscarClientes = function(input) {
+        const lista = document.getElementById('lista-cliente');
+        lista.innerHTML = '';
+        if (!input) return lista.style.display = 'none';
+        const filtradas = listaClientes.filter(c => c.toLowerCase().includes(input.toLowerCase()));
+        if (!filtradas.length) return lista.style.display = 'none';
+        lista.style.display = 'block';
+        filtradas.forEach(cliente => {
+            const li = document.createElement('li');
+            li.textContent = cliente;
+            li.onclick = () => {
+                document.getElementById('clienteInput').value = cliente;
+                lista.innerHTML = '';
+                lista.style.display = 'none';
+            };
+            lista.appendChild(li);
+        });
+    };
+
+    window.updateRoute = function() {
+        const origem = document.getElementById('doc_origem').value;
+        const destino = document.getElementById('doc_destino').value;
+        const rota = document.getElementById('rota');
+        if (origem && destino) {
+            rota.value = `${origem} → ${destino}`;
+        } else {
+            rota.value = '';
+        }
+    };
+
+    // Submissão do formulário
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const data = {};
+        formData.forEach((value, key) => {
+            data[key] = value;
+        });
+
+        const tipoSaida = (formData.get('doc_saida') || '').toUpperCase();
+        let whatsappWindow = null;
+        if (tipoSaida === 'MANIFESTO') {
+            whatsappWindow = window.open('about:blank', '_blank');
+        }
+
+        // Adicionar timestamp
+        data.timestamp = new Date().toISOString();
+
+        fetch(form.action, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: new URLSearchParams(data)
+        })
+        .then(() => {
+            if (tipoSaida === 'MANIFESTO') {
+                const motorista = (formData.get('doc_motorista') || '').toUpperCase();
+                const placaValor = (formData.get('placa') || formData.get('doc_placa') || '').toUpperCase();
+                const carreta = (formData.get('doc_carreta') || '').toUpperCase();
+                const origem = (formData.get('doc_origem') || '').toUpperCase();
+                const destino = (formData.get('doc_destino') || '').toUpperCase();
+                const sm = formData.get('cod_sm') || '';
+
+                const linkImg = 'https://res.cloudinary.com/dijagbe0r/image/upload/v1773329384/Briefing_Kmd_tiecpz.jpg';
+                const mensagem = `Viagem Monitorada\n\nSr. Motorista.\n\nVocê tem uma viagem programada que será monitorada pela Komando. Por favor, acesse o briefing de viagem no link abaixo:\n\n${linkImg}\n\n*Dados da viagem:*\nMotorista: ${motorista}\nPlaca Cavalo: ${placaValor}\nCarreta: ${carreta}\nRota: ${origem} X ${destino}\n\nQualquer dúvida pode nos chamar.\n\n*Equipe Komando*`;
+
+                const whatsappUrl = 'https://wa.me/?text=' + encodeURIComponent(mensagem);
+                if (whatsappWindow && !whatsappWindow.closed) {
+                    whatsappWindow.location.href = whatsappUrl;
+                } else {
+                    window.open(whatsappUrl, '_blank');
+                }
+
+                setTimeout(() => {
+                    const briefingPayload = new URLSearchParams({
+                        data_envio: new Date().toLocaleString('pt-BR'),
+                        codigo_sm: sm,
+                        motorista: motorista,
+                        placa_cavalo: placaValor,
+                        placa_carreta: carreta,
+                        rota: `${origem} X ${destino}`,
+                        texto_pronto: mensagem
+                    });
+
+                    fetch(briefingEndpoint, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        body: briefingPayload.toString()
+                    })
+                    .then(() => {
+                        console.log('Briefing enviado com sucesso.');
+                    })
+                    .catch(err => {
+                        console.error('Erro ao enviar briefing:', err);
+                    });
+                }, 1500);
+
+                alert('Registro enviado com sucesso! WhatsApp aberto para MANIFESTO.');
+            } else {
+                alert('Registro enviado com sucesso!');
+            }
+
+            form.reset();
+            // Resetar campos automáticos
+            autoPreencherTurno();
+            autoPreencherDataSaida();
+            if (selectViagem) selectViagem.value = 'KMD';
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao enviar registro. Tente novamente.');
+        });
+    });
+});
+</script>
+
+</body>
+</html>
+

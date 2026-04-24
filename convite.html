@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='icon' href='src/img/kmd-16x16.png' type='image/png'>
+    <title>Convite Motorista | Portal Unificado</title>
+    <link rel="stylesheet" href="https://unpkg.com/phosphor-icons@1.4.2/src/css/icons.css">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --accent: #6366f1;
+            --success: #059669;
+            --danger: #dc2626;
+            --slate: #475569;
+        }
+
+        /* --- RESET E BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background: #f8fafc; 
+            color: #334155; 
+        }
+
+        .container { 
+            display: grid; 
+            grid-template-columns: 280px 1fr 200px; 
+            min-height: 100vh; 
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar { 
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%); 
+            padding: 30px 20px; 
+            color: white; 
+            position: sticky; 
+            top: 0; 
+            height: 100vh; 
+            overflow-y: auto; 
+        }
+
+        .logo { text-align: center; margin-bottom: 40px; }
+        .logo h2 { font-size: 18px; font-weight: 800; color: #f8fafc; }
+
+        .menu { list-style: none; }
+        .menu-label { 
+            font-size: 10px; 
+            color: #94a3b8; 
+            margin: 25px 0 10px 0; 
+            letter-spacing: 1.5px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+        }
+
+        .menu a { 
+            display: block; 
+            color: #cbd5e1; 
+            text-decoration: none; 
+            padding: 12px 15px; 
+            border-radius: 8px; 
+            margin-bottom: 5px; 
+            transition: 0.2s; 
+            font-size: 14px; 
+            font-weight: 500; 
+        }
+
+        .menu a:hover, .menu a.active { 
+            background: #6366f1; 
+            color: white; 
+        }
+
+        .menu a i { margin-right: 10px; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content { 
+            padding: 30px; 
+            background: white; 
+            overflow-y: auto; 
+        }
+
+        .top-info { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 30px; 
+            padding-bottom: 20px; 
+            border-bottom: 1px solid #e2e8f0; 
+        }
+
+        .top-info h1 { 
+            font-size: 28px; 
+            color: #1e293b; 
+            margin: 0; 
+        }
+
+        .top-info p { 
+            color: #64748b; 
+            font-size: 14px; 
+            margin: 5px 0 0 0; 
+        }
+
+        .badge { 
+            background: #f1f5f9; 
+            padding: 8px 15px; 
+            border-radius: 20px; 
+            font-size: 12px; 
+            font-weight: 700; 
+            color: #475569; 
+        }
+
+        /* --- SIDEBAR RIGHT --- */
+        .sidebar-right { 
+            background: white; 
+            padding: 30px 20px; 
+            border-left: 1px solid #e2e8f0; 
+        }
+
+        .sidebar-right h4 { 
+            font-size: 10px; 
+            color: #94a3b8; 
+            margin-bottom: 20px; 
+            letter-spacing: 1.5px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+        }
+
+        .sidebar-right a { 
+            text-decoration: none; 
+            color: inherit; 
+            display: block; 
+            margin-bottom: 10px; 
+        }
+
+        .sidebar-right div { 
+            background: white; 
+            padding: 15px; 
+            border-radius: 12px; 
+            border: 1px solid #e2e8f0; 
+            text-align: center; 
+            transition: 0.2s; 
+        }
+
+        .sidebar-right div:hover { 
+            background: #f8fafc; 
+            border-color: #cbd5e1; 
+        }
+
+        .sidebar-right i { 
+            font-size: 24px; 
+            color: #6366f1; 
+            display: block; 
+            margin-bottom: 5px; 
+        }
+
+        .sidebar-right p { 
+            font-size: 11px; 
+            font-weight: 700; 
+            margin: 0; 
+        }
+
+        /* --- FORM STYLES --- */
+        .form-container { 
+            background: white; 
+            border-radius: 16px; 
+            padding: 30px; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+            border: 1px solid #e2e8f0; 
+            margin-bottom: 30px; 
+        }
+
+        .form-container h2 { 
+            text-align: center; 
+            margin-top: 0; 
+            color: #1e293b; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            font-size: 24px; 
+            border-bottom: 2px solid #f0f0f0; 
+            padding-bottom: 15px; 
+            margin-bottom: 20px; 
+        }
+
+        /* FORMULÁRIO */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            row-gap: 25px;
+        }
+
+        .form-group { min-width: 180px; }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #555;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            border-color: #6366f1;
+            background: white;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        textarea { height: 80px; resize: none; line-height: 1.5; font-size: 13px; }
+
+        .full-width { grid-column: span 4; }
+
+        /* BOTÕES */
+        button {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            grid-column: span 4;
+        }
+
+        button { background: #059669; color: white; }
+        button:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        #previewSVG {
+            max-width: 100%;
+            height: auto;
+            display: none;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) { 
+            .container { grid-template-columns: 250px 1fr; } 
+            .sidebar-right { display: none; } 
+        }
+
+        @media (max-width: 768px) { 
+            .container { grid-template-columns: 1fr; } 
+            .sidebar { display: none; } 
+            .main-content { padding: 20px; } 
+            .form-grid { grid-template-columns: repeat(2, 1fr); } 
+        }
+
+        @media (max-width: 480px) { 
+            .form-grid { grid-template-columns: 1fr; } 
+            .full-width, button { grid-column: span 1; } 
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <aside class="sidebar">
+        <div class="logo"><h2>PA - Campinas</h2></div>
+        <nav class="menu">
+            <p class="menu-label">Monitoramento</p>
+            <a href="index.html"><i class="ph ph-gauge"></i> Dashboard Principal</a>
+            <a href="torre.html"><i class="ph ph-broadcast"></i> Torre de Controle</a>
+            <a href="posicao.html"><i class="ph ph-map-pin"></i> Posição Escolta</a>
+            <a href="solicitacao-escolta.html"><i class="ph ph-shield-plus"></i> Solicitação Escolta</a>
+            
+            <p class="menu-label">Operação</p>
+            <a href="cftv.html"><i class="ph ph-video-camera"></i> Auditoria CFTV</a>
+            <a href="cftv-email.html"><i class="ph ph-envelope"></i> E-mail CFTV</a>
+            <a href="brief.html"><i class="ph ph-clipboard-text"></i> Briefing Digital</a>
+            <a href="registros-saidas.html"><i class="ph ph-sign-out"></i> Registro de Saídas</a>
+            <a href="comunicado.html"><i class="ph ph-whatsapp-logo"></i> Gerador de Comunicado</a>
+            <a href="conhecimento.html"><i class="ph ph-book-open"></i> Para Conhecimento</a>
+
+            <p class="menu-label">Capacitação</p>
+            <a href="Treinamento_Komando_Completo.html"><i class="ph ph-graduation-cap"></i> Avaliação do Treinamento</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="top-info">
+            <div>
+                <h1>Convite Motorista</h1>
+                <p id="greetingMessage"></p>
+            </div>
+            <div class="badge">Comunicação</div>
+        </div>
+
+        <div class="form-container">
+            <h2>Sr. Motorista</h2>
+
+            <form id="formOcorrencia">
+                <div class="form-grid">
+                    <!-- Seleção de texto -->
+                    <div class="form-group full-width">
+                        <label for="modeloTexto">Selecione o modelo de texto:</label>
+                        <select id="modeloTexto" name="modeloTexto" onchange="carregarTexto()">
+                            <option value="" disabled selected>Escolha um modelo</option>
+                            <option value="checklist">Check list vencido</option>
+                            <option value="fotos">Fotos de paradas</option>
+                            <option value="manutencao">Agendamento de manutenção</option>
+                            <option value="briefing">Briefing digital</option>
+                            <option value="reciclagem">Reciclagem motorista</option>
+                        </select>
+                    </div>
+
+                    <!-- Texto Pronto -->
+                    <div class="form-group full-width">
+                        <label for="textoPronto">Texto Pronto:</label>
+                        <textarea id="textoPronto" name="textoPronto" rows="6" readonly></textarea>
+                    </div>
+
+                    <!-- Espaço para digitação adicional -->
+                    <div class="form-group full-width">
+                        <label for="textoAdicional">Digite informações adicionais:</label>
+                        <textarea id="textoAdicional" name="textoAdicional" rows="4" placeholder="Digite suas informações adicionais aqui"></textarea>
+                    </div>
+
+                    <!-- Seleção de imagem -->
+                    <div class="form-group">
+                        <label for="imagemSVG">Selecione uma Imagem:</label>
+                        <select id="imagemSVG" name="imagemSVG">
+                            <option value="" disabled selected>Escolha uma imagem</option>
+                            <option value="src/img/imagem1.jpg">Imagem JPG 1</option>
+                            <option value="src/img/imagem2.png">Imagem PNG 2</option>
+                            <option value="src/svg/imagem1.svg">Imagem SVG</option>
+                        </select>
+                    </div>
+
+                    <!-- Upload de arquivo -->
+                    <div class="form-group">
+                        <label for="arquivoExterno">Imagem do seu dispositivo:</label>
+                        <input type="file" id="arquivoExterno" name="arquivoExterno" accept=".svg,.png,.jpg,.jpeg">
+                    </div>
+
+                    <!-- Pré-visualização -->
+                    <div class="form-group">
+                        <img id="previewSVG" src="" alt="Pré-visualização da imagem">
+                    </div>
+
+                    <!-- Botão Enviar -->
+                    <button type="button" onclick="enviarWhatsApp()">📤 Enviar</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <aside class="sidebar-right">
+        <h4 style="font-size: 10px; color: #94a3b8; margin-bottom: 20px; letter-spacing: 1.5px; font-weight: 800;">FERRAMENTAS</h4>
+        <a href="convite.html" style="text-decoration:none; color:inherit;">
+            <div style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 10px; text-align:center;">
+                <i class="ph ph-steering-wheel" style="font-size: 24px; color: #6366f1;"></i>
+                <p style="font-size: 11px; font-weight: 700; margin-top:5px;">CONVITE MOTORISTA</p>
+            </div>
+        </a>
+        <a href="torre.html" style="text-decoration:none; color:inherit;">
+            <div style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; text-align:center;">
+                <i class="ph ph-broadcast" style="font-size: 24px; color: #6366f1;"></i>
+                <p style="font-size: 11px; font-weight: 700; margin-top:5px;">TORRE 360</p>
+            </div>
+        </a>
+    </aside>
+</div>
+
+        <form id="formOcorrencia">
+            <div class="form-grid">
+                <!-- Seleção de texto -->
+                <div class="form-group full-width">
+                    <label for="modeloTexto">Selecione o modelo de texto:</label>
+                    <select id="modeloTexto" name="modeloTexto" onchange="carregarTexto()">
+                        <option value="" disabled selected>Escolha um modelo</option>
+                        <option value="checklist">Check list vencido</option>
+                        <option value="fotos">Fotos de paradas</option>
+                        <option value="manutencao">Agendamento de manutenção</option>
+                        <option value="briefing">Briefing digital</option>
+                        <option value="reciclagem">Reciclagem motorista</option>
+                    </select>
+                </div>
+
+                <!-- Texto Pronto -->
+                <div class="form-group full-width">
+                    <label for="textoPronto">Texto Pronto:</label>
+                    <textarea id="textoPronto" name="textoPronto" rows="6" readonly></textarea>
+                </div>
+
+                <!-- Espaço para digitação adicional -->
+                <div class="form-group full-width">
+                    <label for="textoAdicional">Digite informações adicionais:</label>
+                    <textarea id="textoAdicional" name="textoAdicional" rows="4" placeholder="Digite suas informações adicionais aqui"></textarea>
+                </div>
+
+                <!-- Seleção de imagem -->
+                <div class="form-group">
+                    <label for="imagemSVG">Selecione uma Imagem:</label>
+                    <select id="imagemSVG" name="imagemSVG">
+                        <option value="" disabled selected>Escolha uma imagem</option>
+                        <option value="src/img/imagem1.jpg">Imagem JPG 1</option>
+                        <option value="src/img/imagem2.png">Imagem PNG 2</option>
+                        <option value="src/svg/imagem1.svg">Imagem SVG</option>
+                    </select>
+                </div>
+
+                <!-- Upload de arquivo -->
+                <div class="form-group">
+                    <label for="arquivoExterno">Imagem do seu dispositivo:</label>
+                    <input type="file" id="arquivoExterno" name="arquivoExterno" accept=".svg,.png,.jpg,.jpeg">
+                </div>
+
+                <!-- Pré-visualização -->
+                <div class="form-group">
+                    <img id="previewSVG" src="" alt="Pré-visualização da imagem">
+                </div>
+
+                <!-- Botão Enviar -->
+                <button type="button" onclick="enviarWhatsApp()">Enviar</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Saudação dinâmica
+        function updateGreeting() {
+            const now = new Date();
+            const hour = now.getHours();
+            const greeting = hour < 12 ? 'Bom dia' : hour < 18 ? 'Boa tarde' : 'Boa noite';
+            const timeString = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('greetingMessage').textContent = `${greeting}! Agora são ${timeString}.`;
+        }
+        updateGreeting();
+        setInterval(updateGreeting, 60000); // Atualiza a cada minuto
+
+        // Mensagem de saudação
+        const hour = new Date().getHours();
+        const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
+
+        // Modelos de texto
+        const textos = {
+            checklist: `*Check list vencido*\n\nSr. Motorista,\n\nSeu check list está vencido. Por favor verifique o melhor horário para realizar o teste. Antes, verifique as travas e sensores do veículo. Esteja engatado e entre em contato em nossos telefones para realizarmos o teste.\n\n*Equipe Komando*`,
+            manutencao: `*Agendamento de manutenção*\n\nSr. Motorista,\n\nVerificamos que o seu equipamento rastreador necessita de manutenção, estamos recebendo alertas. Por favor, verifique com a autorizada mais próxima para realizar os reparos necessários. Certifique-se de que o equipamento esteja em condições seguras e nos chame para um novo teste.\n\n*Equipe Komando*`,
+            reciclagem: 'Sr. Motorista.\n\nSeu checkilist esta suspenso para novas viagens, será necessário reciclagem com a equipe komando para validá-lo no sistema, por favor preencha os dados no formulario e compareça na unidade em horário comercial. https://forms.gle/tt4LVq24EjBsVC7WA Qualquer dúvida pode nos chamar.\n\n*Equipe Komando*',
+            briefing: 'Sr. Motorista.\n\nVocê tem uma viagem programada que será monitorada pela Komando. Por favor, leia o formulário e preencha os campos. https://forms.gle/F8ij4q2XPa8SLTmVA Qualquer dúvida pode nos chamar.\n\n*Equipe Komando*',
+            fotos: 'Sr. Motorista.\n\nAo informar paradas e pernoite via macro. Por favor confirme a ação em nosso whatsapp *(19 98103-2053)*.É preciso que você nos envie.\n\n*-> FOTO DO BAÚ.*\n*-> FOTO DOS LACRES.*\n*-> FOTO DO ENGATE.*\n\nEste procedimento de envio deverá ser repetido quando você reiniciar a viagem também. \n\nQualquer dúvida pode nos chamar.\n\n*Equipe Komando*',
+        };
+
+        // Carregar texto pronto
+        function carregarTexto() {
+            const modelo = document.getElementById("modeloTexto").value;
+            document.getElementById("textoPronto").value = textos[modelo] || "";
+        }
+
+        // Enviar mensagem
+        function enviarWhatsApp() {
+            const textoPronto = document.getElementById("textoPronto").value;
+            const textoAdicional = document.getElementById("textoAdicional").value;
+            const imagem = document.getElementById("imagemSVG").value;
+            const mensagem = `${textoPronto}\n\n${textoAdicional}\n${imagem ? "Confira a imagem: " + imagem : ""}`;
+            const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+            window.open(url, "_blank");
+        }
+
+        // Pré-visualização de imagem
+        document.getElementById("arquivoExterno").addEventListener("change", function (e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById("previewSVG");
+            if (file && file.type.match("image.*")) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.src = e.target.result;
+                    preview.style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+    
+</html>

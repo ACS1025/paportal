@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-mail CFTV | Portal Unificado</title>
+    <link rel="stylesheet" href="https://unpkg.com/phosphor-icons@1.4.2/src/css/icons.css">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --accent: #6366f1;
+            --success: #059669;
+            --danger: #dc2626;
+            --slate: #475569;
+        }
+
+        /* --- RESET E BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background: #f8fafc; 
+            color: #334155; 
+        }
+
+        .container { 
+            display: grid; 
+            grid-template-columns: 280px 1fr 200px; 
+            min-height: 100vh; 
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar { 
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%); 
+            padding: 30px 20px; 
+            color: white; 
+            position: sticky; 
+            top: 0; 
+            height: 100vh; 
+            overflow-y: auto; 
+        }
+
+        .logo { text-align: center; margin-bottom: 40px; }
+        .logo h2 { font-size: 18px; font-weight: 800; color: #f8fafc; }
+
+        .menu { list-style: none; }
+        .menu-label { 
+            font-size: 10px; 
+            color: #94a3b8; 
+            margin: 25px 0 10px 0; 
+            letter-spacing: 1.5px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+        }
+
+        .menu a { 
+            display: block; 
+            color: #cbd5e1; 
+            text-decoration: none; 
+            padding: 12px 15px; 
+            border-radius: 8px; 
+            margin-bottom: 5px; 
+            transition: 0.2s; 
+            font-size: 14px; 
+            font-weight: 500; 
+        }
+
+        .menu a:hover, .menu a.active { 
+            background: #6366f1; 
+            color: white; 
+        }
+
+        .menu a i { margin-right: 10px; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content { 
+            padding: 30px; 
+            background: white; 
+            overflow-y: auto; 
+        }
+
+        .top-info { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 30px; 
+            padding-bottom: 20px; 
+            border-bottom: 1px solid #e2e8f0; 
+        }
+
+        .top-info h1 { 
+            font-size: 28px; 
+            color: #1e293b; 
+            margin: 0; 
+        }
+
+        .top-info p { 
+            color: #64748b; 
+            font-size: 14px; 
+            margin: 5px 0 0 0; 
+        }
+
+        .badge { 
+            background: #f1f5f9; 
+            padding: 8px 15px; 
+            border-radius: 20px; 
+            font-size: 12px; 
+            font-weight: 700; 
+            color: #475569; 
+        }
+
+        /* --- SIDEBAR RIGHT --- */
+        .sidebar-right { 
+            background: white; 
+            padding: 30px 20px; 
+            border-left: 1px solid #e2e8f0; 
+        }
+
+        .sidebar-right h4 { 
+            font-size: 10px; 
+            color: #94a3b8; 
+            margin-bottom: 20px; 
+            letter-spacing: 1.5px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+        }
+
+        .sidebar-right a { 
+            text-decoration: none; 
+            color: inherit; 
+            display: block; 
+            margin-bottom: 10px; 
+        }
+
+        .sidebar-right div { 
+            background: white; 
+            padding: 15px; 
+            border-radius: 12px; 
+            border: 1px solid #e2e8f0; 
+            text-align: center; 
+            transition: 0.2s; 
+        }
+
+        .sidebar-right div:hover { 
+            background: #f8fafc; 
+            border-color: #cbd5e1; 
+        }
+
+        .sidebar-right i { 
+            font-size: 24px; 
+            color: #6366f1; 
+            display: block; 
+            margin-bottom: 5px; 
+        }
+
+        .sidebar-right p { 
+            font-size: 11px; 
+            font-weight: 700; 
+            margin: 0; 
+        }
+
+        /* CONFIGURAÇÃO DA FOLHA A4 */
+        
+        /* Área de visualização na tela */
+        .page-container {
+            padding: 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .no-print-area { 
+            max-width: 800px; 
+            margin: 0 auto 20px auto; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+        }
+
+        .btn-print { 
+            background-color: var(--primary); 
+            color: white; border: none; 
+            padding: 10px 20px; 
+            border-radius: 8px; cursor: pointer; 
+            font-weight: bold; font-size: 14px;
+            display: flex; align-items: center; gap: 8px;
+            transition: 0.3s;
+        }
+
+        /* ESTILO DO RELATÓRIO - SIMULANDO A4 */
+        #relatorio-final { 
+            background-color: #ffffff; 
+            width: 210mm; /* Largura A4 */
+            min-height: 297mm; /* Altura A4 */
+            margin: auto; 
+            padding: 20mm; /* Margem de segurança para impressão */
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .header-relatorio {
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .logo-box img { max-height: 45px; }
+        .title-box h2 { color: var(--primary); margin: 0; font-size: 18px; text-transform: uppercase; }
+
+        .info-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            margin-bottom: 25px; 
+            font-size: 12px; 
+            color: var(--slate);
+        }
+
+        .stats-row { display: flex; gap: 10px; margin-bottom: 25px; }
+        .stat-box { 
+            flex: 1; padding: 12px; border-radius: 6px; text-align: center; 
+            border: 1px solid #e2e8f0;
+        }
+        .stat-box span { display: block; font-size: 9px; font-weight: bold; text-transform: uppercase; margin-bottom: 3px; }
+        .stat-box strong { font-size: 20px; color: var(--primary); }
+
+        .table-section-title {
+            font-size: 13px; color: var(--primary); margin-bottom: 12px;
+            font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 8px;
+        }
+
+        table { width: 100%; border-collapse: collapse; font-size: 11px; }
+        th { background: #f8fafc; padding: 10px; text-align: left; color: var(--slate); border-bottom: 2px solid #e2e8f0; }
+        td { padding: 10px; border-bottom: 1px solid #f1f5f9; vertical-align: top; line-height: 1.4; }
+
+        .tag-critical { 
+            background: #fef2f2; color: var(--danger); padding: 2px 5px; 
+            border-radius: 4px; font-size: 8px; font-weight: bold; text-transform: uppercase;
+        }
+
+        .footer-nota {
+            margin-top: 30px; padding: 12px; background: #f8fafc;
+            border-left: 4px solid var(--primary); font-size: 10px; color: var(--slate); line-height: 1.4;
+        }
+
+        .signature-area {
+            margin-top: 40px; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 15px;
+        }
+
+        /* AJUSTES PARA IMPRESSÃO REAL */
+        @media print {
+            @page {
+                size: A4;
+                margin: 0; /* O padding do #relatorio-final já serve como margem */
+            }
+            body { background: white; }
+            .page-container { padding: 0; }
+            .no-print-area { display: none; }
+            #relatorio-final { 
+                box-shadow: none; 
+                width: 100%; 
+                height: 100%;
+                margin: 0;
+            }
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) { 
+            .container { grid-template-columns: 250px 1fr; } 
+            .sidebar-right { display: none; } 
+        }
+
+        @media (max-width: 768px) { 
+            .container { grid-template-columns: 1fr; } 
+            .sidebar { display: none; } 
+            .main-content { padding: 20px; } 
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <aside class="sidebar">
+        <div class="logo"><h2>PA - Campinas</h2></div>
+        <nav class="menu">
+            <p class="menu-label">Monitoramento</p>
+            <a href="index.html"><i class="ph ph-gauge"></i> Dashboard Principal</a>
+            <a href="torre.html"><i class="ph ph-broadcast"></i> Torre de Controle</a>
+            <a href="posicao.html"><i class="ph ph-map-pin"></i> Posição Escolta</a>
+            <a href="solicitacao-escolta.html"><i class="ph ph-shield-plus"></i> Solicitação Escolta</a>
+            
+            <p class="menu-label">Operação</p>
+            <a href="cftv.html"><i class="ph ph-video-camera"></i> Auditoria CFTV</a>
+            <a href="cftv-email.html" class="active"><i class="ph ph-envelope"></i> E-mail CFTV</a>
+            <a href="brief.html"><i class="ph ph-clipboard-text"></i> Briefing Digital</a>
+            <a href="registros-saidas.html"><i class="ph ph-sign-out"></i> Registro de Saídas</a>
+            <a href="comunicado.html"><i class="ph ph-whatsapp-logo"></i> Gerador de Comunicado</a>
+            <a href="conhecimento.html"><i class="ph ph-book-open"></i> Para Conhecimento</a>
+
+            <p class="menu-label">Capacitação</p>
+            <a href="Treinamento_Komando_Completo.html"><i class="ph ph-graduation-cap"></i> Avaliação do Treinamento</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="top-info">
+            <div>
+                <h1>E-mail CFTV</h1>
+                <p id="greetingMessage"></p>
+            </div>
+            <div class="badge">Relatórios</div>
+        </div>
+
+        <div class="page-container">
+            <div class="no-print-area">
+                <a href="index.html" style="text-decoration: none; color: var(--slate); font-size: 13px; font-weight: bold;">
+                    <i class="ph ph-arrow-left"></i> Voltar ao Painel
+                </a>
+                <button class="btn-print" onclick="window.print()">
+                    <i class="ph ph-printer"></i> IMPRIMIR / SALVAR PDF
+                </button>
+            </div>
+
+            <div id="relatorio-final">
+                <div class="header-relatorio">
+                    <div class="logo-box">
+                        <img src="src/img/LogoKMD.png" alt="Logo Komando">
+                    </div>
+                    <div class="title-box">
+                        <h2>Checklist CFTV</h2>
+                    </div>
+                </div>
+
+                <div class="info-grid">
+                    <div>
+                        <p style="margin: 3px 0;"><strong>UNIDADE:</strong> <span id="view-unidade">CAMPINAS / SP</span></p>
+                        <p style="margin: 3px 0;"><strong>RESPONSÁVEL:</strong> <span id="view-responsavel">---</span></p>
+                    </div>
+                    <div style="text-align: right;">
+                        <p style="margin: 3px 0;"><strong>DATA:</strong> <span id="view-data">--/--/----</span></p>
+                        <p style="margin: 3px 0;"><strong>HORA:</strong> <span id="view-hora">00:00</span></p>
+                    </div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <span>Ativos Totais</span>
+                        <strong id="view-total">0</strong>
+                    </div>
+                    <div class="stat-box" style="background: #f0fdf4;">
+                        <span style="color: var(--success);">Operacionais</span>
+                        <strong id="view-ok" style="color: var(--success);">0</strong>
+                    </div>
+                    <div class="stat-box" style="background: #fef2f2;">
+                        <span style="color: var(--danger);">Com Falha</span>
+                        <strong id="view-fail" style="color: var(--danger);">0</strong>
+                    </div>
+                </div>
+
+                <div class="table-section-title">
+                    <i class="ph ph-warning-octagon"></i> Ocorrências Detalhadas
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;">DVR / GRUPO</th>
+                            <th>CÂMERAS COM ANOMALIA</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-corpo"></tbody>
+                </table>
+
+                <div class="footer-nota">
+                    <strong>NOTA TÉCNICA ACS CONSULT:</strong> Este documento atesta o estado funcional dos ativos de CFTV na data e hora mencionadas. Os equipamentos não listados na tabela de ocorrências foram testados e encontram-se em pleno funcionamento (Imagem, Gravação e Conectividade).
+                </div>
+
+                <div class="signature-area">
+                    <div style="display: inline-block; width: 220px; border-top: 1px solid #333; padding-top: 5px; font-size: 10px; color: #475569;">
+                        Assinatura do Responsável
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <aside class="sidebar-right">
+        <h4 style="font-size: 10px; color: #94a3b8; margin-bottom: 20px; letter-spacing: 1.5px; font-weight: 800;">FERRAMENTAS</h4>
+        <a href="comunicado.html" style="text-decoration:none; color:inherit;">
+            <div style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 10px; text-align:center;">
+                <i class="ph ph-whatsapp-logo" style="font-size: 24px; color: #25D366;"></i>
+                <p style="font-size: 11px; font-weight: 700; margin-top:5px;">GERADOR ZAP</p>
+            </div>
+        </a>
+        <a href="torre.html" style="text-decoration:none; color:inherit;">
+            <div style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; text-align:center;">
+                <i class="ph ph-broadcast" style="font-size: 24px; color: #6366f1;"></i>
+                <p style="font-size: 11px; font-weight: 700; margin-top:5px;">TORRE 360</p>
+            </div>
+        </a>
+    </aside>
+</div>
+
+<script>
+    // Greeting message
+    const hour = new Date().getHours();
+    const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
+    document.getElementById("greetingMessage").textContent = greeting;
+
+    window.onload = function() {
+        const dados = JSON.parse(localStorage.getItem("dadosAuditoria"));
+        
+        document.getElementById('view-data').innerText = new Date().toLocaleDateString('pt-BR');
+        document.getElementById('view-hora').innerText = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+
+        if (dados) {
+            document.getElementById('view-unidade').innerText = dados.unidade || "CAMPINAS / SP";
+            document.getElementById('view-responsavel').innerText = (dados.responsavel || "---").toUpperCase();
+            document.getElementById('view-total').innerText = dados.total;
+            document.getElementById('view-ok').innerText = dados.ok;
+            document.getElementById('view-fail').innerText = dados.fail;
+
+            const corpo = document.getElementById('tabela-corpo');
+            
+            if (!dados.listaFalhas || dados.listaFalhas.length === 0) {
+                corpo.innerHTML = '<tr><td colspan="2" style="padding: 40px; text-align: center; color: var(--success); font-weight: bold; font-size: 13px;"><i class="ph ph-check-circle" style="font-size: 24px;"></i><br><br>SISTEMA 100% OPERACIONAL</td></tr>';
+            } else {
+                const agrupado = {};
+                dados.listaFalhas.forEach(item => {
+                    if (!agrupado[item.dvr]) agrupado[item.dvr] = [];
+                    agrupado[item.dvr].push(item.cam);
+                });
+
+                for (const dvr in agrupado) {
+                    const tr = document.createElement('tr');
+                    const critico = dvr.includes("04") || agrupado[dvr].length > 4;
+
+                    tr.innerHTML = `
+                        <td style="font-weight: bold; background: ${critico ? '#fff1f0' : 'transparent'};">
+                            ${dvr} ${critico ? '<span class="tag-critical">Atenção</span>' : ''}
+                        </td>
+                        <td style="color: ${critico ? 'var(--danger)' : '#333'}">
+                            ${agrupado[dvr].join(" • ")}
+                        </td>
+                    `;
+                    corpo.appendChild(tr);
+                }
+            }
+        }
+    };
+</script>
+</body>
+</html>

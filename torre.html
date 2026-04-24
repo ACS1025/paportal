@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
+    <title>Torre de Controle | Portal Unificado</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        /* Ajustes específicos para a Torre de Controle */
+        .grid-container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+            gap: 15px; 
+            margin-bottom: 25px; 
+        }
+
+        .kpi-card { 
+            position: relative; 
+            background: white; 
+            border: 1px solid #e2e8f0; 
+            border-radius: 15px; 
+            padding: 20px; 
+            text-align: center; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: 0.3s;
+            border-top: 4px solid #6366f1;
+        }
+
+        .valor-big { font-size: 2.8rem; font-weight: 800; display: block; margin: 5px 0; color: #1e293b; }
+        .label-sub { color: #94a3b8; font-size: 0.7rem; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
+        
+        /* Cores Dinâmicas */
+        .card-atraso { border-top-color: #ef4444; } .card-atraso .valor-big { color: #ef4444; }
+        .card-aguardando { border-top-color: #f59e0b; } .card-aguardando .valor-big { color: #f59e0b; }
+        .card-transito { border-top-color: #22c55e; } .card-transito .valor-big { color: #22c55e; }
+
+        /* --- DETALHES --- */
+        .grid-detalhes { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        
+        .card-detalhe { 
+            background: white; 
+            border: 1px solid #e2e8f0; 
+            border-radius: 15px; padding: 20px; min-height: 350px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .card-detalhe h3 { 
+            font-size: 1rem; color: #6366f1; border-bottom: 1px solid #e2e8f0; 
+            padding-bottom: 12px; margin-bottom: 15px; text-transform: uppercase; 
+        }
+
+        .item-lista { 
+            padding: 10px 0; border-bottom: 1px solid #f1f5f9; 
+            font-size: 0.9rem; color: #475569; 
+        }
+
+        /* --- LOADING OVERLAY --- */
+        .loading-overlay { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(255,255,255,0.8); display: none; justify-content: center; 
+            align-items: center; border-radius: 15px; z-index: 5; 
+        }
+        .is-updating .loading-overlay { display: flex; }
+        .loading-text { font-size: 10px; color: #f59e0b; font-weight: bold; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        .footer-info { text-align: center; color: #64748b; font-size: 11px; margin-top: 30px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <aside class="sidebar">
+        <div class="logo"><h2>PA - Campinas</h2></div>
+        <nav class="menu">
+            <p class="menu-label">Monitoramento</p>
+            <a href="index.html"><i class="ph ph-gauge"></i> Dashboard Principal</a>
+            <a href="torre.html" class="active"><i class="ph ph-broadcast"></i> Torre de Controle</a>
+            <a href="posicao.html"><i class="ph ph-map-pin"></i> Posição Escolta</a>
+            <a href="solicitacao-escolta.html"><i class="ph ph-shield-plus"></i> Solicitação Escolta</a>
+            
+            <p class="menu-label">Operação</p>
+            <a href="cftv.html"><i class="ph ph-video-camera"></i> Auditoria CFTV</a>
+            <a href="cftv-email.html"><i class="ph ph-envelope"></i> E-mail CFTV</a>
+            <a href="brief.html"><i class="ph ph-clipboard-text"></i> Briefing Digital</a>
+            <a href="registros-saidas.html"><i class="ph ph-sign-out"></i> Registro de Saídas</a>
+            <a href="comunicado.html"><i class="ph ph-whatsapp-logo"></i> Gerador de Comunicado</a>
+            <a href="conhecimento.html"><i class="ph ph-book-open"></i> Para Conhecimento</a>
+
+            <p class="menu-label">Capacitação</p>
+            <a href="Treinamento_Komando_Completo.html"><i class="ph ph-graduation-cap"></i> Avaliação do Treinamento</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div style="display: flex; justify-content:建设; gap: 10px; margin-bottom: 10px;">
+    <button onclick="toggleSidebar('left')" class="btn-toggle"><i class="ph ph-sidebar-simple"></i> Menu</button>
+    <button onclick="toggleSidebar('right')" class="btn-toggle"><i class="ph ph-wrench"></i> Ferramentas</button>
+</div>
+        <div class="top-info">
+            <div>
+                <h1 style="font-size: 24px; color: #1e293b; margin: 0;">Torre de Controle</h1>
+                <p style="color: #64748b; font-size: 14px;"><span id="greetingMessage"></span></p>
+            </div>
+            <div style="background: #f1f5f9; padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700;">
+                Inteligência Operacional
+            </div>
+        </div>
+
+<div class="grid-container">
+    <div class="kpi-card">
+        <div class="loading-overlay"><span class="loading-text">SYNC</span></div>
+        <span class="label-sub">Monitorados</span>
+        <span id="big-monitorado" class="valor-big">--</span>
+    </div>
+
+    <div class="kpi-card">
+        <div class="loading-overlay"><span class="loading-text">SYNC</span></div>
+        <span class="label-sub">Solicitações</span>
+        <span id="big-nova" class="valor-big">--</span>
+    </div>
+
+    <div class="kpi-card card-transito">
+        <div class="loading-overlay"><span class="loading-text">SYNC</span></div>
+        <span class="label-sub">Em Trânsito</span>
+        <span id="big-transito" class="valor-big">--</span>
+    </div>
+
+    <div class="kpi-card card-aguardando">
+        <div class="loading-overlay"><span class="loading-text">SYNC</span></div>
+        <span class="label-sub">Aguardando</span>
+        <span id="big-aguardando" class="valor-big">--</span>
+    </div>
+
+    <div class="kpi-card card-atraso">
+        <div class="loading-overlay"><span class="loading-text">SYNC</span></div>
+        <span class="label-sub">Atraso</span>
+        <span id="big-atraso" class="valor-big">--</span>
+    </div>
+</div>
+
+<div class="grid-detalhes">
+    <div class="card-detalhe">
+        <div class="loading-overlay"><span class="loading-text">LENDO PLANILHA...</span></div>
+        <h3>🚚 Alertas de Veículos</h3>
+        <div id="lista-veiculos">Sincronizando...</div>
+    </div>
+    <div class="card-detalhe">
+        <div class="loading-overlay"><span class="loading-text">LENDO PLANILHA...</span></div>
+        <h3>👨‍✈️ Alertas de Motoristas</h3>
+        <div id="lista-motoristas">Sincronizando...</div>
+    </div>
+</div>
+
+<div class="footer-info">
+    SISTEMA DE INTELIGÊNCIA ACS | <span id="status-com">Conectado</span> | <span id="relogio">--:--:--</span>
+</div>
+    </main>
+
+    <aside class="sidebar-right">
+        <h4 style="font-size: 10px; color: #94a3b8; margin-bottom: 20px; letter-spacing: 1.5px; font-weight: 800;">FERRAMENTAS</h4>
+        <a href="comunicado.html" style="text-decoration:none; color:inherit;">
+            <div style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 10px; text-align:center;">
+                <i class="ph ph-whatsapp-logo" style="font-size: 24px; color: #25D366;"></i>
+                <p style="font-size: 11px; font-weight: 700; margin-top:5px;">GERADOR ZAP</p>
+            </div>
+        </a>
+        <a href="torre.html" style="text-decoration:none; color:inherit;">
+            <div style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; text-align:center;">
+                <i class="ph ph-broadcast" style="font-size: 24px; color: #6366f1;"></i>
+                <p style="font-size: 11px; font-weight: 700; margin-top:5px;">TORRE 360</p>
+            </div>
+        </a>
+    </aside>
+</div>
+
+<script>
+const hour = new Date().getHours();
+const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
+document.getElementById("greetingMessage").textContent = greeting;
+
+// CONFIGURAÇÃO DOS LINKS
+const urlPython = "https://torre-campinas-ana.loca.lt/dados";
+const urlGoogle = "https://script.google.com/macros/s/AKfycbxfgVMxw6OoSElxAgx1QbcV_FeQgnsPHo1c9EaJHwjSK7EzniHu-Y_0xeD-1HJ8LWxZsQ/exec";
+
+async function updateTorre() {
+    const cards = document.querySelectorAll('.kpi-card, .card-detalhe');
+    cards.forEach(c => c.classList.add('is-updating'));
+
+    try {
+        // 1. DADOS DO ROBÔ LOCAL (via Localtunnel)
+        // Adicionamos o bypass do localtunnel para evitar a tela de aviso
+        const resPython = await fetch(urlPython, {
+            headers: { 
+                'Bypass-Tunnel-Reminder': 'true' 
+            }
+        });
+        
+        const dadosRobo = await resPython.json();
+        
+        if (dadosRobo && dadosRobo.monitorados > 0) {
+            document.getElementById('big-monitorado').innerText = dadosRobo.monitorados;
+            document.getElementById('big-nova').innerText = dadosRobo.nova_solicitacao || 0;
+            document.getElementById('big-transito').innerText = dadosRobo.em_transito;
+            document.getElementById('big-aguardando').innerText = dadosRobo.aguardando_inicio;
+            document.getElementById('big-atraso').innerText = dadosRobo.inicio_atraso;
+            document.getElementById('status-com').innerText = "Online (Robô)";
+            document.getElementById('status-com').style.color = "#22c55e";
+        }
+
+        // 2. DADOS DO GOOGLE SHEETS
+        const resGoogle = await fetch(urlGoogle);
+        const dadosPlanilha = await resGoogle.json();
+
+        if (dadosPlanilha) {
+            renderRows('lista-veiculos', dadosPlanilha.topVeiculos);
+            renderRows('lista-motoristas', dadosPlanilha.topMotoristas);
+            
+            // Backup: Se o robô local falhar, a planilha (nuvem) assume
+            if (document.getElementById('big-monitorado').innerText === "--") {
+                document.getElementById('big-monitorado').innerText = dadosPlanilha.monitorados || 0;
+                document.getElementById('big-transito').innerText = dadosPlanilha.em_transito || 0;
+                document.getElementById('big-atraso').innerText = dadosPlanilha.inicio_atraso || 0;
+                document.getElementById('status-com').innerText = "Online (Nuvem)";
+            }
+        }
+
+        document.getElementById('relogio').innerText = new Date().toLocaleTimeString();
+
+    } catch (err) {
+        console.error("Erro na sincronização:", err);
+        // Se der erro, mantemos o status visual de offline
+        if (document.getElementById('big-monitorado').innerText === "--") {
+            document.getElementById('status-com').innerText = "Link Offline";
+            document.getElementById('status-com').style.color = "#ef4444";
+        }
+    } finally {
+        setTimeout(() => cards.forEach(c => c.classList.remove('is-updating')), 800);
+    }
+}
+
+function renderRows(id, itens) {
+    const container = document.getElementById(id);
+    if (!itens || itens.length === 0 || (itens.length === 1 && !itens[0])) {
+        container.innerHTML = "<div class='item-lista'>✅ Nenhuma anormalidade.</div>";
+        return;
+    }
+    container.innerHTML = itens.map(i => `<div class='item-lista'>• ${i}</div>`).join('');
+}
+
+// Inicializa e define o intervalo de 1 minuto
+updateTorre();
+setInterval(updateTorre, 60000);
+ function toggleSidebar(side) {
+    if (side === 'left') {
+        const sidebar = document.querySelector('.sidebar');
+        sidebar.classList.toggle('hidden');
+    } else {
+        const sidebarRight = document.querySelector('.sidebar-right');
+        sidebarRight.classList.toggle('hidden');
+    }
+    
+    // Força o mapa a se reajustar ao novo tamanho da tela após 300ms (tempo da transição)
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 300);
+}
+</script>
+</body>
+</html>
