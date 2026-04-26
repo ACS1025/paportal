@@ -97,7 +97,7 @@
     </aside>
 
     <main class="main-content">
-        <div style="display: flex; justify-content:建设; gap: 10px; margin-bottom: 10px;">
+        <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 10px;">
     <button onclick="toggleSidebar('left')" class="btn-toggle"><i class="ph ph-sidebar-simple"></i> Menu</button>
     <button onclick="toggleSidebar('right')" class="btn-toggle"><i class="ph ph-wrench"></i> Ferramentas</button>
 </div>
@@ -183,8 +183,9 @@ const hour = new Date().getHours();
 const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
 document.getElementById("greetingMessage").textContent = greeting;
 
-// CONFIGURAÇÃO DOS LINKS
-const urlPython = "https://torre-campinas-ana.loca.lt/dados";
+// CONFIGURAÇÃO DOS LINKS - AGORA COM SUPABASE
+const urlSupabase = "https://vhebojltcxsfohmmever.supabase.co/rest/v1/status_operacao?id=eq.1";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZoZWJvamx0Y3hzZm9maG1ldmVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxODEwMzIsImV4cCI6MjA5Mjc1NzAzMn0.jOep5EfDwK3lj4jlaCe8AgYBz_yYkCBiHMm8dTcAR28";
 const urlGoogle = "https://script.google.com/macros/s/AKfycbxfgVMxw6OoSElxAgx1QbcV_FeQgnsPHo1c9EaJHwjSK7EzniHu-Y_0xeD-1HJ8LWxZsQ/exec";
 
 async function updateTorre() {
@@ -192,52 +193,44 @@ async function updateTorre() {
     cards.forEach(c => c.classList.add('is-updating'));
 
     try {
-        // 1. DADOS DO ROBÔ LOCAL (via Localtunnel)
-        // Adicionamos o bypass do localtunnel para evitar a tela de aviso
-        const resPython = await fetch(urlPython, {
+        // 1. DADOS DA NUVEM (Supabase)
+        const resSupa = await fetch(urlSupabase, {
             headers: { 
-                'Bypass-Tunnel-Reminder': 'true' 
+                'apikey': supabaseKey,
+                'Authorization': `Bearer ${supabaseKey}`
             }
         });
         
-        const dadosRobo = await resPython.json();
+        const dataSupa = await resSupa.json();
+        const dadosRobo = dataSupa[0]; // Pega a linha que o robô acabou de atualizar
         
-        if (dadosRobo && dadosRobo.monitorados > 0) {
+        if (dadosRobo) { // Removemos o "> 0" para ele mostrar o 0 também
             document.getElementById('big-monitorado').innerText = dadosRobo.monitorados;
             document.getElementById('big-nova').innerText = dadosRobo.nova_solicitacao || 0;
             document.getElementById('big-transito').innerText = dadosRobo.em_transito;
             document.getElementById('big-aguardando').innerText = dadosRobo.aguardando_inicio;
             document.getElementById('big-atraso').innerText = dadosRobo.inicio_atraso;
-            document.getElementById('status-com').innerText = "Online (Robô)";
+            
+            document.getElementById('status-com').innerText = "Online (Supabase)";
             document.getElementById('status-com').style.color = "#22c55e";
         }
+                        
 
-        // 2. DADOS DO GOOGLE SHEETS
+        // 2. DADOS DO GOOGLE SHEETS (Mantém as listas de veículos/motoristas)
         const resGoogle = await fetch(urlGoogle);
         const dadosPlanilha = await resGoogle.json();
 
         if (dadosPlanilha) {
             renderRows('lista-veiculos', dadosPlanilha.topVeiculos);
             renderRows('lista-motoristas', dadosPlanilha.topMotoristas);
-            
-            // Backup: Se o robô local falhar, a planilha (nuvem) assume
-            if (document.getElementById('big-monitorado').innerText === "--") {
-                document.getElementById('big-monitorado').innerText = dadosPlanilha.monitorados || 0;
-                document.getElementById('big-transito').innerText = dadosPlanilha.em_transito || 0;
-                document.getElementById('big-atraso').innerText = dadosPlanilha.inicio_atraso || 0;
-                document.getElementById('status-com').innerText = "Online (Nuvem)";
-            }
         }
 
         document.getElementById('relogio').innerText = new Date().toLocaleTimeString();
 
     } catch (err) {
         console.error("Erro na sincronização:", err);
-        // Se der erro, mantemos o status visual de offline
-        if (document.getElementById('big-monitorado').innerText === "--") {
-            document.getElementById('status-com').innerText = "Link Offline";
-            document.getElementById('status-com').style.color = "#ef4444";
-        }
+        document.getElementById('status-com').innerText = "Link Offline";
+        document.getElementById('status-com').style.color = "#ef4444";
     } finally {
         setTimeout(() => cards.forEach(c => c.classList.remove('is-updating')), 800);
     }
@@ -252,22 +245,15 @@ function renderRows(id, itens) {
     container.innerHTML = itens.map(i => `<div class='item-lista'>• ${i}</div>`).join('');
 }
 
-// Inicializa e define o intervalo de 1 minuto
 updateTorre();
-setInterval(updateTorre, 60000);
- function toggleSidebar(side) {
+setInterval(updateTorre, 30000); // Atualiza a cada 30 segundos
+
+function toggleSidebar(side) {
     if (side === 'left') {
-        const sidebar = document.querySelector('.sidebar');
-        sidebar.classList.toggle('hidden');
+        document.querySelector('.sidebar').classList.toggle('hidden');
     } else {
-        const sidebarRight = document.querySelector('.sidebar-right');
-        sidebarRight.classList.toggle('hidden');
+        document.querySelector('.sidebar-right').classList.toggle('hidden');
     }
-    
-    // Força o mapa a se reajustar ao novo tamanho da tela após 300ms (tempo da transição)
-    setTimeout(() => {
-        map.invalidateSize();
-    }, 300);
 }
 </script>
 </body>
