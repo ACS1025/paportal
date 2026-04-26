@@ -1,16 +1,19 @@
 @echo off
-title Robo Torre de Controle
+title Robo Torre de Controle - AUTO RECOVERY
+:inicio
 cls
-
-:: 1. Entra na pasta onde o robô realmente está
 cd /d "C:\Users\komando.campinas\OneDrive\Projetos_automacao\Automacao_SLA"
 
 echo ==========================================================
 echo           INICIANDO MONITORAMENTO - PA CAMPINAS
 echo ==========================================================
-echo Local: %cd%
+echo [%date% %time%] - Ligando o motor...
 
-:: 2. Executa o robô
+:: Executa o robô
 python painel_sla.py
 
-pause
+echo ==========================================================
+echo ⚠️ O robô parou ou travou! Reiniciando em 10 segundos...
+echo ==========================================================
+timeout /t 10
+goto inicio

@@ -102,44 +102,43 @@ def iniciar_painel():
 
         while True:
             try:
-                # 1. Espera a página carregar o básico
-                print("⏳ Aguardando estabilização da página...")
-                time.sleep(5) 
+                # 1. Espera a página estabilizar após o reload
+                time.sleep(10) 
 
-                # 2. Tenta selecionar as 100 linhas com paciência
+                # 2. Força as 100 linhas e ESPERA o site redesenhar a tabela
                 for f in page.frames:
                     try:
                         selector = "select[name*='length']"
-                        if f.query_selector(selector):
-                            f.select_option(selector, "100")
-                            print("📏 Selecionado 100 linhas. Aguardando processamento...")
-                            # AUMENTAMOS o tempo aqui para o site processar a expansão da tabela
-                            time.sleep(12) 
+                        element = f.query_selector(selector)
+                        if element:
+                            # Verifica se já não está em 100 para não clicar à toa
+                            if element.input_value() != "100":
+                                f.select_option(selector, "100")
+                                print("📏 Redimensionando para 100 linhas...")
+                                time.sleep(15) # Tempo vital para o site carregar a lista longa
                             break
                     except: continue
 
-                print("🔍 Extraindo dados...")
+                # 3. Extração com verificação de segurança
+                print("🔍 Extraindo dados da Torre...")
                 df = extrair_tabela(page)
                 
-                # Só processa e envia se o DF não estiver vazio
                 if not df.empty:
                     processar_dados(df)
+                    # O Firebase já é atualizado dentro do processar_dados
                 else:
-                    print("⚠️ Tabela ainda não carregou totalmente. Tentando novamente no próximo ciclo.")
+                    print("⚠️ Tabela não capturada. Verifique se o login caiu.")
 
-                print("🔄 Atualizando página para próxima leitura...")
-                # Usamos um try/except menor aqui para o reload não derrubar o código
-                try:
-                    page.reload(timeout=60000)
-                except:
-                    print("⚠️ Reload demorou, mas seguindo...")
-                
-                print("💤 Dormindo 60s...")
+                # 4. Controle de Refresh (Dormir antes de recarregar)
+                print("💤 Aguardando 60s para a próxima rodada...")
                 time.sleep(60)
+                
+                print("🔄 Atualizando página...")
+                page.reload(wait_until="domcontentloaded", timeout=90000)
 
             except Exception as e:
                 print(f"❌ Erro no Loop: {e}")
-                time.sleep(20) # Espera um pouco mais em caso de erro antes de reiniciar
+                time.sleep(20)
 
 if __name__ == "__main__":
     print("🚀 Servidor Local em http://127.0.0.1:8080/dados")
