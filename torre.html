@@ -185,9 +185,8 @@ const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!
 document.getElementById("greetingMessage").textContent = greeting;
 
 // 2. URLs de Conexão
-const urlLocal = "http://localhost:8080/dados";
-const urlSupabase = "https://vhebojltcxsfohmmever.supabase.co/rest/v1/status_operacao?id=eq.1&select=*";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZoZWJvamx0Y3hzZm9obW1ldmVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTU0OTUzNzcswicmVmIjp7InN1cGFiYXNlX3VybCI6Imh0dHBzOi8vdmhlYm9qbHRjeHNmb2htbW1ldmVyLnN1cGFiYXNlLmNvIn19.j0ep5EfDwK31j4jlaCe8AgyBz_yYkCBiHMm8dTcAR28";
+// Substitua pela URL que você copiou do Firebase adicionando /dashboard.json no final
+const urlFirebase = "https://torre-acs-default-rtdb.firebaseio.com/dashboard.json";
 const urlGoogle = "https://script.google.com/macros/s/AKfycbxfgVMxw6OoSElxAgx1QbcV_FeQgnsPHo1c9EaJHwjSK7EzniHu-Y_0xeD-1HJ8LWxZsQ/exec";
 
 async function updateTorre() {
@@ -195,40 +194,23 @@ async function updateTorre() {
     cards.forEach(c => c.classList.add('is-updating'));
 
     try {
-        let dadosRobo = null;
+        // TENTATIVA ÚNICA E EFICAZ: FIREBASE (Nuvem rápida)
+        const resFire = await fetch(urlFirebase);
+        const dadosRobo = await resFire.json();
 
-        // TENTATIVA 1: BUSCAR DO ROBÔ LOCAL (Mais rápido e fura o erro 11001)
-        try {
-            const resLocal = await fetch(urlLocal);
-            dadosRobo = await resLocal.json();
-            document.getElementById('status-com').innerText = "Online (Local)";
-            document.getElementById('status-com').style.color = "#22c55e";
-        } catch (localErr) {
-            console.log("Robô local não detectado, tentando Supabase...");
-            
-            // TENTATIVA 2: SUPABASE (Nuvem)
-            const resSupa = await fetch(urlSupabase, {
-                headers: { 
-                    'apikey': supabaseKey,
-                    'Authorization': `Bearer ${supabaseKey}`
-                }
-            });
-            const dataSupa = await resSupa.json();
-            dadosRobo = dataSupa[0];
-            document.getElementById('status-com').innerText = "Online (Nuvem)";
-            document.getElementById('status-com').style.color = "#6366f1";
-        }
-
-        // Se conseguiu dados de qualquer uma das fontes, atualiza a tela
+        // Se conseguiu dados do Firebase, atualiza a tela
         if (dadosRobo) {
             document.getElementById('big-monitorado').innerText = dadosRobo.monitorados ?? "--";
             document.getElementById('big-nova').innerText = dadosRobo.nova_solicitacao ?? 0;
             document.getElementById('big-transito').innerText = dadosRobo.em_transito ?? "--";
             document.getElementById('big-aguardando').innerText = dadosRobo.aguardando_inicio ?? "--";
             document.getElementById('big-atraso').innerText = dadosRobo.inicio_atraso ?? "--";
+            
+            document.getElementById('status-com').innerText = "Online (Nuvem)";
+            document.getElementById('status-com').style.color = "#22c55e"; // Verde sucesso
         }
 
-        // 3. DADOS DO GOOGLE SHEETS (Listas)
+        // 3. DADOS DO GOOGLE SHEETS (Listas/Mapas)
         const resGoogle = await fetch(urlGoogle);
         const dadosPlanilha = await resGoogle.json();
         if (dadosPlanilha) {
@@ -237,8 +219,8 @@ async function updateTorre() {
         }
 
     } catch (err) {
-        console.error("Erro geral:", err);
-        document.getElementById('status-com').innerText = "Link Offline";
+        console.error("Erro ao sincronizar com Firebase:", err);
+        document.getElementById('status-com').innerText = "Erro de Sincronia";
         document.getElementById('status-com').style.color = "#ef4444";
     } finally {
         document.getElementById('relogio').innerText = new Date().toLocaleTimeString();
@@ -258,12 +240,13 @@ function renderRows(id, itens) {
 
 function toggleSidebar(side) {
     const selector = side === 'left' ? '.sidebar' : '.sidebar-right';
-    document.querySelector(selector).classList.toggle('hidden');
+    const element = document.querySelector(selector);
+    if(element) element.classList.toggle('hidden');
 }
 
 // Iniciar
 updateTorre();
-setInterval(updateTorre, 15000); // Atualiza a cada 15 segundos
+setInterval(updateTorre, 30000); // 30 segundos é o ideal para não sobrecarregar o navegador
 </script>
 </body>
 </html>

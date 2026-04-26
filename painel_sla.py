@@ -3,11 +3,11 @@ from playwright.sync_api import sync_playwright
 import time
 import threading
 import os
+import requests  # Importante para o Firebase
 from flask import Flask, jsonify, make_response
 from flask_cors import CORS
 
 app = Flask(__name__)
-# Configuração robusta de CORS
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 # --- MEMÓRIA PERSISTENTE ---
@@ -16,10 +16,22 @@ cache_real = {
     "aguardando_inicio": 0, "inicio_atraso": 0
 }
 
+# --- FUNÇÃO FIREBASE (A PONTE PARA O GITHUB) ---
+def atualizar_firebase(dados):
+    # SUA URL DO FIREBASE COM /dashboard.json NO FINAL
+    url_firebase = "https://torre-acs-default-rtdb.firebaseio.com/dashboard.json"
+    try:
+        response = requests.put(url_firebase, json=dados, timeout=10)
+        if response.status_code == 200:
+            print("🚀 Nuvem Sincronizada (Firebase)!")
+        else:
+            print(f"⚠️ Erro Firebase: {response.status_code}")
+    except Exception as e:
+        print(f"❌ Falha ao subir para nuvem: {e}")
+
 @app.route('/dados')
 def get_dados():
     global cache_real
-    # Adicionando headers manuais para garantir que o torre.html acesse
     response = make_response(jsonify(cache_real))
     response.headers["Access-Control-Allow-Origin"] = "*"
     return response
@@ -41,13 +53,16 @@ def processar_dados(df):
             "inicio_atraso": len(df_atraso)
         }
         print(f"✅ Cache Atualizado: {total} Monitorados | {len(df_transito)} Em Trânsito")
+        
+        # --- AQUI ESTÁ O PULO DO GATO ---
+        # Assim que processa, ele já manda para a nuvem
+        atualizar_firebase(cache_real)
+        
     else:
         print("⚠️ Tabela vazia ou não encontrada. Mantendo dados anteriores.")
 
 def extrair_tabela(page):
-    """ Captura a tabela de dentro dos frames da VSoftware """
     alvo = page
-    # Tenta encontrar o frame que contém a tabela
     for frame in page.frames:
         try:
             if frame.query_selector("table"):
@@ -63,7 +78,6 @@ def extrair_tabela(page):
             cols = row.query_selector_all("td")
             if len(cols) < 11: continue
             
-            # Captura o texto do status dentro do ícone/span
             status_td = cols[2] 
             icon = status_td.query_selector("i, img, span")
             status_texto = icon.get_attribute("title") if icon else "SEM STATUS"
@@ -79,7 +93,6 @@ def extrair_tabela(page):
 
 def iniciar_painel():
     with sync_playwright() as p:
-        # headless=False para você poder logar
         browser = p.chromium.launch(headless=False)
         page = browser.new_page()
         page.goto("http://vstrack.ddns.net/komando/", timeout=120000)
@@ -89,33 +102,46 @@ def iniciar_painel():
 
         while True:
             try:
-                print("🔍 Extraindo dados...")
-                df = extrair_tabela(page)
-                processar_dados(df)
-                
-                print("🔄 Atualizando página para próxima leitura...")
-                page.reload(wait_until="domcontentloaded")
-                time.sleep(8)
-                
-                # Garante as 100 linhas para o dashboard ficar completo
+                # 1. Espera a página carregar o básico
+                print("⏳ Aguardando estabilização da página...")
+                time.sleep(5) 
+
+                # 2. Tenta selecionar as 100 linhas com paciência
                 for f in page.frames:
                     try:
                         selector = "select[name*='length']"
                         if f.query_selector(selector):
                             f.select_option(selector, "100")
-                            print("📏 Ajustado para 100 linhas.")
-                            time.sleep(5)
+                            print("📏 Selecionado 100 linhas. Aguardando processamento...")
+                            # AUMENTAMOS o tempo aqui para o site processar a expansão da tabela
+                            time.sleep(12) 
                             break
                     except: continue
+
+                print("🔍 Extraindo dados...")
+                df = extrair_tabela(page)
+                
+                # Só processa e envia se o DF não estiver vazio
+                if not df.empty:
+                    processar_dados(df)
+                else:
+                    print("⚠️ Tabela ainda não carregou totalmente. Tentando novamente no próximo ciclo.")
+
+                print("🔄 Atualizando página para próxima leitura...")
+                # Usamos um try/except menor aqui para o reload não derrubar o código
+                try:
+                    page.reload(timeout=60000)
+                except:
+                    print("⚠️ Reload demorou, mas seguindo...")
                 
                 print("💤 Dormindo 60s...")
                 time.sleep(60)
+
             except Exception as e:
                 print(f"❌ Erro no Loop: {e}")
-                time.sleep(15)
+                time.sleep(20) # Espera um pouco mais em caso de erro antes de reiniciar
 
 if __name__ == "__main__":
-    print("🚀 Servidor Local rodando em http://127.0.0.1:8080/dados")
-    # Mudamos para 127.0.0.1 para evitar bloqueio de rede externa
+    print("🚀 Servidor Local em http://127.0.0.1:8080/dados")
     threading.Thread(target=lambda: app.run(host='127.0.0.1', port=8080, debug=False, use_reloader=False), daemon=True).start()
     iniciar_painel()
