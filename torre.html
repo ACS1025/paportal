@@ -194,20 +194,24 @@ async function updateTorre() {
     cards.forEach(c => c.classList.add('is-updating'));
 
     try {
-        // TENTATIVA ÚNICA E EFICAZ: FIREBASE (Nuvem rápida)
-        const resFire = await fetch(urlFirebase);
+        // 1. Buscamos do Firebase (adicionei um timestamp para evitar que o navegador use cache antigo)
+        const resFire = await fetch(`${urlFirebase}?nocache=${new Date().getTime()}`);
         const dadosRobo = await resFire.json();
 
-        // Se conseguiu dados do Firebase, atualiza a tela
+        // 2. VERIFICAÇÃO CRUCIAL: O Firebase guarda os dados dentro de uma "pasta" chamada dashboard
+        // Se no seu Python você enviou para ".../dashboard.json", os dados estão em dadosRobo
         if (dadosRobo) {
-            document.getElementById('big-monitorado').innerText = dadosRobo.monitorados ?? "--";
+            console.log("Dados recebidos:", dadosRobo); // Aperte F12 no site para ver isso!
+
+            // Use os nomes EXATOS que o Python envia
+            document.getElementById('big-monitorado').innerText = dadosRobo.monitorados ?? 0;
             document.getElementById('big-nova').innerText = dadosRobo.nova_solicitacao ?? 0;
-            document.getElementById('big-transito').innerText = dadosRobo.em_transito ?? "--";
-            document.getElementById('big-aguardando').innerText = dadosRobo.aguardando_inicio ?? "--";
-            document.getElementById('big-atraso').innerText = dadosRobo.inicio_atraso ?? "--";
-            
+            document.getElementById('big-transito').innerText = dadosRobo.em_transito ?? 0;
+            document.getElementById('big-aguardando').innerText = dadosRobo.aguardando_inicio ?? 0;
+            document.getElementById('big-atraso').innerText = dadosRobo.inicio_atraso ?? 0;
+
             document.getElementById('status-com').innerText = "Online (Nuvem)";
-            document.getElementById('status-com').style.color = "#22c55e"; // Verde sucesso
+            document.getElementById('status-com').style.color = "#22c55e";
         }
 
         // 3. DADOS DO GOOGLE SHEETS (Listas/Mapas)
