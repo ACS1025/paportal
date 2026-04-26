@@ -750,6 +750,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Submissão do formulário
     form.addEventListener('submit', function(e) {
         e.preventDefault();
+        console.log('Form submit triggered');
         
         const formData = new FormData(form);
         const data = {};
@@ -758,9 +759,18 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         const tipoSaida = (formData.get('doc_saida') || '').toUpperCase();
-        let whatsappWindow = null;
         if (tipoSaida === 'MANIFESTO') {
-            whatsappWindow = window.open('about:blank', '_blank');
+            const motorista = (formData.get('doc_motorista') || '').toUpperCase();
+            const placaValor = (formData.get('placa') || formData.get('doc_placa') || '').toUpperCase();
+            const carreta = (formData.get('doc_carreta') || '').toUpperCase();
+            const origem = (formData.get('doc_origem') || '').toUpperCase();
+            const destino = (formData.get('doc_destino') || '').toUpperCase();
+
+            const linkImg = 'https://res.cloudinary.com/dijagbe0r/image/upload/v1773329384/Briefing_Kmd_tiecpz.jpg';
+            const mensagem = `Viagem Monitorada\n\nSr. Motorista.\n\nVocê tem uma viagem programada que será monitorada pela Komando. Por favor, acesse o briefing de viagem no link abaixo:\n\n${linkImg}\n\n*Dados da viagem:*\nMotorista: ${motorista}\nPlaca Cavalo: ${placaValor}\nCarreta: ${carreta}\nRota: ${origem} X ${destino}\n\nQualquer dúvida pode nos chamar.\n\n*Equipe Komando*`;
+
+            const whatsappUrl = 'https://wa.me/?text=' + encodeURIComponent(mensagem);
+            window.open(whatsappUrl, '_blank');
         }
 
         // Adicionar timestamp
@@ -784,11 +794,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const mensagem = `Viagem Monitorada\n\nSr. Motorista.\n\nVocê tem uma viagem programada que será monitorada pela Komando. Por favor, acesse o briefing de viagem no link abaixo:\n\n${linkImg}\n\n*Dados da viagem:*\nMotorista: ${motorista}\nPlaca Cavalo: ${placaValor}\nCarreta: ${carreta}\nRota: ${origem} X ${destino}\n\nQualquer dúvida pode nos chamar.\n\n*Equipe Komando*`;
 
                 const whatsappUrl = 'https://wa.me/?text=' + encodeURIComponent(mensagem);
-                if (whatsappWindow && !whatsappWindow.closed) {
-                    whatsappWindow.location.href = whatsappUrl;
-                } else {
-                    window.open(whatsappUrl, '_blank');
-                }
+                window.open(whatsappUrl, '_blank');
 
                 setTimeout(() => {
                     const briefingPayload = new URLSearchParams({
