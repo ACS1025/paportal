@@ -143,8 +143,8 @@
     </div>
 
     <script>
-        // 1. CONFIGURAÇÃO DO LINK FIXO DO ROBÔ
-    const urlPython = "https://torre-campinas-ana.loca.lt/dados"; 
+    // 1. CONFIGURAÇÃO DO LINK LOCAL (O mesmo que funcionou na Torre)
+    const urlPython = "http://127.0.0.1:8080/dados"; 
     
     const hour = new Date().getHours();
     document.getElementById("greetingMessage").textContent = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
@@ -154,34 +154,33 @@
     var markers = [];
 
     async function refreshData() {
-        // A. Atualiza Painel Superior (DADOS DO SEU ROBÔ PYTHON)
+        // A. Atualiza Painel Superior (CONEXÃO COM O ROBÔ LOCAL)
         try {
-            const res = await fetch(urlPython, { 
-                headers: { 
-                    'bypass-tunnel-reminder': 'true' // Pula o aviso do Localtunnel
-                } 
-            });
-            
+            const res = await fetch(urlPython);
             const dados = await res.json();
             
-            if(dados && dados.monitorados > 0) {
-                document.getElementById('big-monitorado').innerText = dados.monitorados || "0";
+            if(dados) {
+                // Atualiza os cards com os nomes exatos vindos do Python
+                document.getElementById('big-monitorado').innerText = dados.monitorados ?? "0";
                 document.getElementById('big-nova').innerText = dados.nova_solicitacao ?? "0";
-                document.getElementById('big-transito').innerText = dados.em_transito || "0";
-                document.getElementById('big-aguardando').innerText = dados.aguardando_inicio || "0";
-                document.getElementById('big-atraso').innerText = dados.inicio_atraso || "0";
+                document.getElementById('big-transito').innerText = dados.em_transito ?? "0";
+                document.getElementById('big-aguardando').innerText = dados.aguardando_inicio ?? "0";
+                document.getElementById('big-atraso').innerText = dados.inicio_atraso ?? "0";
                 
-                // Feedback visual de conexão OK
-                document.getElementById('status-com').innerText = "SINCRO OK";
+                // Feedback visual
+                document.getElementById('status-com').innerText = "SINCRO LOCAL OK";
                 document.getElementById('status-dot').className = "dot online";
             }
         } catch (err) {
-            console.error("Erro ao ler robô:", err);
-            document.getElementById('status-com').innerText = "OFFLINE";
+            console.error("Erro ao ler robô local:", err);
+            document.getElementById('status-com').innerText = "ROBÔ OFFLINE";
             document.getElementById('status-dot').className = "dot offline";
         }
 
-            // B. Atualiza Torre de Controle (Sheets) - 5 Cards
+        // B. Atualiza Torre de Controle (Mantém sua integração com Google Sheets)
+        // Certifique-se de que este arquivo HTML é servido pelo Google Apps Script 
+        // para que 'google.script.run' funcione.
+        if (typeof google !== 'undefined') {
             google.script.run.withSuccessHandler(function(stats) {
                 document.getElementById('emAndamentoLonge').innerText = stats.emAndamentoLonge || "0";
                 document.getElementById('emAndamentoMedio').innerText = stats.emAndamentoMedio || "0";
@@ -198,14 +197,12 @@
                     stats.veiculosProximos.forEach(item => {
                         let statusTexto = item.status ? item.status.toUpperCase() : "";
                         
-                        // Tabela foca no Crítico (Próximo ou Encontro)
                         if(statusTexto.includes("PRÓXIMO") || statusTexto.includes("ENCONTRO")) {
                             tabela.innerHTML += `<tr><td>${item.veiculo}</td><td>${item.motorista}</td><td style="color:#ef4444; font-weight:bold;">${item.distancia} km</td></tr>`;
                         }
 
-                        // Marcadores no Mapa com 5 cores
                         if (item.lat && item.lat !== 0) {
-                            let cor = "#6366f1"; // Longe
+                            let cor = "#6366f1"; 
                             if(statusTexto.includes("MÉDIO")) cor = "#f59e0b";
                             if(statusTexto.includes("PRÓXIMO")) cor = "#ef4444";
                             if(statusTexto.includes("ENCONTRO")) cor = "#a855f7";
@@ -220,25 +217,18 @@
                 }
             }).getDadosDashboard();
         }
-
-        window.onload = () => {
-            refreshData();
-            setInterval(refreshData, 60000); 
-        };
-        function toggleSidebar(side) {
-    if (side === 'left') {
-        const sidebar = document.querySelector('.sidebar');
-        sidebar.classList.toggle('hidden');
-    } else {
-        const sidebarRight = document.querySelector('.sidebar-right');
-        sidebarRight.classList.toggle('hidden');
     }
-    
-    // Força o mapa a se reajustar ao novo tamanho da tela após 300ms (tempo da transição)
-    setTimeout(() => {
-        map.invalidateSize();
-    }, 300);
-}
-    </script>
+
+    window.onload = () => {
+        refreshData();
+        setInterval(refreshData, 30000); // Reduzi para 30s para o Index ficar bem atualizado
+    };
+
+    function toggleSidebar(side) {
+        const selector = side === 'left' ? '.sidebar' : '.sidebar-right';
+        document.querySelector(selector).classList.toggle('hidden');
+        setTimeout(() => { map.invalidateSize(); }, 300);
+    }
+</script>
 </body>
 </html>

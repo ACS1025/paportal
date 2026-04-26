@@ -179,13 +179,15 @@
 </div>
 
 <script>
+// 1. Configurações Iniciais
 const hour = new Date().getHours();
 const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
 document.getElementById("greetingMessage").textContent = greeting;
 
-// CONFIGURAÇÃO DOS LINKS - AGORA COM SUPABASE
-const urlSupabase = "https://vhebojltcxsfohmmever.supabase.co/rest/v1/status_operacao?id=eq.1";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZoZWJvamx0Y3hzZm9maG1ldmVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxODEwMzIsImV4cCI6MjA5Mjc1NzAzMn0.jOep5EfDwK3lj4jlaCe8AgYBz_yYkCBiHMm8dTcAR28";
+// 2. URLs de Conexão
+const urlLocal = "http://localhost:8080/dados";
+const urlSupabase = "https://vhebojltcxsfohmmever.supabase.co/rest/v1/status_operacao?id=eq.1&select=*";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZoZWJvamx0Y3hzZm9obW1ldmVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTU0OTUzNzcswicmVmIjp7InN1cGFiYXNlX3VybCI6Imh0dHBzOi8vdmhlYm9qbHRjeHNmb2htbW1ldmVyLnN1cGFiYXNlLmNvIn19.j0ep5EfDwK31j4jlaCe8AgyBz_yYkCBiHMm8dTcAR28";
 const urlGoogle = "https://script.google.com/macros/s/AKfycbxfgVMxw6OoSElxAgx1QbcV_FeQgnsPHo1c9EaJHwjSK7EzniHu-Y_0xeD-1HJ8LWxZsQ/exec";
 
 async function updateTorre() {
@@ -193,51 +195,60 @@ async function updateTorre() {
     cards.forEach(c => c.classList.add('is-updating'));
 
     try {
-        // 1. DADOS DA NUVEM (Supabase)
-        const resSupa = await fetch(urlSupabase, {
-            headers: { 
-                'apikey': supabaseKey,
-                'Authorization': `Bearer ${supabaseKey}`
-            }
-        });
-        
-        const dataSupa = await resSupa.json();
-        const dadosRobo = dataSupa[0]; // Pega a linha que o robô acabou de atualizar
-        
-        if (dadosRobo) { // Removemos o "> 0" para ele mostrar o 0 também
-            document.getElementById('big-monitorado').innerText = dadosRobo.monitorados;
-            document.getElementById('big-nova').innerText = dadosRobo.nova_solicitacao || 0;
-            document.getElementById('big-transito').innerText = dadosRobo.em_transito;
-            document.getElementById('big-aguardando').innerText = dadosRobo.aguardando_inicio;
-            document.getElementById('big-atraso').innerText = dadosRobo.inicio_atraso;
-            
-            document.getElementById('status-com').innerText = "Online (Supabase)";
-            document.getElementById('status-com').style.color = "#22c55e";
-        }
-                        
+        let dadosRobo = null;
 
-        // 2. DADOS DO GOOGLE SHEETS (Mantém as listas de veículos/motoristas)
+        // TENTATIVA 1: BUSCAR DO ROBÔ LOCAL (Mais rápido e fura o erro 11001)
+        try {
+            const resLocal = await fetch(urlLocal);
+            dadosRobo = await resLocal.json();
+            document.getElementById('status-com').innerText = "Online (Local)";
+            document.getElementById('status-com').style.color = "#22c55e";
+        } catch (localErr) {
+            console.log("Robô local não detectado, tentando Supabase...");
+            
+            // TENTATIVA 2: SUPABASE (Nuvem)
+            const resSupa = await fetch(urlSupabase, {
+                headers: { 
+                    'apikey': supabaseKey,
+                    'Authorization': `Bearer ${supabaseKey}`
+                }
+            });
+            const dataSupa = await resSupa.json();
+            dadosRobo = dataSupa[0];
+            document.getElementById('status-com').innerText = "Online (Nuvem)";
+            document.getElementById('status-com').style.color = "#6366f1";
+        }
+
+        // Se conseguiu dados de qualquer uma das fontes, atualiza a tela
+        if (dadosRobo) {
+            document.getElementById('big-monitorado').innerText = dadosRobo.monitorados ?? "--";
+            document.getElementById('big-nova').innerText = dadosRobo.nova_solicitacao ?? 0;
+            document.getElementById('big-transito').innerText = dadosRobo.em_transito ?? "--";
+            document.getElementById('big-aguardando').innerText = dadosRobo.aguardando_inicio ?? "--";
+            document.getElementById('big-atraso').innerText = dadosRobo.inicio_atraso ?? "--";
+        }
+
+        // 3. DADOS DO GOOGLE SHEETS (Listas)
         const resGoogle = await fetch(urlGoogle);
         const dadosPlanilha = await resGoogle.json();
-
         if (dadosPlanilha) {
             renderRows('lista-veiculos', dadosPlanilha.topVeiculos);
             renderRows('lista-motoristas', dadosPlanilha.topMotoristas);
         }
 
-        document.getElementById('relogio').innerText = new Date().toLocaleTimeString();
-
     } catch (err) {
-        console.error("Erro na sincronização:", err);
+        console.error("Erro geral:", err);
         document.getElementById('status-com').innerText = "Link Offline";
         document.getElementById('status-com').style.color = "#ef4444";
     } finally {
+        document.getElementById('relogio').innerText = new Date().toLocaleTimeString();
         setTimeout(() => cards.forEach(c => c.classList.remove('is-updating')), 800);
     }
 }
 
 function renderRows(id, itens) {
     const container = document.getElementById(id);
+    if (!container) return;
     if (!itens || itens.length === 0 || (itens.length === 1 && !itens[0])) {
         container.innerHTML = "<div class='item-lista'>✅ Nenhuma anormalidade.</div>";
         return;
@@ -245,16 +256,14 @@ function renderRows(id, itens) {
     container.innerHTML = itens.map(i => `<div class='item-lista'>• ${i}</div>`).join('');
 }
 
-updateTorre();
-setInterval(updateTorre, 30000); // Atualiza a cada 30 segundos
-
 function toggleSidebar(side) {
-    if (side === 'left') {
-        document.querySelector('.sidebar').classList.toggle('hidden');
-    } else {
-        document.querySelector('.sidebar-right').classList.toggle('hidden');
-    }
+    const selector = side === 'left' ? '.sidebar' : '.sidebar-right';
+    document.querySelector(selector).classList.toggle('hidden');
 }
+
+// Iniciar
+updateTorre();
+setInterval(updateTorre, 15000); // Atualiza a cada 15 segundos
 </script>
 </body>
 </html>
