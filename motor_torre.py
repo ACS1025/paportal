@@ -20,13 +20,16 @@ cache_real = {
 def atualizar_firebase(dados):
     url_firebase = "https://torre-acs-default-rtdb.firebaseio.com/dashboard.json"
     try:
+        # Enviando os dados para a nuvem
         response = requests.put(url_firebase, json=dados, timeout=10)
+        
         if response.status_code == 200:
-            print(">>> Nuvem Sincronizada (Firebase)!")
+            print(f"✅ SINCRONIZADO COM FIREBASE! (Monitorados: {dados['monitorados']})")
         else:
-            print(f"--- Erro Firebase: {response.status_code}")
+            print(f"❌ ERRO NO FIREBASE: Status {response.status_code}")
+            print(f"Motivo: {response.text}")
     except Exception as e:
-        print(f"!!! Falha ao subir para nuvem: {e}")
+        print(f"⚠️ FALHA DE CONEXÃO COM INTERNET: {e}")
 
 @app.route('/dados')
 def get_dados():
@@ -51,7 +54,9 @@ def processar_dados(df):
             "aguardando_inicio": len(df_aguardando),
             "inicio_atraso": len(df_atraso)
         }
-        print(f"OK - Cache Atualizado: {total} Monitorados")
+        
+        print(f"\n📊 RESUMO LOCAL: {total} Monitorados")
+        # ENVIA PARA A NUVEM LOGO APÓS CALCULAR
         atualizar_firebase(cache_real)
     else:
         print("--- Tabela vazia ou nao encontrada.")
@@ -109,25 +114,29 @@ def iniciar_painel():
                             break
                     except: continue
 
-                print("Lendo dados da Torre...")
+                print("\n🔍 Lendo dados da Torre...")
                 df = extrair_tabela(page)
                 
                 if not df.empty:
                     processar_dados(df)
                 else:
-                    print("Atencao: Tabela nao capturada.")
+                    print("Atenção: Tabela não capturada.")
 
-                print("Aguardando 60s...")
+                print("⏳ Aguardando 60s para próxima atualização...")
                 time.sleep(60)
                 
-                print("Atualizando pagina...")
+                print("🔄 Atualizando página do rastreador...")
                 page.reload(wait_until="domcontentloaded", timeout=90000)
 
             except Exception as e:
-                print(f"Erro no Loop: {e}")
+                print(f"❌ Erro no Loop: {e}")
                 time.sleep(20)
 
 if __name__ == "__main__":
-    print("Servidor Local em http://127.0.0.1:8080/dados")
+    print("🚀 Servidor Local rodando em http://127.0.0.1:8080/dados")
+    
+    # Inicia o Flask em uma thread separada
     threading.Thread(target=lambda: app.run(host='127.0.0.1', port=8080, debug=False, use_reloader=False), daemon=True).start()
+    
+    # Inicia a automação do Playwright
     iniciar_painel()
