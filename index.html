@@ -154,21 +154,22 @@
     var markers = [];
 
     async function refreshData() {
-        // A. Atualiza Painel Superior (CONEXÃO COM O ROBÔ LOCAL)
+        // A. Atualiza Painel Superior (CONEXÃO COM O FIREBASE)
         try {
-            const res = await fetch(urlPython);
+            // USANDO A URL DO FIREBASE COM ANTICACHE
+            const res = await fetch(urlFirebase + "?nocache=" + new Date().getTime());
             const dados = await res.json();
             
             if(dados) {
-                // Atualiza os cards com os nomes exatos vindos do Python
+                // Atualiza os cards com os nomes exatos vindos do Firebase
                 document.getElementById('big-monitorado').innerText = dados.monitorados ?? "0";
                 document.getElementById('big-nova').innerText = dados.nova_solicitacao ?? "0";
                 document.getElementById('big-transito').innerText = dados.em_transito ?? "0";
                 document.getElementById('big-aguardando').innerText = dados.aguardando_inicio ?? "0";
                 document.getElementById('big-atraso').innerText = dados.inicio_atraso ?? "0";
                 
-                // Feedback visual
-                document.getElementById('status-com').innerText = "SINCRO LOCAL OK";
+                // Feedback visual atualizado para Nuvem
+                document.getElementById('status-com').innerText = "SINCRO NUVEM OK";
                 document.getElementById('status-dot').className = "dot online";
             }
         } catch (err) {
