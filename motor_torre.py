@@ -10,23 +10,23 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# --- MEMÓRIA PERSISTENTE ---
+# --- MEMORIA PERSISTENTE ---
 cache_real = {
     "monitorados": 0, "em_transito": 0, "nova_solicitacao": 0, 
     "aguardando_inicio": 0, "inicio_atraso": 0
 }
 
-# --- FUNÇÃO FIREBASE (SÓ O QUE IMPORTA) ---
+# --- FUNCAO FIREBASE ---
 def atualizar_firebase(dados):
     url_firebase = "https://torre-acs-default-rtdb.firebaseio.com/dashboard.json"
     try:
         response = requests.put(url_firebase, json=dados, timeout=10)
         if response.status_code == 200:
-            print("🚀 Nuvem Sincronizada (Firebase)!")
+            print(">>> Nuvem Sincronizada (Firebase)!")
         else:
-            print(f"⚠️ Erro Firebase: {response.status_code}")
+            print(f"--- Erro Firebase: {response.status_code}")
     except Exception as e:
-        print(f"❌ Falha ao subir para nuvem: {e}")
+        print(f"!!! Falha ao subir para nuvem: {e}")
 
 @app.route('/dados')
 def get_dados():
@@ -39,11 +39,10 @@ def processar_dados(df):
     global cache_real
     if df is not None and not df.empty:
         total = len(df)
-        # Filtros baseados no Status da VSoftware
         df_transito = df[df['Status'].str.contains('INICIADO', na=False)]
-        df_nova = df[df['Status'].str.contains('NOVA SOLICITAÇÃO', na=False)]
-        df_aguardando = df[df['Status'].str.contains('AGUARDANDO INÍCIO', na=False)]
-        df_atraso = df[df['Status'].str.contains('ATRASADO|ATRASO PRÓXIMO', na=False)]
+        df_nova = df[df['Status'].str.contains('NOVA SOLICITACAO', na=False)]
+        df_aguardando = df[df['Status'].str.contains('AGUARDANDO INICIO', na=False)]
+        df_atraso = df[df['Status'].str.contains('ATRASADO|ATRASO PROXIMO', na=False)]
         
         cache_real = {
             "monitorados": total,
@@ -52,10 +51,10 @@ def processar_dados(df):
             "aguardando_inicio": len(df_aguardando),
             "inicio_atraso": len(df_atraso)
         }
-        print(f"✅ Cache Atualizado: {total} Monitorados")
+        print(f"OK - Cache Atualizado: {total} Monitorados")
         atualizar_firebase(cache_real)
     else:
-        print("⚠️ Tabela vazia. Mantendo dados anteriores.")
+        print("--- Tabela vazia ou nao encontrada.")
 
 def extrair_tabela(page):
     alvo = page
@@ -79,12 +78,12 @@ def extrair_tabela(page):
             status_texto = icon.get_attribute("title") if icon else "SEM STATUS"
             
             lista.append({
-                "Código": cols[1].text_content().strip(),
+                "Codigo": cols[1].text_content().strip(),
                 "Status": status_texto.upper().strip()
             })
         return pd.DataFrame(lista)
     except Exception as e:
-        print(f"❌ Erro na extração: {e}")
+        print(f"Erro na extracao: {e}")
         return pd.DataFrame()
 
 def iniciar_painel():
@@ -98,45 +97,37 @@ def iniciar_painel():
 
         while True:
             try:
-                # 1. Espera a página estabilizar após o reload
                 time.sleep(10) 
-
-                # 2. Força as 100 linhas e ESPERA o site redesenhar a tabela
                 for f in page.frames:
                     try:
                         selector = "select[name*='length']"
                         element = f.query_selector(selector)
-                        if element:
-                            # Verifica se já não está em 100 para não clicar à toa
-                            if element.input_value() != "100":
-                                f.select_option(selector, "100")
-                                print("📏 Redimensionando para 100 linhas...")
-                                time.sleep(15) # Tempo vital para o site carregar a lista longa
+                        if element and element.input_value() != "100":
+                            f.select_option(selector, "100")
+                            print("Ajustando para 100 linhas...")
+                            time.sleep(15) 
                             break
                     except: continue
 
-                # 3. Extração com verificação de segurança
-                print("🔍 Extraindo dados da Torre...")
+                print("Lendo dados da Torre...")
                 df = extrair_tabela(page)
                 
                 if not df.empty:
                     processar_dados(df)
-                    # O Firebase já é atualizado dentro do processar_dados
                 else:
-                    print("⚠️ Tabela não capturada. Verifique se o login caiu.")
+                    print("Atencao: Tabela nao capturada.")
 
-                # 4. Controle de Refresh (Dormir antes de recarregar)
-                print("💤 Aguardando 60s para a próxima rodada...")
+                print("Aguardando 60s...")
                 time.sleep(60)
                 
-                print("🔄 Atualizando página...")
+                print("Atualizando pagina...")
                 page.reload(wait_until="domcontentloaded", timeout=90000)
 
             except Exception as e:
-                print(f"❌ Erro no Loop: {e}")
+                print(f"Erro no Loop: {e}")
                 time.sleep(20)
 
 if __name__ == "__main__":
-    print("🚀 Servidor Local em http://127.0.0.1:8080/dados")
+    print("Servidor Local em http://127.0.0.1:8080/dados")
     threading.Thread(target=lambda: app.run(host='127.0.0.1', port=8080, debug=False, use_reloader=False), daemon=True).start()
     iniciar_painel()
