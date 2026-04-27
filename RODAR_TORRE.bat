@@ -1,19 +1,25 @@
 @echo off
-title Robo Torre de Controle - AUTO RECOVERY
+title Robo Torre de Controle - LIMPEZA TOTAL
 :inicio
 cls
 cd /d "C:\Users\komando.campinas\OneDrive\Projetos_automacao\Automacao_SLA"
 
 echo ==========================================================
-echo           INICIANDO MONITORAMENTO - PA CAMPINAS
+echo           MATANDO PROCESSOS ANTIGOS (PYTHON/CHROME)
 echo ==========================================================
-echo [%date% %time%] - Ligando o motor...
-
-:: Executa o robô
-python painel_sla.py
+taskkill /f /im python.exe /t >nul 2>&1
+taskkill /f /im chrome.exe /t >nul 2>&1
 
 echo ==========================================================
-echo ⚠️ O robô parou ou travou! Reiniciando em 10 segundos...
+echo           INICIANDO VERSÃO LIMPA
+echo ==========================================================
+echo Pasta Atual: %cd%
+
+:: O comando -B impede a criação de cache novo
+python -B painel_sla.py
+
+echo ==========================================================
+echo ⚠️ Robô parou. Reiniciando em 10 segundos...
 echo ==========================================================
 timeout /t 10
 goto inicio
