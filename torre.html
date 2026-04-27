@@ -201,10 +201,10 @@ async function updateTorre() {
         // 2. VERIFICAÇÃO CRUCIAL: O Firebase guarda os dados dentro de uma "pasta" chamada dashboard
         // Se no seu Python você enviou para ".../dashboard.json", os dados estão em dadosRobo
         if (dadosRobo) {
-            console.log("Dados recebidos:", dadosRobo); // Aperte F12 no site para ver isso!
+            console.log("Dados recebidos:", dadosRobo);
 
-            // Use os nomes EXATOS que o Python envia
-            document.getElementById('monitorados').innerText = dadosRobo.monitorados ?? 0;
+            // Ajustados para bater com o ID do seu HTML:
+            document.getElementById('big-monitorado').innerText = dadosRobo.monitorados ?? 0;
             document.getElementById('big-nova').innerText = dadosRobo.nova_solicitacao ?? 0;
             document.getElementById('big-transito').innerText = dadosRobo.em_transito ?? 0;
             document.getElementById('big-aguardando').innerText = dadosRobo.aguardando_inicio ?? 0;
