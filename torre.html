@@ -195,7 +195,7 @@ async function updateTorre() {
 
     try {
         // 1. Buscamos do Firebase (adicionei um timestamp para evitar que o navegador use cache antigo)
-        const resFire = await fetch(`${urlFirebase}?nocache=${new Date().getTime()}`);
+        const resFire = await fetch(`${urlFirebase}?v=${Math.random()}`); 
         const dadosRobo = await resFire.json();
 
         // 2. VERIFICAÇÃO CRUCIAL: O Firebase guarda os dados dentro de uma "pasta" chamada dashboard
