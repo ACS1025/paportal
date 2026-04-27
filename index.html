@@ -143,42 +143,50 @@
     </div>
 
     <script>
-    // 1. CONFIGURAÇÃO DO LINK LOCAL (O mesmo que funcionou na Torre)
-    const urlFirebase = "https://torre-acs-default-rtdb.firebaseio.com/dashboard.json"; 
-    
-    const hour = new Date().getHours();
-    document.getElementById("greetingMessage").textContent = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
+// 1. Configurações Iniciais
+const hour = new Date().getHours();
+const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
+document.getElementById("greetingMessage").textContent = greeting;
 
-    var map = L.map('map').setView([-15.78, -47.92], 4); 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-    var markers = [];
+// 2. URLs de Conexão (Copiadas da sua Torre que já funciona)
+const urlFirebase = "https://torre-acs-default-rtdb.firebaseio.com/dashboard.json";
+const urlGoogle = "https://script.google.com/macros/s/AKfycbxfgVMxw6OoSElxAgx1QbcV_FeQgnsPHo1c9EaJHwjSK7EzniHu-Y_0xeD-1HJ8LWxZsQ/exec";
 
-    async function refreshData() {
-    // A. ESPELHAMENTO DOS 5 CARDS (Vindo da Planilha)
-    if (typeof google !== 'undefined') {
-        google.script.run.withSuccessHandler(function(dadosPlanilha) {
-            if(dadosPlanilha) {
-                document.getElementById('big-monitorado').innerText = dadosPlanilha.monitorados || "0";
-                document.getElementById('big-nova').innerText = dadosPlanilha.nova_solicitacao || "0";
-                document.getElementById('big-transito').innerText = dadosPlanilha.em_transito || "0";
-                document.getElementById('big-aguardando').innerText = dadosPlanilha.aguardando_inicio || "0";
-                document.getElementById('big-atraso').innerText = dadosPlanilha.inicio_atraso || "0";
-                
-                document.getElementById('status-com').innerText = "ESPELHAMENTO OK";
-                document.getElementById('status-dot').className = "dot online";
-            }
-        }).getStatusCards(); // Esta função precisa existir no seu Código.gs
-    }
+// 3. Inicialização do Mapa (Mantendo Leaflet)
+var map = L.map('map').setView([-15.78, -47.92], 4); 
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+var markers = [];
 
-    // B. ESPELHAMENTO DA TORRE (Mapa e Tabela - Já funcionava)
-    if (typeof google !== 'undefined') {
-        google.script.run.withSuccessHandler(function(stats) {
+async function refreshData() {
+    try {
+        // --- PARTE A: FIREBASE (OS 5 CARDS) ---
+        const resFire = await fetch(`${urlFirebase}?v=${Math.random()}`); 
+        const dadosRobo = await resFire.json();
+
+        if (dadosRobo) {
+            document.getElementById('big-monitorado').innerText = dadosRobo.monitorados ?? 0;
+            document.getElementById('big-nova').innerText = dadosRobo.nova_solicitacao ?? 0;
+            document.getElementById('big-transito').innerText = dadosRobo.em_transito ?? 0;
+            document.getElementById('big-aguardando').innerText = dadosRobo.aguardando_inicio ?? 0;
+            document.getElementById('big-atraso').innerText = dadosRobo.inicio_atraso ?? 0;
+
+            document.getElementById('status-com').innerText = "Online (Nuvem)";
+            document.getElementById('status-dot').className = "dot online";
+        }
+
+        // --- PARTE B: GOOGLE SHEETS (MAPA E TABELA) ---
+        const resGoogle = await fetch(urlGoogle);
+        const stats = await resGoogle.json();
+
+        if (stats) {
+            // 1. Atualiza os cards secundários (Neon)
             document.getElementById('emAndamentoLonge').innerText = stats.emAndamentoLonge || "0";
             document.getElementById('emAndamentoMedio').innerText = stats.emAndamentoMedio || "0";
             document.getElementById('emAndamentoProximo').innerText = stats.emAndamentoProximo || "0";
             document.getElementById('statusEncontro').innerText = stats.emEncontro || "0";
             document.getElementById('statusChegada').innerText = stats.chegada || "0";
 
+            // 2. Limpa e reconstrói a Tabela e o Mapa
             let tabela = document.getElementById('tabelaProximos');
             tabela.innerHTML = "";
             markers.forEach(m => map.removeLayer(m));
@@ -187,36 +195,50 @@
             if (stats.veiculosProximos) {
                 stats.veiculosProximos.forEach(item => {
                     let statusTexto = item.status ? item.status.toUpperCase() : "";
+                    
+                    // Tabela de Críticos
                     if(statusTexto.includes("PRÓXIMO") || statusTexto.includes("ENCONTRO")) {
                         tabela.innerHTML += `<tr><td>${item.veiculo}</td><td>${item.motorista}</td><td style="color:#ef4444; font-weight:bold;">${item.distancia} km</td></tr>`;
                     }
-                    if (item.lat && item.lat !== 0) {
-                        let cor = statusTexto.includes("MÉDIO") ? "#f59e0b" : 
-                                  statusTexto.includes("PRÓXIMO") ? "#ef4444" : 
-                                  statusTexto.includes("ENCONTRO") ? "#a855f7" : 
-                                  statusTexto.includes("CHEGADA") ? "#22c55e" : "#6366f1";
 
-                        let marker = L.circleMarker([item.lat, item.lng], { color: "white", fillColor: cor, fillOpacity: 0.9, weight: 2, radius: 10 }).addTo(map);
+                    // Plotagem no Mapa
+                    if (item.lat && item.lat !== 0) {
+                        let cor = "#6366f1"; // Padrão
+                        if(statusTexto.includes("MÉDIO")) cor = "#f59e0b";
+                        if(statusTexto.includes("PRÓXIMO")) cor = "#ef4444";
+                        if(statusTexto.includes("ENCONTRO")) cor = "#a855f7";
+                        if(statusTexto.includes("CHEGADA")) cor = "#22c55e";
+
+                        let marker = L.circleMarker([item.lat, item.lng], { 
+                            color: "white", fillColor: cor, fillOpacity: 0.9, weight: 2, radius: 10 
+                        }).addTo(map);
+                        
                         marker.bindTooltip(`<b>${item.veiculo}</b><br>${statusTexto}<br>${item.distancia} km`);
                         markers.push(marker);
                     }
                 });
                 if (markers.length > 0) map.fitBounds(new L.featureGroup(markers).getBounds().pad(0.2));
             }
-        }).getDadosDashboard();
+        }
+
+    } catch (err) {
+        console.error("Erro na sincronia:", err);
+        document.getElementById('status-com').innerText = "Erro de Conexão";
+        document.getElementById('status-dot').className = "dot offline";
     }
 }
 
-    window.onload = () => {
-        refreshData();
-        setInterval(refreshData, 30000); // Reduzi para 30s para o Index ficar bem atualizado
-    };
+// Funções de UI
+function toggleSidebar(side) {
+    const selector = side === 'left' ? '.sidebar' : '.sidebar-right';
+    const element = document.querySelector(selector);
+    if(element) element.classList.toggle('hidden');
+    setTimeout(() => map.invalidateSize(), 300);
+}
 
-    function toggleSidebar(side) {
-        const selector = side === 'left' ? '.sidebar' : '.sidebar-right';
-        document.querySelector(selector).classList.toggle('hidden');
-        setTimeout(() => { map.invalidateSize(); }, 300);
-    }
+// Iniciar
+refreshData();
+setInterval(refreshData, 30000);
 </script>
 </body>
 </html>
