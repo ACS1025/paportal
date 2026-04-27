@@ -157,7 +157,7 @@
         // A. Atualiza Painel Superior (CONEXÃO COM O FIREBASE)
         try {
             // USANDO A URL DO FIREBASE COM ANTICACHE
-            const res = await fetch(urlFirebase + "?nocache=" + new Date().getTime());
+            const res = await fetch(urlFirebase + "?nocache=" + new Date().getTime(), { mode: 'cors' });
             const dados = await res.json();
             
             if(dados) {
