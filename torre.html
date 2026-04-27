@@ -204,7 +204,7 @@ async function updateTorre() {
             console.log("Dados recebidos:", dadosRobo); // Aperte F12 no site para ver isso!
 
             // Use os nomes EXATOS que o Python envia
-            document.getElementById('big-monitorado').innerText = dadosRobo.monitorados ?? 0;
+            document.getElementById('monitorados').innerText = dadosRobo.monitorados ?? 0;
             document.getElementById('big-nova').innerText = dadosRobo.nova_solicitacao ?? 0;
             document.getElementById('big-transito').innerText = dadosRobo.em_transito ?? 0;
             document.getElementById('big-aguardando').innerText = dadosRobo.aguardando_inicio ?? 0;
