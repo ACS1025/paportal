@@ -3,12 +3,12 @@ from playwright.sync_api import sync_playwright
 import time
 import threading
 import os
-import requests  # Importante para o Firebase
+import requests  # Para o Firebase
 from flask import Flask, jsonify, make_response
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
 
 # --- MEMÓRIA PERSISTENTE ---
 cache_real = {
@@ -16,9 +16,8 @@ cache_real = {
     "aguardando_inicio": 0, "inicio_atraso": 0
 }
 
-# --- FUNÇÃO FIREBASE (A PONTE PARA O GITHUB) ---
+# --- FUNÇÃO FIREBASE (SÓ O QUE IMPORTA) ---
 def atualizar_firebase(dados):
-    # SUA URL DO FIREBASE COM /dashboard.json NO FINAL
     url_firebase = "https://torre-acs-default-rtdb.firebaseio.com/dashboard.json"
     try:
         response = requests.put(url_firebase, json=dados, timeout=10)
@@ -38,8 +37,9 @@ def get_dados():
 
 def processar_dados(df):
     global cache_real
-    if df is not None and not df.empty and len(df) > 0:
+    if df is not None and not df.empty:
         total = len(df)
+        # Filtros baseados no Status da VSoftware
         df_transito = df[df['Status'].str.contains('INICIADO', na=False)]
         df_nova = df[df['Status'].str.contains('NOVA SOLICITAÇÃO', na=False)]
         df_aguardando = df[df['Status'].str.contains('AGUARDANDO INÍCIO', na=False)]
@@ -52,14 +52,10 @@ def processar_dados(df):
             "aguardando_inicio": len(df_aguardando),
             "inicio_atraso": len(df_atraso)
         }
-        print(f"✅ Cache Atualizado: {total} Monitorados | {len(df_transito)} Em Trânsito")
-        
-        # --- AQUI ESTÁ O PULO DO GATO ---
-        # Assim que processa, ele já manda para a nuvem
+        print(f"✅ Cache Atualizado: {total} Monitorados")
         atualizar_firebase(cache_real)
-        
     else:
-        print("⚠️ Tabela vazia ou não encontrada. Mantendo dados anteriores.")
+        print("⚠️ Tabela vazia. Mantendo dados anteriores.")
 
 def extrair_tabela(page):
     alvo = page
