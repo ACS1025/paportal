@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='icon' href='src/img/kmd-16x16.png' type='image/png'>
+    <title>Base de Conhecimento | Portal Unificado</title>
+    <link rel="stylesheet" href="https://unpkg.com/phosphor-icons@1.4.2/src/css/icons.css">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --accent: #6366f1;
+            --success: #059669;
+            --danger: #dc2626;
+            --slate: #475569;
+        }
+
+        /* --- RESET E BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background: #f8fafc; 
+            color: #334155; 
+        }
+
+        .container { 
+            display: grid; 
+            grid-template-columns: 280px 1fr 200px; 
+            min-height: 100vh; 
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar { 
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%); 
+            padding: 30px 20px; 
+            color: white; 
+            position: sticky; 
+            top: 0; 
+            height: 100vh; 
+            overflow-y: auto; 
+        }
+
+        .logo { text-align: center; margin-bottom: 40px; }
+        .logo h2 { font-size: 18px; font-weight: 800; color: #f8fafc; }
+
+        .menu { list-style: none; }
+        .menu-label { 
+            font-size: 10px; 
+            color: #94a3b8; 
+            margin: 25px 0 10px 0; 
+            letter-spacing: 1.5px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+        }
+
+        .menu a { 
+            display: block; 
+            color: #cbd5e1; 
+            text-decoration: none; 
+            padding: 12px 15px; 
+            border-radius: 8px; 
+            margin-bottom: 5px; 
+            transition: 0.2s; 
+            font-size: 14px; 
+            font-weight: 500; 
+        }
+
+        .menu a:hover, .menu a.active { 
+            background: #6366f1; 
+            color: white; 
+        }
+
+        .menu a i { margin-right: 10px; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content { 
+            padding: 30px; 
+            background: white; 
+            overflow-y: auto; 
+        }
+
+        .top-info { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 30px; 
+            padding-bottom: 20px; 
+            border-bottom: 1px solid #e2e8f0; 
+        }
+
+        .top-info h1 { 
+            font-size: 28px; 
+            color: #1e293b; 
+            margin: 0; 
+        }
+
+        .top-info p { 
+            color: #64748b; 
+            font-size: 14px; 
+            margin: 5px 0 0 0; 
+        }
+
+        .badge { 
+            background: #f1f5f9; 
+            padding: 8px 15px; 
+            border-radius: 20px; 
+            font-size: 12px; 
+            font-weight: 700; 
+            color: #475569; 
+        }
+
+        /* --- SIDEBAR RIGHT --- */
+        .sidebar-right { 
+            background: white; 
+            padding: 30px 20px; 
+            border-left: 1px solid #e2e8f0; 
+        }
+
+        .sidebar-right h4 { 
+            font-size: 10px; 
+            color: #94a3b8; 
+            margin-bottom: 20px; 
+            letter-spacing: 1.5px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+        }
+
+        .sidebar-right a { 
+            text-decoration: none; 
+            color: inherit; 
+            display: block; 
+            margin-bottom: 10px; 
+        }
+
+        .sidebar-right div { 
+            background: white; 
+            padding: 15px; 
+            border-radius: 12px; 
+            border: 1px solid #e2e8f0; 
+            text-align: center; 
+            transition: 0.2s; 
+        }
+
+        .sidebar-right div:hover { 
+            background: #f8fafc; 
+            border-color: #cbd5e1; 
+        }
+
+        .sidebar-right i { 
+            font-size: 24px; 
+            color: #6366f1; 
+            display: block; 
+            margin-bottom: 5px; 
+        }
+
+        .sidebar-right p { 
+            font-size: 11px; 
+            font-weight: 700; 
+            margin: 0; 
+        }
+
+        /* --- FORM STYLES --- */
+        .form-container { 
+            background: white; 
+            border-radius: 16px; 
+            padding: 30px; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+            border: 1px solid #e2e8f0; 
+            margin-bottom: 30px; 
+        }
+
+        .form-container h2 { 
+            text-align: center; 
+            margin-top: 0; 
+            color: #1e293b; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            font-size: 24px; 
+            border-bottom: 2px solid #f0f0f0; 
+            padding-bottom: 15px; 
+            margin-bottom: 20px; 
+        }
+
+        /* FORMULÁRIO */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            row-gap: 25px;
+        }
+
+        .form-group { min-width: 180px; }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #555;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            border-color: #6366f1;
+            background: white;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        textarea { height: 80px; resize: none; line-height: 1.5; font-size: 13px; }
+
+        .full-width { grid-column: span 4; }
+
+        /* BOTÕES */
+        button {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            grid-column: span 4;
+        }
+
+        button { background: #059669; color: white; }
+        button:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) { 
+            .container { grid-template-columns: 250px 1fr; } 
+            .sidebar-right { display: none; } 
+        }
+
+        @media (max-width: 768px) { 
+            .container { grid-template-columns: 1fr; } 
+            .sidebar { display: none; } 
+            .main-content { padding: 20px; } 
+            .form-grid { grid-template-columns: repeat(2, 1fr); } 
+        }
+
+        @media (max-width: 480px) { 
+            .form-grid { grid-template-columns: 1fr; } 
+            .full-width, button { grid-column: span 1; } 
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <aside class="sidebar">
+        <div class="logo"><h2>PA - Campinas</h2></div>
+        <nav class="menu">
+            <p class="menu-label">Monitoramento</p>
+            <a href="index.html"><i class="ph ph-gauge"></i> Dashboard Principal</a>
+            <a href="torre.html"><i class="ph ph-broadcast"></i> Torre de Controle</a>
+            <a href="posicao.html"><i class="ph ph-map-pin"></i> Posição Escolta</a>
+            <a href="solicitacao-escolta.html"><i class="ph ph-shield-plus"></i> Solicitação Escolta</a>
+            
+            <p class="menu-label">Operação</p>
+            <a href="cftv.html"><i class="ph ph-video-camera"></i> Auditoria CFTV</a>
+            <a href="cftv-email.html"><i class="ph ph-envelope"></i> E-mail CFTV</a>
+            <a href="brief.html"><i class="ph ph-clipboard-text"></i> Briefing Digital</a>
+            <a href="registros-saidas.html"><i class="ph ph-sign-out"></i> Registro de Saídas</a>
+            <a href="comunicado.html"><i class="ph ph-whatsapp-logo"></i> Gerador de Comunicado</a>
+            <a href="conhecimento.html"><i class="ph ph-book-open"></i> Para Conhecimento</a>
+
+            <p class="menu-label">Capacitação</p>
+            <a href="Treinamento_Komando_Completo.html"><i class="ph ph-graduation-cap"></i> Avaliação do Treinamento</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="top-info">
+            <div>
+                <h1>Base de Conhecimento</h1>
+                <p id="greetingMessage"></p>
+            </div>
+            <div class="badge">Capacitação</div>
+        </div>
+
+        <div class="form-container">
+            <h2>Para Conhecimento</h2>
+
+            <form id="formOcorrencia">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="dataHora">Data/Hora</label>
+                        <input type="datetime-local" id="dataHora" name="dataHora" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="ocorrencia">Ocorrência</label>
+                        <select id="ocorrencia" name="ocorrencia">
+                            <option value="PERDA DE SINAL">PERDA DE SINAL</option>
+                            <option value="ALERTA DESENGATE">ALERTA DESENGATE</option>
+                            <option value="FALHA NO EQUIPAMENTO">FALHA NO EQUIPAMENTO</option>
+                            <option value="ENVOLVIDO EM ACIDENTE">ENVOLVIDO EM ACIDENTE</option>
+                            <option value="ENVOLVIDO EM SINISTRO">ENVOLVIDO EM SINISTRO</option>
+                            <option value="ENVOLVIDO EM TENTATIVA DE FURTO">ENVOLVIDO EM TENTATIVA DE FURTO</option>
+                            <option value="PARADA PARA MANUTENÇÃO">PARADA PARA MANUTENÇÃO</option>
+                            <option value="VEÍCULO QUEBRADO">VEÍCULO QUEBRADO</option>
+                            <option value="VEÍCULO QUEBRADO NA VIA">VEÍCULO QUEBRADO NA VIA</option>
+                            <option value="VEÍCULO EM MANUTENÇÃO">VEÍCULO EM MANUTENÇÃO</option>
+                            <option value="DESCUMPRIMENTO DE NORMAS DE GR">DESCUMPRIMENTO DE NORMAS DE GR</option>
+                            <option value="PARADA FERIADO">PARADA FERIADO</option>
+                            <option value="PARADA POSTO FISCAL">PARADA POSTO FISCAL</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label for="sm">SM</label><input type="text" id="sm"></div>
+                    <div class="form-group"><label for="veiculo">Veículo</label><input type="text" id="veiculo"></div>
+                    <div class="form-group"><label for="motorista">Motorista</label><input type="text" id="motorista"></div>
+                    <div class="form-group"><label for="embarcador">Embarcador</label><input type="text" id="embarcador"></div>
+                    <div class="form-group"><label for="valor">Valor</label><input type="text" id="valor"></div>
+                    <div class="form-group"><label for="rota">Rota</label><input type="text" id="rota"></div>
+                    <div class="form-group"><label for="ultimaPosicao">Última Posição</label><input type="text" id="ultimaPosicao"></div>
+                    <div class="form-group"><label for="latLong">Lat/Long</label><input type="text" id="latLong"></div>
+                    <div class="form-group full-width">
+                        <label for="postoApoio">Posto/Ponto de apoio próximo:</label>
+                        <textarea id="postoApoio" rows="3"></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="descricaoSituacao">Situação/Descrição</label>
+                        <textarea id="descricaoSituacao" rows="3"></textarea>
+                    </div>
+                    <button type="button" id="btnEnviar" onclick="enviarTudo()">📤 Enviar</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <aside class="sidebar-right">
+        <h4 style="font-size: 10px; color: #94a3b8; margin-bottom: 20px; letter-spacing: 1.5px; font-weight: 800;">FERRAMENTAS</h4>
+        <a href="conhecimento.html" style="text-decoration:none; color:inherit;">
+            <div style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 10px; text-align:center;">
+                <i class="ph ph-book-open" style="font-size: 24px; color: #6366f1;"></i>
+                <p style="font-size: 11px; font-weight: 700; margin-top:5px;">BASE CONHECIMENTO</p>
+            </div>
+        </a>
+        <a href="torre.html" style="text-decoration:none; color:inherit;">
+            <div style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; text-align:center;">
+                <i class="ph ph-broadcast" style="font-size: 24px; color: #6366f1;"></i>
+                <p style="font-size: 11px; font-weight: 700; margin-top:5px;">TORRE 360</p>
+            </div>
+        </a>
+    </aside>
+</div>
+
+    <script>
+        // Saudação dinâmica
+        function updateGreeting() {
+            const now = new Date();
+            const hour = now.getHours();
+            const greeting = hour < 12 ? 'Bom dia' : hour < 18 ? 'Boa tarde' : 'Boa noite';
+            const timeString = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('greetingMessage').textContent = `${greeting}! Agora são ${timeString}.`;
+        }
+        updateGreeting();
+        setInterval(updateGreeting, 60000); // Atualiza a cada minuto
+
+        // Saudação e Data Inicial
+        const hour = new Date().getHours();
+        const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
+        
+        const agora = new Date();
+        agora.setMinutes(agora.getMinutes() - agora.getTimezoneOffset());
+        document.getElementById("dataHora").value = agora.toISOString().slice(0, 16);
+
+        function enviarTudo() {
+            const btn = document.getElementById("btnEnviar");
+            btn.disabled = true;
+            btn.textContent = "Gravando...";
+
+            // --- FORMATAÇÃO DA DATA PARA PT-BR ---
+            const rawData = document.getElementById("dataHora").value;
+            let dataBrasil = rawData;
+            if (rawData) {
+                const [data, hora] = rawData.split('T');
+                const [ano, mes, dia] = data.split('-');
+                dataBrasil = `${dia}/${mes}/${ano} ${hora}`;
+            }
+
+            const dados = {
+                dataHora: dataBrasil, // Enviando já formatada
+                ocorrencia: document.getElementById("ocorrencia").value,
+                sm: document.getElementById("sm").value,
+                veiculo: document.getElementById("veiculo").value,
+                motorista: document.getElementById("motorista").value,
+                embarcador: document.getElementById("embarcador").value,
+                valor: document.getElementById("valor").value,
+                rota: document.getElementById("rota").value,
+                ultimaPosicao: document.getElementById("ultimaPosicao").value,
+                latLong: document.getElementById("latLong").value,
+                postoApoio: document.getElementById("postoApoio").value,
+                descricaoSituacao: document.getElementById("descricaoSituacao").value
+            };
+
+            const urlScript = "https://script.google.com/macros/s/AKfycbx24GIW-KeYck6yh1cQpofKpoXzWUfPdKFhZz7KOPakS80VNRTIlp7dGabTcrfp5Bbf/exec";
+
+            fetch(urlScript, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify(dados)
+            })
+            .then(() => {
+                // Mensagem do WhatsApp
+                const msg = `*Para conhecimento*\n\n${greeting}\n\n` +
+                            `*Data/Hora:* ${dados.dataHora}\n` +
+                            `*Ocorrência:* ${dados.ocorrencia}\n` +
+                            `*SM:* ${dados.sm}\n` +
+                            `*Veículo:* ${dados.veiculo}\n` +
+                            `*Motorista:* ${dados.motorista}\n` +
+                            `*Embarcador:* ${dados.embarcador}\n` +
+                            `*Valor:* ${dados.valor}\n` +
+                            `*Rota:* ${dados.rota}\n` +
+                            `*Última Posição:* ${dados.ultimaPosicao}\n` +
+                            `*Lat/Long:* ${dados.latLong}\n` +
+                            `*Posto/Ponto:* ${dados.postoApoio}\n` +
+                            `*Descrição:* ${dados.descricaoSituacao}`;
+
+                window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+                
+                btn.disabled = false;
+                btn.textContent = "📤 Enviar";
+                alert("Dados enviados para a planilha e WhatsApp!");
+            })
+            .catch(err => {
+                console.error("Erro no envio:", err);
+                alert("Erro ao salvar dados.");
+                btn.disabled = false;
+                btn.textContent = "📤 Enviar";
+            });
+        }
+    </script>
+    
+</body>
+</html>

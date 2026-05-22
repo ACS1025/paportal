@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='icon' href='src/img/kmd-16x16.png' type='image/png'>
+    <title>Galeria de Vídeos | Portal Unificado</title>
+    <link rel="stylesheet" href="https://unpkg.com/phosphor-icons@1.4.2/src/css/icons.css">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --accent: #6366f1;
+            --success: #059669;
+            --danger: #dc2626;
+            --slate: #475569;
+        }
+
+        /* --- RESET E BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background: #f8fafc; 
+            color: #334155; 
+        }
+
+        .container { 
+            display: grid; 
+            grid-template-columns: 280px 1fr 200px; 
+            min-height: 100vh; 
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar { 
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%); 
+            padding: 30px 20px; 
+            color: white; 
+            position: sticky; 
+            top: 0; 
+            height: 100vh; 
+            overflow-y: auto; 
+        }
+
+        .logo { text-align: center; margin-bottom: 40px; }
+        .logo h2 { font-size: 18px; font-weight: 800; color: #f8fafc; }
+
+        .menu { list-style: none; }
+        .menu-label { 
+            font-size: 10px; 
+            color: #94a3b8; 
+            margin: 25px 0 10px 0; 
+            letter-spacing: 1.5px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+        }
+
+        .menu a { 
+            display: block; 
+            color: #cbd5e1; 
+            text-decoration: none; 
+            padding: 12px 15px; 
+            border-radius: 8px; 
+            margin-bottom: 5px; 
+            transition: 0.2s; 
+            font-size: 14px; 
+            font-weight: 500; 
+        }
+
+        .menu a:hover, .menu a.active { 
+            background: #6366f1; 
+            color: white; 
+        }
+
+        .menu a i { margin-right: 10px; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content { 
+            padding: 30px; 
+            background: white; 
+            overflow-y: auto; 
+        }
+
+        .top-info { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 30px; 
+            padding-bottom: 20px; 
+            border-bottom: 1px solid #e2e8f0; 
+        }
+
+        .top-info h1 { 
+            font-size: 28px; 
+            color: #1e293b; 
+            margin: 0; 
+        }
+
+        .top-info p { 
+            color: #64748b; 
+            font-size: 14px; 
+            margin: 5px 0 0 0; 
+        }
+
+        .badge { 
+            background: #f1f5f9; 
+            padding: 8px 15px; 
+            border-radius: 20px; 
+            font-size: 12px; 
+            font-weight: 700; 
+            color: #475569; 
+        }
+
+        /* --- SIDEBAR RIGHT --- */
+        .sidebar-right { 
+            background: white; 
+            padding: 30px 20px; 
+            border-left: 1px solid #e2e8f0; 
+        }
+
+        .sidebar-right h4 { 
+            font-size: 10px; 
+            color: #94a3b8; 
+            margin-bottom: 20px; 
+            letter-spacing: 1.5px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+        }
+
+        .sidebar-right a { 
+            text-decoration: none; 
+            color: inherit; 
+            display: block; 
+            margin-bottom: 10px; 
+        }
+
+        .sidebar-right div { 
+            background: white; 
+            padding: 15px; 
+            border-radius: 12px; 
+            border: 1px solid #e2e8f0; 
+            text-align: center; 
+            transition: 0.2s; 
+        }
+
+        .sidebar-right div:hover { 
+            background: #f8fafc; 
+            border-color: #cbd5e1; 
+        }
+
+        .sidebar-right i { 
+            font-size: 24px; 
+            color: #6366f1; 
+            display: block; 
+            margin-bottom: 5px; 
+        }
+
+        .sidebar-right p { 
+            font-size: 11px; 
+            font-weight: 700; 
+            margin: 0; 
+        }
+
+        /* --- GALERIA DE VÍDEOS --- */
+        .video-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .video-item {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+            border: 1px solid #e2e8f0;
+        }
+
+        .video-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .video-icon {
+            width: 80px;
+            height: 80px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .video-icon:hover {
+            filter: brightness(1.2);
+            transform: scale(1.1);
+        }
+
+        .video-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) { 
+            .container { grid-template-columns: 250px 1fr; } 
+            .sidebar-right { display: none; } 
+        }
+
+        @media (max-width: 768px) { 
+            .container { grid-template-columns: 1fr; } 
+            .sidebar { display: none; } 
+            .main-content { padding: 20px; } 
+            .video-container { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+        }
+
+        @media (max-width: 480px) { 
+            .video-container { grid-template-columns: 1fr; } 
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <aside class="sidebar">
+        <div class="logo"><h2>PA - Campinas</h2></div>
+        <nav class="menu">
+            <p class="menu-label">Monitoramento</p>
+            <a href="index.html"><i class="ph ph-gauge"></i> Dashboard Principal</a>
+            <a href="torre.html"><i class="ph ph-broadcast"></i> Torre de Controle</a>
+            <a href="posicao.html"><i class="ph ph-map-pin"></i> Posição Escolta</a>
+            <a href="solicitacao-escolta.html"><i class="ph ph-shield-plus"></i> Solicitação Escolta</a>
+            
+            <p class="menu-label">Operação</p>
+            <a href="cftv.html"><i class="ph ph-video-camera"></i> Auditoria CFTV</a>
+            <a href="cftv-email.html"><i class="ph ph-envelope"></i> E-mail CFTV</a>
+            <a href="brief.html"><i class="ph ph-clipboard-text"></i> Briefing Digital</a>
+            <a href="registros-saidas.html"><i class="ph ph-sign-out"></i> Registro de Saídas</a>
+            <a href="comunicado.html"><i class="ph ph-whatsapp-logo"></i> Gerador de Comunicado</a>
+            <a href="conhecimento.html"><i class="ph ph-book-open"></i> Para Conhecimento</a>
+
+            <p class="menu-label">Capacitação</p>
+            <a href="videos.html" class="active"><i class="ph ph-video"></i> Galeria de Vídeos</a>
+            <a href="Treinamento_Komando_Completo.html"><i class="ph ph-graduation-cap"></i> Avaliação do Treinamento</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="top-info">
+            <div>
+                <h1>Galeria de Vídeos</h1>
+                <p id="greetingMessage"></p>
+            </div>
+            <div class="badge">Capacitação</div>
+        </div>
+
+        <div class="video-container">
+            <div class="video-item">
+                <img src="src/img/Movie_Kmd.png" alt="Dica KMD Move" class="video-icon" onclick="abrirVideo('src/video/Dica_Kmd_Move.mp4')">
+                <p class="video-title">Dica KMD Move</p>
+            </div>
+           
+            <div class="video-item">
+                <img src="src/img/Movie_Kmd.png" alt="Outro" class="video-icon" onclick="abrirVideo('src/video/Outro_Video.mp4')">
+                <p class="video-title">Outro Vídeo</p>
+            </div>
+        </div>
+    </main>
+
+    <aside class="sidebar-right">
+        <h4>FERRAMENTAS</h4>
+        <a href="videos.html">
+            <div>
+                <i class="ph ph-video"></i>
+                <p>GALERIA VÍDEOS</p>
+            </div>
+        </a>
+        <a href="torre.html">
+            <div>
+                <i class="ph ph-broadcast"></i>
+                <p>TORRE 360</p>
+            </div>
+        </a>
+    </aside>
+</div>
+
+<script>
+    function abrirVideo(url) {
+        window.open(url, '_blank', 'width=800,height=450');
+    }
+
+    // Script de saudação
+    function updateGreeting() {
+        const now = new Date();
+        const hour = now.getHours();
+        const dayOfWeek = now.toLocaleDateString('pt-BR', { weekday: 'long' });
+        const date = now.toLocaleDateString('pt-BR');
+
+        let greeting;
+        if (hour < 12) {
+            greeting = 'Bom dia';
+        } else if (hour < 18) {
+            greeting = 'Boa tarde';
+        } else {
+            greeting = 'Boa noite';
+        }
+
+        document.getElementById('greetingMessage').textContent = `${greeting}! Hoje é ${dayOfWeek}, ${date}.`;
+    }
+
+    updateGreeting();
+    setInterval(updateGreeting, 60000); // Atualiza a cada minuto
+</script>
+
+</body>
+</html>
