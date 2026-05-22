@@ -213,7 +213,7 @@
             border: 1px solid #e2e8f0; 
         }
 
-        .template-section label { 
+        .template-section .section-label { 
             margin-top: 0; 
             margin-bottom: 15px; 
         }
@@ -379,32 +379,32 @@
         <div class="form-container">
             <h3>Briefing Digital WhatsApp</h3>
             
-            <label>Código SM *</label>
+            <label for="sm">Código SM *</label>
             <input id="sm" placeholder="Ex: 1175983" required/>
 
             <div class="row">
                 <div style="position: relative;">
-                  <label>Motorista *</label>
+                  <label for="motorista">Motorista *</label>
                   <input id="motorista" placeholder="Autocomplete..." required autocomplete="off"/>
                   <ul id="lista-motorista" class="autocomplete-list" style="display:none"></ul>
                 </div>
                 <div style="position: relative;">
-                  <label>Placa Cavalo</label>
+                  <label for="placa_cavalo">Placa Cavalo</label>
                   <input id="placa_cavalo" placeholder="ABC-1234" autocomplete="off"/>
                   <ul id="lista-placa" class="autocomplete-list" style="display:none"></ul>
                 </div>
                 <div style="position: relative;">
-                  <label>Placa Carreta</label>
+                  <label for="placa_carreta">Placa Carreta</label>
                   <input id="placa_carreta" placeholder="XYZ-5678" autocomplete="off"/>
                   <ul id="lista-carreta" class="autocomplete-list" style="display:none"></ul>
                 </div>
             </div>
 
-            <label>Rota</label>
+            <label for="rota">Rota</label>
             <input id="rota" placeholder="Campinas/SP X Rio de Janeiro/RJ"/>
 
             <div class="template-section">
-                <label>📋 Modelos de Mensagem:</label>
+                <p class="section-label">📋 Modelos de Mensagem:</p>
                 <div class="template-buttons">
                   <button type="button" class="template-btn" onclick="inserirTemplate('briefing')">📍 Briefing</button>
                   <button type="button" class="template-btn" onclick="inserirTemplate('reciclagem')">♻️ Reciclagem</button>
@@ -413,7 +413,7 @@
                 </div>
             </div>
 
-            <label>Mensagem para WhatsApp:</label>
+            <label for="textoPronto">Mensagem para WhatsApp:</label>
             <textarea id="textoPronto" rows="6"></textarea>
 
             <button id="btnEnviar">📱 Enviar via WhatsApp</button>
@@ -507,11 +507,12 @@
       listaCarretas = await loadList('carretas');
     })();
 
-    function setupAutocomplete(inputId, listId, dataSrc) {
+    function setupAutocomplete(inputId, listId, getDataSrc) {
       const input = document.getElementById(inputId);
       const list = document.getElementById(listId);
       input.addEventListener('input', () => {
         const val = input.value.toLowerCase();
+        const dataSrc = getDataSrc();
         list.innerHTML = '';
         if(!val) { list.style.display='none'; return; }
         const matches = dataSrc.filter(x => x.toLowerCase().startsWith(val)).slice(0,10);
@@ -526,9 +527,9 @@
       });
     }
 
-    setupAutocomplete('motorista', 'lista-motorista', listaNomes);
-    setupAutocomplete('placa_cavalo', 'lista-placa', listaPlacas);
-    setupAutocomplete('placa_carreta', 'lista-carreta', listaCarretas);
+    setupAutocomplete('motorista', 'lista-motorista', () => listaNomes);
+    setupAutocomplete('placa_cavalo', 'lista-placa', () => listaPlacas);
+    setupAutocomplete('placa_carreta', 'lista-carreta', () => listaCarretas);
     document.getElementById('sm').addEventListener('input', atualizarMensagem);
     document.getElementById('rota').addEventListener('input', atualizarMensagem);
 
