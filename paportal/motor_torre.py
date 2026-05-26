@@ -15,7 +15,7 @@ cache_real = {
 }
 
 def atualizar_firebase(dados):
-    url_firebase = "https://torre-acs-default-rtdb.firebaseio.com/dashboard.json"
+    url_firebase = "https://torre-default-rtdb.firebaseio.com/dashboard.json"
     try:
         response = requests.put(url_firebase, json=dados, timeout=10)
         if response.status_code == 200:
