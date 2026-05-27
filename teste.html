@@ -272,7 +272,7 @@ let todosOsClientes = [];
 async function carregarDadosLogistica() {
     try {
         const resposta = await fetch('dados_logistica.json');
-        const dados = await responseFix(await resposta.json());
+        const dados = responseFix(await resposta.json());
         
         todosOsPontos = dados.pontosEncontro;
         todosOsClientes = dados.clientes;
@@ -528,6 +528,7 @@ function enviarTudo() {
     const nomeOrigemText = selectOrigem.selectedIndex > 0 ? selectOrigem.options[selectOrigem.selectedIndex].text : "";
     const nomeDestinoText = selectDestino.selectedIndex > 0 ? selectDestino.options[selectDestino.selectedIndex].text : "";
 
+    // Mapeamento correto das chaves para enviar idêntico ao esperado pela Opção 1 do Apps Script
     const dados = {
         dataHora: dataBrasil,
         ordem: document.getElementById("ordem").value,
@@ -535,9 +536,12 @@ function enviarTudo() {
         veiculo: document.getElementById("veiculo").value,
         manifesto: document.getElementById("manifesto").value,
         kmDestino: document.getElementById("km").value,
+        rota: document.getElementById("rota").value, 
         origem: nomeOrigemText,
         destino: nomeDestinoText,
+        ultimaPosicao: document.getElementById("ultimaPosicao").value,
         latLong: document.getElementById("latLong").value,
+        latLongEncontro: document.getElementById("latLongEncontro").value,
         distanciaOrigemKM: distanciaOrigemCalculada,
         distanciaDestinoKM: distanciaDestinoCalculada,
         linkGoogle: document.getElementById("link").value,
@@ -545,8 +549,7 @@ function enviarTudo() {
         enderecoPonto: document.getElementById("postoApoio").value
     };
 
-    // Mantive a integração idêntica com o seu Apps Script enviando o objeto unificado
-    fetch("https://script.google.com/macros/s/AKfycbw5g_z2JCFT-l1sd9rpyiSoEUlIN00kcO-4NGm4goAtWC519PzKLVVeACj9dwUncwmg/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbwC3tbOG3dklFVoQZXgBQTvFqUOoKMdBM3uf6zZ9nqmik0U72nuzqRMcGS_HQp5czi6/exec", {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
