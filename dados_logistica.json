@@ -5,10 +5,11 @@
       "latLong": "-23.3331,-46.8425",
       "endereco": "Avenida Marginal do Ribeirão dos Cristais, Cajamar - SP"
     },
-
-    { "nome": "Ceras Johnsons - Cajamar - SP (Jordanésia)",
+    { 
+      "nome": "Ceras Johnsons - Cajamar - SP (Jordanésia)",
       "latLong": "-23.3331,-46.8425",
-      "endereco": "Avenida Marginal do Ribeirão dos Cristais, Cajamar - SP" },
+      "endereco": "Avenida Marginal do Ribeirão dos Cristais, Cajamar - SP" 
+    },
     {
       "nome": "Supersonic - Campinas - SP",
       "latLong": "-22.994206,-47.131779",
@@ -28,6 +29,36 @@
       "nome": "DIS COMERCIO DE ELETRÔNICOS S/A",
       "latLong": "-19.1972983,-40.097984",
       "endereco": "Rod. Governador Mário Covas, 13709, Sooretama - ES"
+    },
+    {
+      "nome": "Supersonic Ananindeua - PA",
+      "latLong": "-1.385203,-48.390098",
+      "endereco": "BR 316 KM 5, Coqueiro, Complexo de Galpões Carisma Galpão 1 C.A - Levilândia, Ananindeua - PA, 67015-220"
+    },
+    {
+      "nome": "JF OLIVEIRA NAVEGAÇÕES (BALSA / BELÉM)",
+      "latLong": "-1.344446,-48.487823",
+      "endereco": "Av. Arthur Bernardes, s/n, R. Santo Antônio, 0 - Lote 19 - Tapanã, Belém - PA, 66816-000"
+    },
+    {
+      "nome": "DELL - Hortolândia - SP",
+      "latLong": "-22.871143,-47.234125",
+      "endereco": "Av. da Emancipação, 5000 - Parque dos Pinheiros, Hortolândia - SP, 13184-654"
+    },
+    {
+      "nome": "VCP - Campinas - SP",
+      "latLong": "-23.007412,-47.140232",
+      "endereco": "Jardim Princesa D'oeste, Campinas - SP"
+    },
+    {
+      "nome": "COMPAL - Jundiaí - SP",
+      "latLong": "-23.161042,-46.974052",
+      "endereco": "R. Kanebo, 175 - Distrito Industrial, Jundiaí - SP, 13213-090"
+    },
+    {
+      "nome": "FOXCONN - Jundiaí - SP",
+      "latLong": "-23.159335,-46.965938",
+      "endereco": "Foxconn, Av. Marginal Sul da Rodovia dos Bandeirantes - Engordadouro, Jundiaí - SP, 13213-008"
     }
   ],
   "pontosEncontro": [
