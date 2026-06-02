@@ -42,7 +42,7 @@
 
         .full-width { grid-column: 1 / -1; }
 
-        #distanciaBox, #distanciaDestinoBox {
+        #distanciaBox, #distanciaDestinoBox, #distanciaEncontroBox {
             grid-column: 1 / -1;
             padding: 15px 20px;
             border-radius: 6px;
@@ -210,6 +210,7 @@
 
                     <div id="distanciaBox"></div>
                     <div id="distanciaDestinoBox"></div>
+                    <div id="distanciaEncontroBox"></div>
 
                     <div class="form-group full-width">
                         <label>Ponto de Encontro (Filtrado por KM Geográfico com base na Origem)</label>
@@ -264,6 +265,7 @@ document.getElementById("dataHora").value = agora.toISOString().slice(0, 16);
 
 let distanciaOrigemCalculada = 0;
 let distanciaDestinoCalculada = 0;
+let distanciaEncontroCalculada = 0;
 
 let todosOsPontos = [];
 let todosOsClientes = [];
@@ -458,15 +460,33 @@ document.getElementById("pontoSelect").addEventListener("change", function () {
 function atualizarDistancia() {
     const boxOrigem = document.getElementById("distanciaBox");
     const boxDestino = document.getElementById("distanciaDestinoBox");
+    const boxEncontro = document.getElementById("distanciaEncontroBox"); // Captura o novo box
     
     const latLongValue = document.getElementById("latLong").value;
     const latLongOrigemValue = document.getElementById("latLongOrigem").value;
     const latLongDestinoValue = document.getElementById("latLongDestino").value;
+    const latLongEncontroValue = document.getElementById("latLongEncontro").value;
 
-    // 1. DISTÂNCIA ATÉ A ORIGEM (PONTO DE PARTIDA)
+    // Função interna para tratar e corrigir coordenadas sem ponto decimal (Ex: -212829 -> -21.2829)
+    const tratarCoordenada = (val) => {
+        if (!val) return [NaN, NaN];
+        return val.split(',').map(v => {
+            let str = v.trim();
+            if (!str.includes('.') && str.replace('-', '').length > 4) {
+                const sinal = str.startsWith('-') ? '-' : '';
+                const puro = str.replace('-', '');
+                str = `${sinal}${puro.substring(0, 2)}.${puro.substring(2)}`;
+            }
+            return parseFloat(str);
+        });
+    };
+
+    // Posição Atual do Veículo (Base para todos os cálculos)
+    const [latV, lonV] = tratarCoordenada(latLongValue);
+
+    // 1. DISTÂNCIA: VEÍCULO (ATUAL) ATÉ A ORIGEM
     try {
-        const [latV, lonV] = latLongValue.split(',').map(v => parseFloat(v.trim()));
-        const [latO, lonO] = latLongOrigemValue.split(',').map(v => parseFloat(v.trim()));
+        const [latO, lonO] = tratarCoordenada(latLongOrigemValue);
 
         if (!isNaN(latV) && !isNaN(lonV) && !isNaN(latO) && !isNaN(lonO)) {
             const distO = calcularDistancia(latV, lonV, latO, lonO);
@@ -487,10 +507,33 @@ function atualizarDistancia() {
         } else { boxOrigem.style.display = "none"; }
     } catch (e) { boxOrigem.style.display = "none"; }
 
-    // 2. DISTÂNCIA ATÉ O DESTINO FINAL
+    // 2. DISTÂNCIA: VEÍCULO (ATUAL) ATÉ O PONTO DE ENCONTRO 
     try {
-        const [latV, lonV] = latLongValue.split(',').map(v => parseFloat(v.trim()));
-        const [latD, lonD] = latLongDestinoValue.split(',').map(v => parseFloat(v.trim()));
+        const [latE, lonE] = tratarCoordenada(latLongEncontroValue);
+
+        if (!isNaN(latV) && !isNaN(lonV) && !isNaN(latE) && !isNaN(lonE)) {
+            // Calcula usando a Lat/Long Atual do Veículo contra a Lat/Long do Encontro
+            const distE = calcularDistancia(latV, lonV, latE, lonE);
+            const kmE = Math.round(distE);
+            distanciaEncontroCalculada = kmE; // 
+            const tempoE = (distE / 80).toFixed(1);
+
+            let status = ""; let corBg = ""; let corTexto = "";
+            if (kmE <= 30) { status = "🟢 PRÓXIMO AO PONTO"; corBg = "#eafaf1"; corTexto = "#145a32"; } 
+            else if (kmE <= 150) { status = "🟡 EM DESLOCAMENTO"; corBg = "#fefde8"; corTexto = "#713f12"; } 
+            else { status = "🔴 DISTANTE DO PONTO"; corBg = "#fdf2f2"; corTexto = "#7a1c1c"; }
+
+            boxEncontro.style.display = "block";
+            boxEncontro.style.background = corBg;
+            boxEncontro.style.color = corTexto;
+            boxEncontro.style.borderLeft = `6px solid ${corTexto}`;
+            boxEncontro.innerHTML = `<strong>${status} ENCONTRO</strong> | 🤝 Veículo a <strong>${kmE} km</strong> do Ponto de Encontro | ⏱ ETA: ${tempoE}h`;
+        } else { boxEncontro.style.display = "none"; }
+    } catch (e) { boxEncontro.style.display = "none"; }
+
+    // 3. DISTÂNCIA: VEÍCULO (ATUAL) ATÉ O DESTINO FINAL
+    try {
+        const [latD, lonD] = tratarCoordenada(latLongDestinoValue);
 
         if (!isNaN(latV) && !isNaN(lonV) && !isNaN(latD) && !isNaN(lonD)) {
             const distD = calcularDistancia(latV, lonV, latD, lonD);
@@ -528,7 +571,7 @@ function enviarTudo() {
     const nomeOrigemText = selectOrigem.selectedIndex > 0 ? selectOrigem.options[selectOrigem.selectedIndex].text : "";
     const nomeDestinoText = selectDestino.selectedIndex > 0 ? selectDestino.options[selectDestino.selectedIndex].text : "";
 
-    // Mapeamento correto das chaves para enviar idêntico ao esperado pela Opção 1 do Apps Script
+    // Mapeamento das chaves para enviar ao Apps Script
     const dados = {
         dataHora: dataBrasil,
         ordem: document.getElementById("ordem").value,
@@ -544,6 +587,7 @@ function enviarTudo() {
         latLongEncontro: document.getElementById("latLongEncontro").value,
         distanciaOrigemKM: distanciaOrigemCalculada,
         distanciaDestinoKM: distanciaDestinoCalculada,
+        distanciaEncontroKM: distanciaEncontroCalculada, // Enviando também para a planilha
         linkGoogle: document.getElementById("link").value,
         pontoEncontro: document.getElementById("pontoSelect").selectedIndex > 0 ? document.getElementById("pontoSelect").options[document.getElementById("pontoSelect").selectedIndex].text : "",
         enderecoPonto: document.getElementById("postoApoio").value
@@ -556,17 +600,22 @@ function enviarTudo() {
         body: JSON.stringify(dados)
     })
     .then(() => {
-        const msg = `*Posição para Escolta*\n\n${greeting}\n\n` +
-        (distanciaOrigemCalculada ? `🛫 *Distância até a Origem:* ${distanciaOrigemCalculada} km\n` : "") +
-        (distanciaDestinoCalculada ? `🏁 *Distância até o Destino:* ${distanciaDestinoCalculada} km\n\n` : "\n") +
-        `*Data/Hora:* ${dados.dataHora}\n` +
-        `*Ordem:* ${dados.ordem}\n` +
-        `*Motorista:* ${dados.motorista}\n` +
-        `*Veículo:* ${dados.veiculo}\n\n` +
-        `*De (Origem):* ${dados.origem}\n` +
-        `*Para (Destino):* ${dados.destino}\n\n` +
-        `📍 *Link Mapa:* ${dados.linkGoogle}\n\n` +
-        `*Ponto de Apoio:* ${dados.pontoEncontro}`;
+        // Montagem da mensagem do WhatsApp com os 3 blocos de distância se existirem
+        let msg = `*Posição para Escolta*\n\n${greeting}\n\n`;
+        
+        if (distanciaOrigemCalculada) { msg += `🛫 *Distância até a Origem:* ${distanciaOrigemCalculada} km\n`; }
+        if (distanciaEncontroCalculada) { msg += `🤝 *Distância até o Encontro:* ${distanciaEncontroCalculada} km\n`; }
+        if (distanciaDestinoCalculada) { msg += `🏁 *Distância até o Destino:* ${distanciaDestinoCalculada} km\n`; }
+        
+        msg += `\n*Data/Hora:* ${dados.dataHora}\n` +
+               `*Ordem:* ${dados.ordem}\n` +
+               `*Motorista:* ${dados.motorista}\n` +
+               `*Veículo:* ${dados.veiculo}\n\n` +
+               `*De (Origem):* ${dados.origem}\n` +
+               `*Para (Destino):* ${dados.destino}\n\n` +
+               `📍 *Link Mapa:* ${dados.linkGoogle}\n\n` +
+               `*Ponto de Encontro:* ${dados.pontoEncontro}\n` +
+               `🏠 *Endereço do Ponto:* ${dados.enderecoPonto}`;
 
         window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
         btn.disabled = false;
