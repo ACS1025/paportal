@@ -565,6 +565,7 @@ function enviarTudo() {
     const [ano, mes, dia] = data.split('-');
     const dataBrasil = `${dia}/${mes}/${ano} ${hora}`;
 
+    // CORREÇÃO: Pegar os elementos do SELECT primeiro, antes de ler os textos
     const selectOrigem = document.getElementById("origemSelect");
     const selectDestino = document.getElementById("destinoSelect");
     
@@ -587,7 +588,7 @@ function enviarTudo() {
         latLongEncontro: document.getElementById("latLongEncontro").value,
         distanciaOrigemKM: distanciaOrigemCalculada,
         distanciaDestinoKM: distanciaDestinoCalculada,
-        distanciaEncontroKM: distanciaEncontroCalculada, // Enviando também para a planilha
+        distanciaEncontroKM: distanciaEncontroCalculada, 
         linkGoogle: document.getElementById("link").value,
         pontoEncontro: document.getElementById("pontoSelect").selectedIndex > 0 ? document.getElementById("pontoSelect").options[document.getElementById("pontoSelect").selectedIndex].text : "",
         enderecoPonto: document.getElementById("postoApoio").value
@@ -600,12 +601,20 @@ function enviarTudo() {
         body: JSON.stringify(dados)
     })
     .then(() => {
-        // Montagem da mensagem do WhatsApp com os 3 blocos de distância se existirem
+        // Montagem da mensagem do WhatsApp com a nova ordem e formatação desejada
         let msg = `*Posição para Escolta*\n\n${greeting}\n\n`;
         
-        if (distanciaEncontroCalculada) { msg += `🤝 *Distância até o Encontro:* ${distanciaEncontroCalculada} km\n`; }
-        if (distanciaDestinoCalculada) { msg += `🏁 *Distância até o Destino:* ${distanciaDestinoCalculada} km\n`; }
-        if (distanciaOrigemCalculada) { msg += `🛫 *Distância desde a Origem:* ${distanciaOrigemCalculada} km\n`; }
+        // 1. Distância até o Encontro (Principal para a escolta)
+        if (distanciaEncontroCalculada) { 
+            msg += `🤝 *Distância até o Encontro:* ${distanciaEncontroCalculada} km\n`; 
+        }
+        // 2. Distância até o Destino (Secundária)
+        if (distanciaDestinoCalculada) { 
+            msg += `🏁 *Distância até o Destino:* ${distanciaDestinoCalculada} km\n`; 
+        }
+        
+        // Nota: A distância da origem foi removida do texto do WhatsApp conforme solicitado,
+        // mas ela continua sendo salva na sua planilha normalmente através do objeto 'dados'.
                 
         msg += `\n*Data/Hora:* ${dados.dataHora}\n` +
                `*Ordem:* ${dados.ordem}\n` +
