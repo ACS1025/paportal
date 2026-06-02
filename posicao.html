@@ -603,10 +603,10 @@ function enviarTudo() {
         // Montagem da mensagem do WhatsApp com os 3 blocos de distância se existirem
         let msg = `*Posição para Escolta*\n\n${greeting}\n\n`;
         
-        if (distanciaOrigemCalculada) { msg += `🛫 *Distância até a Origem:* ${distanciaOrigemCalculada} km\n`; }
         if (distanciaEncontroCalculada) { msg += `🤝 *Distância até o Encontro:* ${distanciaEncontroCalculada} km\n`; }
         if (distanciaDestinoCalculada) { msg += `🏁 *Distância até o Destino:* ${distanciaDestinoCalculada} km\n`; }
-        
+        if (distanciaOrigemCalculada) { msg += `🛫 *Distância desde a Origem:* ${distanciaOrigemCalculada} km\n`; }
+                
         msg += `\n*Data/Hora:* ${dados.dataHora}\n` +
                `*Ordem:* ${dados.ordem}\n` +
                `*Motorista:* ${dados.motorista}\n` +
