@@ -1,68 +1,68 @@
 {
   "clientes": [
     {
-      "value": "-22.8837,-47.1627",
       "nome": "BYD - Campinas - SP",
+      "latLong": "-22.8837,-47.1627",
       "endereco": "Av. Antônio Boscato, 230 - TIC, Campinas - SP"
     },
     {
-      "value": "-23.3331,-46.8425",
       "nome": "Ceras Johnsons - Cajamar - SP (Jordanésia)",
+      "latLong": "-23.3331,-46.8425",
       "endereco": "Avenida Marginal do Ribeirão dos Cristais, Cajamar - SP"
     },
     {
-      "value": "-15.7951,-47.9254",
       "nome": "Claro nxt (Antiga Nextel) - Brasília - DF",
+      "latLong": "-15.7951,-47.9254",
       "endereco": "SIG Quadra 8, Lote 2225, Parte E (Anexo), Zona Industrial, Brasília - DF, CEP 70610-480"
     },
     {
-      "value": "-22.8122695,-43.2921503",
       "nome": "Cliente Nansen - Emtel (Light)",
+      "latLong": "-22.8122695,-43.2921503",
       "endereco": "Av. Trevo das Missões, 102 - Cordovil, Rio de Janeiro - RJ"
     },
     {
-      "value": "-23.161042,-46.974052",
       "nome": "COMPAL - Jundiaí - SP",
+      "latLong": "-23.161042,-46.974052",
       "endereco": "R. Kanebo, 175 - Distrito Industrial, Jundiaí - SP, 13213-090"
     },
     {
-      "value": "-22.871143,-47.234125",
       "nome": "DELL - Hortolândia - SP",
+      "latLong": "-22.871143,-47.234125",
       "endereco": "Av. da Emancipação, 5000 - Parque dos Pinheiros, Hortolândia - SP, 13184-654"
     },
     {
-      "value": "-23.3331,-46.8425",
       "nome": "DHL - Cajamar - SP",
+      "latLong": "-23.3331,-46.8425",
       "endereco": "Avenida Marginal do Ribeirão dos Cristais, Cajamar - SP"
     },
     {
-      "value": "-19.1972983,-40.097984",
       "nome": "DIS COMERCIO DE ELETRÔNICOS S/A",
+      "latLong": "-19.1972983,-40.097984",
       "endereco": "Rod. Governador Mário Covas, 13709, Sooretama - ES"
     },
     {
-      "value": "-23.159335,-46.965938",
       "nome": "FOXCONN - Jundiaí - SP",
+      "latLong": "-23.159335,-46.965938",
       "endereco": "Foxconn, Av. Marginal Sul da Rodovia dos Bandeirantes - Engordadouro, Jundiaí - SP, 13213-008"
     },
     {
-      "value": "-1.344446,-48.487823",
       "nome": "JF OLIVEIRA NAVEGAÇÕES (BALSA / BELÉM)",
+      "latLong": "-1.344446,-48.487823",
       "endereco": "Av. Arthur Bernardes, s/n, R. Santo Antônio, 0 - Lote 19 - Tapanã, Belém - PA, 66816-000"
     },
     {
-      "value": "-22.994206,-47.131779",
       "nome": "Supersonic - Campinas - SP",
+      "latLong": "-22.994206,-47.131779",
       "endereco": "Av. Br. Smith de Vasconcelos, 630 - Distrito Industrial, Campinas - SP, 13054-740"
     },
     {
-      "value": "-1.385203,-48.390098",
       "nome": "Supersonic Ananindeua - PA",
+      "latLong": "-1.385203,-48.390098",
       "endereco": "BR 316 KM 5, Coqueiro, Complexo de Galpões Carisma Galpão 1 C.A - Levilândia, Ananindeua - PA, 67015-220"
     },
     {
-      "value": "-23.007412,-47.140232",
       "nome": "VCP - Campinas - SP",
+      "latLong": "-23.007412,-47.140232",
       "endereco": "Jardim Princesa D'oeste, Campinas - SP"
     }
   ],
@@ -118,7 +118,7 @@
       "endereco": "Rod. Anhanguera, KM 164 - S/N - Jardim Europa, Araras - SP, 13600-780"
     },
     {
-      "value": "-21.6841,-47.5002",
+      "value": "-21.6411,-47.5002",
       "nome": "Posto Anhanguera - Santa Rita do Passa Quatro - SP",
       "endereco": "Rod. Anhanguera, KM 248 - S/N - Zona Rural, Santa Rita do Passa Quatro - SP, 13670-000"
     },
