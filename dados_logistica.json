@@ -1,87 +1,147 @@
 {
   "clientes": [
-    {
-      "nome": "DHL - Cajamar - SP",
-      "latLong": "-23.3331,-46.8425",
-      "endereco": "Avenida Marginal do Ribeirão dos Cristais, Cajamar - SP"
-    },
-    { 
-      "nome": "Ceras Johnsons - Cajamar - SP (Jordanésia)",
-      "latLong": "-23.3331,-46.8425",
-      "endereco": "Avenida Marginal do Ribeirão dos Cristais, Cajamar - SP" 
-    },
-    {
-      "nome": "Supersonic - Campinas - SP",
-      "latLong": "-22.994206,-47.131779",
-      "endereco": "Av. Br. Smith de Vasconcelos, 630 - Distrito Industrial, Campinas - SP, 13054-740"
-    },
-    { 
-      "nome": "Claro nxt (Antiga Nextel) - Brasília - DF",
-      "latLong": "-15.7951,-47.9254",
-      "endereco": "SIG Quadra 8, Lote 2225, Parte E (Anexo), Zona Industrial, Brasília - DF, CEP 70610-480" 
-    },
-    {
-      "nome": "BYD - Campinas - SP",
-      "latLong": "-22.8837,-47.1627",
-      "endereco": "Av. Antônio Boscato, 230 - TIC, Campinas - SP"
-    },
-    {
-      "nome": "Cliente Nansen - Emtel (Light)",
-      "latLong": "-22.8122695,-43.2921503",
-      "endereco": "Av. Trevo das Missões, 102 - Cordovil, Rio de Janeiro - RJ"
-    },
-    {
-      "nome": "DIS COMERCIO DE ELETRÔNICOS S/A",
-      "latLong": "-19.1972983,-40.097984",
-      "endereco": "Rod. Governador Mário Covas, 13709, Sooretama - ES"
-    },
-    {
-      "nome": "Supersonic Ananindeua - PA",
-      "latLong": "-1.385203,-48.390098",
-      "endereco": "BR 316 KM 5, Coqueiro, Complexo de Galpões Carisma Galpão 1 C.A - Levilândia, Ananindeua - PA, 67015-220"
-    },
-    {
-      "nome": "JF OLIVEIRA NAVEGAÇÕES (BALSA / BELÉM)",
-      "latLong": "-1.344446,-48.487823",
-      "endereco": "Av. Arthur Bernardes, s/n, R. Santo Antônio, 0 - Lote 19 - Tapanã, Belém - PA, 66816-000"
-    },
-    {
-      "nome": "DELL - Hortolândia - SP",
-      "latLong": "-22.871143,-47.234125",
-      "endereco": "Av. da Emancipação, 5000 - Parque dos Pinheiros, Hortolândia - SP, 13184-654"
-    },
-    {
-      "nome": "VCP - Campinas - SP",
-      "latLong": "-23.007412,-47.140232",
-      "endereco": "Jardim Princesa D'oeste, Campinas - SP"
-    },
-    {
-      "nome": "COMPAL - Jundiaí - SP",
-      "latLong": "-23.161042,-46.974052",
-      "endereco": "R. Kanebo, 175 - Distrito Industrial, Jundiaí - SP, 13213-090"
-    },
-    {
-      "nome": "FOXCONN - Jundiaí - SP",
-      "latLong": "-23.159335,-46.965938",
-      "endereco": "Foxconn, Av. Marginal Sul da Rodovia dos Bandeirantes - Engordadouro, Jundiaí - SP, 13213-008"
-    }
-  ],
+  {
+    "nome": "BYD - Campinas - SP",
+    "latLong": "-22.8837,-47.1627",
+    "endereco": "Av. Antônio Boscato, 230 - TIC, Campinas - SP"
+  },
+  {
+    "nome": "Ceras Johnsons - Cajamar - SP (Jordanésia)",
+    "latLong": "-23.3331,-46.8425",
+    "endereco": "Avenida Marginal do Ribeirão dos Cristais, Cajamar - SP"
+  },
+  {
+    "nome": "Claro nxt (Antiga Nextel) - Brasília - DF",
+    "latLong": "-15.7951,-47.9254",
+    "endereco": "SIG Quadra 8, Lote 2225, Parte E (Anexo), Zona Industrial, Brasília - DF, CEP 70610-480"
+  },
+  {
+    "nome": "Cliente Nansen - Emtel (Light)",
+    "latLong": "-22.8122695,-43.2921503",
+    "endereco": "Av. Trevo das Missões, 102 - Cordovil, Rio de Janeiro - RJ"
+  },
+  {
+    "nome": "COMPAL - Jundiaí - SP",
+    "latLong": "-23.161042,-46.974052",
+    "endereco": "R. Kanebo, 175 - Distrito Industrial, Jundiaí - SP, 13213-090"
+  },
+  {
+    "nome": "DELL - Hortolândia - SP",
+    "latLong": "-22.871143,-47.234125",
+    "endereco": "Av. da Emancipação, 5000 - Parque dos Pinheiros, Hortolândia - SP, 13184-654"
+  },
+  {
+    "nome": "DHL - Cajamar - SP",
+    "latLong": "-23.3331,-46.8425",
+    "endereco": "Avenida Marginal do Ribeirão dos Cristais, Cajamar - SP"
+  },
+  {
+    "nome": "DIS COMERCIO DE ELETRÔNICOS S/A",
+    "latLong": "-19.1972983,-40.097984",
+    "endereco": "Rod. Governador Mário Covas, 13709, Sooretama - ES"
+  },
+  {
+    "nome": "FOXCONN - Jundiaí - SP",
+    "latLong": "-23.159335,-46.965938",
+    "endereco": "Foxconn, Av. Marginal Sul da Rodovia dos Bandeirantes - Engordadouro, Jundiaí - SP, 13213-008"
+  },
+  {
+    "nome": "JF OLIVEIRA NAVEGAÇÕES (BALSA / BELÉM)",
+    "latLong": "-1.344446,-48.487823",
+    "endereco": "Av. Arthur Bernardes, s/n, R. Santo Antônio, 0 - Lote 19 - Tapanã, Belém - PA, 66816-000"
+  },
+  {
+    "nome": "Supersonic - Campinas - SP",
+    "latLong": "-22.994206,-47.131779",
+    "endereco": "Av. Br. Smith de Vasconcelos, 630 - Distrito Industrial, Campinas - SP, 13054-740"
+  },
+  {
+    "nome": "Supersonic Ananindeua - PA",
+    "latLong": "-1.385203,-48.390098",
+    "endereco": "BR 316 KM 5, Coqueiro, Complexo de Galpões Carisma Galpão 1 C.A - Levilândia, Ananindeua - PA, 67015-220"
+  },
+  {
+    "nome": "VCP - Campinas - SP",
+    "latLong": "-23.007412,-47.140232",
+    "endereco": "Jardim Princesa D'oeste, Campinas - SP"
+  }
+],
   "pontosEncontro": [
-    { "value": "-22.3577,-47.3849", "nome": "Posto 7 - Araras - SP", "endereco": "Rod. Anhanguera, KM 164 - S/N - Jardim Europa, Araras - SP, 13600-780" },
-    { "value": "-21.8662556,-47.4901579","nome": "Posto 6 Shell - Porto Ferreira - SP","endereco": "Av. João Martins da Silveira Sobrinho, 2101, Porto Ferreira - SP, 13660-000"},
+  {
+    "value": "-21.0736637,-48.4116492",
+    "nome": "AUTO POSTO CASULO TAQUARAL LTDA",
+    "endereco": "AUTO POSTO CASULO TAQUARAL LTDA, R. São Paulo, 08 - Centro, Taquaral - SP, 14765-000"
+  },
+  {
+    "value": "-20.9317,-48.4984",
+    "nome": "Auto Posto Delevatti - Bebedouro - SP",
+    "endereco": "Auto Posto Delevatti"
+  },
+  {
+    "value": "-20.7228022,-47.8926955",
+    "nome": "Auto Posto Estoril de Orlândia",
+    "endereco": "Auto Posto Estoril de Orlândia, Av. Marginal Esquerda, 313 - Centro, Orlândia - SP, 14620-000"
+  },
+  {
+    "value": "-21.6402,-47.7543",
+    "nome": "Auto Posto Gironda - SP",
+    "endereco": "Auto Posto Gironda, SP-253, 1 - Gironda, Luís Antônio - SP"
+  },
+  {
+    "value": "-21.2829,-48.3349",
+    "nome": "Auto Posto Guanabara - Jaboticabal - SP",
+    "endereco": "Rod. Brg. Faria Lima, km 340 - S/N - Zona Rural, Jaboticabal - SP, 14870-000"
+  },
+  {
+    "value": "-15.0285,-49.1242",
+    "nome": "Auto Posto Oliveira - Santa Rita do Novo Destino - GO (Povoado da Placa)",
+    "endereco": "Rodovia BR-080, Km 152, Povoado da Placa, Zona Rural, Santa Rita do Novo Destino - GO, CEP 76395-000"
+  },
+  {
+    "value": "-21.6881,-47.5029",
+    "nome": "Auto Posto Vassununga - Santa Rita do Passa Quatro - SP",
+    "endereco": "Rod. Anhanguera, KM 250 - S/N - Santa Rita do Passa Quatro - SP, 13670-000"
+  },
+  {
+    "value": "-22.4588402,-44.4252638",
+    "nome": "Ponto de encontro 150km - Posto Olá - Resendão",
+    "endereco": "Posto Olá - Resendão, Rod. Pres. Dutra, Km 304 - s/n - Paraíso, Resende - RJ, 27356-000"
+  },
+  {
+    "value": "-21.8662556,-47.4901579",
+    "nome": "Posto 6 Shell - Porto Ferreira - SP",
+    "endereco": "Av. João Martins da Silveira Sobrinho, 2101, Porto Ferreira - SP, 13660-000"
+  },
+  {
+    "value": "-22.3577,-47.3849",
+    "nome": "Posto 7 - Araras - SP",
+    "endereco": "Rod. Anhanguera, KM 164 - S/N - Jardim Europa, Araras - SP, 13600-780"
+  },
+  {
+    "value": "-21.6841,-47.5002",
+    "nome": "Posto Anhanguera - Santa Rita do Passa Quatro - SP",
+    "endereco": "Rod. Anhanguera, KM 248 - S/N - Zona Rural, Santa Rita do Passa Quatro - SP, 13670-000"
+  },
+  {
+    "value": "-21.4673,-47.5756",
+    "nome": "Posto do Tim - São Simão - SP",
+    "endereco": "Rod. Anhanguera, KM 266 + 630 metros - Zona Rural, São Simão - SP, 14200-000"
+  },
+  {
+    "value": "-22.2536,-47.3828",
+    "nome": "Posto Pica Pau (Petrobras) - Leme - SP",
+    "endereco": "Rod. Anhangüera, KM 186 - S/N - Serelepe, Leme - SP, 13610-000"
+  },
+  {
+    "value": "-19.1972983,-40.097984",
+    "nome": "Posto Reserva - CLIENTE: DIS COMERCIO DE ELETROMESTICOS S/A",
+    "endereco": "Posto Reserva, Rod. Governador Mário Covas, 13709, Sooretama - ES, 29927-000, Brasil"
+  },
+  {
+    "value": "-23.0185,-47.1354",
+    "nome": "Supersonic - Campinas - SP",
+    "endereco": "Av. Br. Smith de Vasconcelos, 630 - Distrito Industrial, Campinas - SP, 13054-740"
+  }
+]
 
-    { "value": "-21.4673,-47.5756", "nome": "Posto do Tim - São Simão - SP", "endereco": "Rod. Anhanguera, KM 266 + 630 metros - Zona Rural, São Simão - SP, 14200-000" },
-    { "value": "-15.0285,-49.1242", "nome": "Auto Posto Oliveira - Santa Rita do Novo Destino - GO (Povoado da Placa)", "endereco": "Rodovia BR-080, Km 152, Povoado da Placa, Zona Rural, Santa Rita do Novo Destino - GO, CEP 76395-000"},
-    { "value": "-21.6841,-47.5002", "nome": "Posto Anhanguera - Santa Rita do Passa Quatro - SP", "endereco": "Rod. Anhanguera, KM 248 - S/N - Zona Rural, Santa Rita do Passa Quatro - SP, 13670-000" },
-    { "value": "-21.6402,-47.7543", "nome": "Auto Posto Gironda - SP", "endereco": "Auto Posto Gironda, SP-253, 1 - Gironda, Luís Antônio - SP" },
-    { "value": "-22.2536,-47.3828", "nome": "Posto Pica Pau (Petrobras) - Leme - SP", "endereco": "Rod. Anhangüera, KM 186 - S/N - Serelepe, Leme - SP, 13610-000" },
-    { "value": "-23.0185,-47.1354", "nome": "Supersonic - Campinas - SP", "endereco": "Av. Br. Smith de Vasconcelos, 630 - Distrito Industrial, Campinas - SP, 13054-740" },
-    { "value": "-21.6881,-47.5029", "nome": "Auto Posto Vassununga - Santa Rita do Passa Quatro - SP", "endereco": "Rod. Anhanguera, KM 250 - S/N - Santa Rita do Passa Quatro - SP, 13670-000" },
-    { "value": "-20.7228022,-47.8926955", "nome": "Auto Posto Estoril de Orlândia", "endereco": "Auto Posto Estoril de Orlândia, Av. Marginal Esquerda, 313 - Centro, Orlândia - SP, 14620-000" },
-    { "value": "-20.9317,-48.4984", "nome": "Auto Posto Delevatti - Bebedouro - SP", "endereco": "Auto Posto Delevatti" },
-    { "value": "-21.0736637,-48.4116492", "nome": "AUTO POSTO CASULO TAQUARAL LTDA", "endereco": "AUTO POSTO CASULO TAQUARAL LTDA, R. São Paulo, 08 - Centro, Taquaral - SP, 14765-000" },
-    { "value": "-21.2829,-48.3349", "nome": "Auto Posto Guanabara - Jaboticabal - SP", "endereco": "Rod. Brg. Faria Lima, km 340 - S/N - Zona Rural, Jaboticabal - SP, 14870-000"},
-    { "value": "-22.4588402,-44.4252638", "nome": "Ponto de encontro 150km - Posto Olá - Resendão", "endereco": "Posto Olá - Resendão, Rod. Pres. Dutra, Km 304 - s/n - Paraíso, Resende - RJ, 27356-000" },
-    { "value": "-19.1972983,-40.097984", "nome": "Posto Reserva - CLIENTE: DIS COMERCIO DE ELETROMESTICOS S/A", "endereco": "Posto Reserva, Rod. Governador Mário Covas, 13709, Sooretama - ES, 29927-000, Brasil" }
-  ]
 }
