@@ -69,6 +69,12 @@
   "pontosEncontro": [
     { "value": "-22.3577,-47.3849", "nome": "Posto 7 - Araras - SP", "endereco": "Rod. Anhanguera, KM 164 - S/N - Jardim Europa, Araras - SP, 13600-780" },
     { "value": "-21.4673,-47.5756", "nome": "Posto do Tim - São Simão - SP", "endereco": "Rod. Anhanguera, KM 266 + 630 metros - Zona Rural, São Simão - SP, 14200-000" },
+    { 
+  "value": "-15.0285,-49.1242",
+  "nome": "Auto Posto Oliveira - Santa Rita do Novo Destino - GO (Povoado da Placa)",
+  "endereco": "Rodovia BR-080, Km 152, Povoado da Placa, Zona Rural, Santa Rita do Novo Destino - GO, CEP 76395-000" 
+},
+
     { "value": "-21.6841,-47.5002", "nome": "Posto Anhanguera - Santa Rita do Passa Quatro - SP", "endereco": "Rod. Anhanguera, KM 248 - S/N - Zona Rural, Santa Rita do Passa Quatro - SP, 13670-000" },
     { "value": "-21.6402,-47.7543", "nome": "Auto Posto Gironda - SP", "endereco": "Auto Posto Gironda, SP-253, 1 - Gironda, Luís Antônio - SP" },
     { "value": "-22.2536,-47.3828", "nome": "Posto Pica Pau (Petrobras) - Leme - SP", "endereco": "Rod. Anhangüera, KM 186 - S/N - Serelepe, Leme - SP, 13610-000" },
