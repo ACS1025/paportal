@@ -141,7 +141,13 @@
     "value": "-23.0185,-47.1354",
     "nome": "Supersonic - Campinas - SP",
     "endereco": "Av. Br. Smith de Vasconcelos, 630 - Distrito Industrial, Campinas - SP, 13054-740"
-  }
+  },
+  { 
+  "value": "-21.1396,-47.7816",
+  "nome": "Posto Ipiranga (KM 320) - Ribeirão Preto - SP",
+  "endereco": "Rod. Anhangüera, Km 320 - Avelino Alves Palma, Ribeirão Preto - SP, 14070-730" 
+}
+
 ]
 
 }
