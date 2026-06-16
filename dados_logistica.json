@@ -1,153 +1,1378 @@
 {
   "clientes": [
-  {
-    "nome": "BYD - Campinas - SP",
-    "latLong": "-22.8837,-47.1627",
-    "endereco": "Av. Antônio Boscato, 230 - TIC, Campinas - SP"
-  },
-  {
-    "nome": "Ceras Johnsons - Cajamar - SP (Jordanésia)",
-    "latLong": "-23.3331,-46.8425",
-    "endereco": "Avenida Marginal do Ribeirão dos Cristais, Cajamar - SP"
-  },
-  {
-    "nome": "Claro nxt (Antiga Nextel) - Brasília - DF",
-    "latLong": "-15.7951,-47.9254",
-    "endereco": "SIG Quadra 8, Lote 2225, Parte E (Anexo), Zona Industrial, Brasília - DF, CEP 70610-480"
-  },
-  {
-    "nome": "Cliente Nansen - Emtel (Light)",
-    "latLong": "-22.8122695,-43.2921503",
-    "endereco": "Av. Trevo das Missões, 102 - Cordovil, Rio de Janeiro - RJ"
-  },
-  {
-    "nome": "COMPAL - Jundiaí - SP",
-    "latLong": "-23.161042,-46.974052",
-    "endereco": "R. Kanebo, 175 - Distrito Industrial, Jundiaí - SP, 13213-090"
-  },
-  {
-    "nome": "DELL - Hortolândia - SP",
-    "latLong": "-22.871143,-47.234125",
-    "endereco": "Av. da Emancipação, 5000 - Parque dos Pinheiros, Hortolândia - SP, 13184-654"
-  },
-  {
-    "nome": "DHL - Cajamar - SP",
-    "latLong": "-23.3331,-46.8425",
-    "endereco": "Avenida Marginal do Ribeirão dos Cristais, Cajamar - SP"
-  },
-  {
-    "nome": "DIS COMERCIO DE ELETRÔNICOS S/A",
-    "latLong": "-19.1972983,-40.097984",
-    "endereco": "Rod. Governador Mário Covas, 13709, Sooretama - ES"
-  },
-  {
-    "nome": "FOXCONN - Jundiaí - SP",
-    "latLong": "-23.159335,-46.965938",
-    "endereco": "Foxconn, Av. Marginal Sul da Rodovia dos Bandeirantes - Engordadouro, Jundiaí - SP, 13213-008"
-  },
-  {
-    "nome": "JF OLIVEIRA NAVEGAÇÕES (BALSA / BELÉM)",
-    "latLong": "-1.344446,-48.487823",
-    "endereco": "Av. Arthur Bernardes, s/n, R. Santo Antônio, 0 - Lote 19 - Tapanã, Belém - PA, 66816-000"
-  },
-  {
-    "nome": "Supersonic - Campinas - SP",
-    "latLong": "-22.994206,-47.131779",
-    "endereco": "Av. Br. Smith de Vasconcelos, 630 - Distrito Industrial, Campinas - SP, 13054-740"
-  },
-  {
-    "nome": "Supersonic Ananindeua - PA",
-    "latLong": "-1.385203,-48.390098",
-    "endereco": "BR 316 KM 5, Coqueiro, Complexo de Galpões Carisma Galpão 1 C.A - Levilândia, Ananindeua - PA, 67015-220"
-  },
-  {
-    "nome": "VCP - Campinas - SP",
-    "latLong": "-23.007412,-47.140232",
-    "endereco": "Jardim Princesa D'oeste, Campinas - SP"
-  }
-],
+    {
+      "nome": "BYD - Campinas - SP",
+      "latLong": "-22.8837,-47.1627",
+      "endereco": "Av. Antônio Boscato, 230 - TIC, Campinas - SP"
+    },
+    {
+      "nome": "Ceras Johnsons - Cajamar - SP (Jordanésia)",
+      "latLong": "-23.3331,-46.8425",
+      "endereco": "Avenida Marginal do Ribeirão dos Cristais, Cajamar - SP"
+    },
+    {
+      "nome": "Claro nxt (Antiga Nextel) - Brasília - DF",
+      "latLong": "-15.7951,-47.9254",
+      "endereco": "SIG Quadra 8, Lote 2225, Parte E (Anexo), Zona Industrial, Brasília - DF, CEP 70610-480"
+    },
+    {
+      "nome": "Cliente Nansen - Emtel (Light)",
+      "latLong": "-22.8122695,-43.2921503",
+      "endereco": "Av. Trevo das Missões, 102 - Cordovil, Rio de Janeiro - RJ"
+    },
+    {
+      "nome": "COMPAL - Jundiaí - SP",
+      "latLong": "-23.161042,-46.974052",
+      "endereco": "R. Kanebo, 175 - Distrito Industrial, Jundiaí - SP, 13213-090"
+    },
+    {
+      "nome": "DELL - Hortolândia - SP",
+      "latLong": "-22.871143,-47.234125",
+      "endereco": "Av. da Emancipação, 5000 - Parque dos Pinheiros, Hortolândia - SP, 13184-654"
+    },
+    {
+      "nome": "DHL - Cajamar - SP",
+      "latLong": "-23.3331,-46.8425",
+      "endereco": "Avenida Marginal do Ribeirão dos Cristais, Cajamar - SP"
+    },
+    {
+      "nome": "DIS COMERCIO DE ELETRÔNICOS S/A",
+      "latLong": "-19.1972983,-40.097984",
+      "endereco": "Rod. Governador Mário Covas, 13709, Sooretama - ES"
+    },
+    {
+      "nome": "FOXCONN - Jundiaí - SP",
+      "latLong": "-23.159335,-46.965938",
+      "endereco": "Foxconn, Av. Marginal Sul da Rodovia dos Bandeirantes - Engordadouro, Jundiaí - SP, 13213-008"
+    },
+    {
+      "nome": "JF OLIVEIRA NAVEGAÇÕES (BALSA / BELÉM)",
+      "latLong": "-1.344446,-48.487823",
+      "endereco": "Av. Arthur Bernardes, s/n, R. Santo Antônio, 0 - Lote 19 - Tapanã, Belém - PA, 66816-000"
+    },
+    {
+      "nome": "Supersonic - Campinas - SP",
+      "latLong": "-22.994206,-47.131779",
+      "endereco": "Av. Br. Smith de Vasconcelos, 630 - Distrito Industrial, Campinas - SP, 13054-740"
+    },
+    {
+      "nome": "Supersonic Ananindeua - PA",
+      "latLong": "-1.385203,-48.390098",
+      "endereco": "BR 316 KM 5, Coqueiro, Complexo de Galpões Carisma Galpão 1 C.A - Levilândia, Ananindeua - PA, 67015-220"
+    },
+    {
+      "nome": "VCP - Campinas - SP",
+      "latLong": "-23.007412,-47.140232",
+      "endereco": "Jardim Princesa D'oeste, Campinas - SP"
+    }
+  ],
   "pontosEncontro": [
-  {
-    "value": "-21.0736637,-48.4116492",
-    "nome": "AUTO POSTO CASULO TAQUARAL LTDA",
-    "endereco": "AUTO POSTO CASULO TAQUARAL LTDA, R. São Paulo, 08 - Centro, Taquaral - SP, 14765-000"
+    {
+      "value": "-15.6755796,-55.9345101",
+      "nome": "Aldo",
+      "endereco": "Rod. BR-163, Km 398 - Distrito Industrial, Cuiabá - MT, 78098-530"
+    },
+    {
+      "value": "-22.5254689,-46.9928867",
+      "nome": "Area de Descanso",
+      "endereco": "Rod. Gov. Dr. Adhemar Pereira de Barros, Km 169 - Mogi Mirim - SP, 13800-000"
+    },
+    {
+      "value": "-21.0736637,-48.4116492",
+      "nome": "AUTO POSTO CASULO TAQUARAL LTDA",
+      "endereco": "AUTO POSTO CASULO TAQUARAL LTDA, R. São Paulo, 08 - Centro, Taquaral - SP, 14765-000"
+    },
+    {
+      "value": "-20.9317,-48.4984",
+      "nome": "Auto Posto Delevatti - Bebedouro - SP",
+      "endereco": "Auto Posto Delevatti"
+    },
+    {
+      "value": "-20.7228022,-47.8926955",
+      "nome": "Auto Posto Estoril de Orlândia",
+      "endereco": "Auto Posto Estoril de Orlândia, Av. Marginal Esquerda, 313 - Centro, Orlândia - SP, 14620-000"
+    },
+    {
+      "value": "-21.6402,-47.7543",
+      "nome": "Auto Posto Gironda - SP",
+      "endereco": "Auto Posto Gironda, SP-253, 1 - Gironda, Luís Antônio - SP"
+    },
+    {
+      "value": "-21.2829,-48.3349",
+      "nome": "Auto Posto Guanabara - Jaboticabal - SP",
+      "endereco": "Rod. Brg. Faria Lima, km 340 - S/N - Zona Rural, Jaboticabal - SP, 14870-000"
+    },
+    {
+      "value": "-15.0285,-49.1242",
+      "nome": "Auto Posto Oliveira - Santa Rita do Novo Destino - GO (Povoado da Placa)",
+      "endereco": "Rodovia BR-080, Km 152, Povoado da Placa, Zona Rural, Santa Rita do Novo Destino - GO, CEP 76395-000"
+    },
+    {
+      "value": "-22.86809,-43.42631",
+      "nome": "Auto Posto Parque de Deodoro (Vibra)",
+      "endereco": "Av. Brasil, 26420 - Deodoro, Rio de Janeiro - RJ, CEP 21615-338"
+    },
+    {
+      "value": "-22.86348,-43.23503",
+      "nome": "Auto Posto Parque União (Vibra)",
+      "endereco": "Av. Brasil, 7015 - Bonsucesso, Rio de Janeiro - RJ, CEP 21040-360"
+    },
+    {
+      "value": "-22.77145,-42.92784",
+      "nome": "Auto Posto Trevo de Manilha (Petrobras)",
+      "endereco": "Rod. Gov. Mário Covas, BR-101, Km 293 - Manilha, Itaboraí - RJ, CEP 24855-246"
+    },
+    {
+      "value": "-21.6881,-47.5029",
+      "nome": "Auto Posto Vassununga - Santa Rita do Passa Quatro - SP",
+      "endereco": "Rod. Anhanguera, KM 250 - S/N - Santa Rita do Passa Quatro - SP, 13670-000"
+    },
+    {
+      "value": "-22.4855005,-47.3994635",
+      "nome": "Auto Posto Marrakech",
+      "endereco": "Rod. Anhanguera, Km 150 - Leme - SP, 13612-200"
+    },
+    {
+      "value": "-20.8396734,-41.1129806",
+      "nome": "Auto Posto Cachoeiro",
+      "endereco": "Rod. Eng. Fabiano Vivacqua, Km 10 - Safra, Cachoeiro de Itapemirim - ES, 29324-400"
+    },
+    {
+      "value": "-20.6506499,-40.642324",
+      "nome": "Auto Posto Jaqueira",
+      "endereco": "Rod. Gov. Mário Covas, Km 350 - Jaqueira, Guarapari - ES, 29223-550"
+    },
+    {
+      "value": "-20.3976044,-42.1495042",
+      "nome": "AUTO POSTO NAZARÃO LTDA - SHELL",
+      "endereco": "Rod. BR-262, Km 120 - Nazaré, Manhuaçu - MG, 36906-330"
+    },
+    {
+      "value": "-23.1236451,-45.7302469",
+      "nome": "Auto Posto Sete Estrelas GNV",
+      "endereco": "Rod. Pres. Dutra, Km 152 - Jardim das Indústrias, São José dos Campos - SP, 12240-420"
+    },
+    {
+      "value": "-23.2107862,-48.9681884",
+      "nome": "Auto Posto Bizungão Ilha Verde",
+      "endereco": "Rod. Castelo Branco, Km 268 - Zona Rural, Cerqueira César - SP, 18760-000"
+    },
+    {
+      "value": "-21.4815357,-47.7769679",
+      "nome": "Auto Posto Gironda",
+      "endereco": "Rod. Dep. Vicente Botta, SP-253, Km 1 - Gironda, Luís Antônio - SP, 14210-000"
+    },
+    {
+      "value": "-16.5625289,-41.503538",
+      "nome": "Auto Posto Itaobim",
+      "endereco": "Rod. BR-116, Km 116 - Zona Rural, Itaobim - MG, 39625-000"
+    },
+    {
+      "value": "-21.78336,-48.2238399",
+      "nome": "Auto Posto Pau Seco",
+      "endereco": "Rod. Washington Luís, Km 277 - Zona Rural, Araraquara - SP, 14800-000"
+    },
+    {
+      "value": "-23.4297367,-47.1382722",
+      "nome": "Auto Posto Quinta do Marquês",
+      "endereco": "Rod. Castelo Branco, Km 57 - City Castelo, São Roque - SP, 18132-350"
+    },
+    {
+      "value": "-23.2500715,-47.9975209",
+      "nome": "Auto Posto Rei da Castelo II",
+      "endereco": "Rod. Castelo Branco, Km 152 - Distrito Industrial, Quadra - SP, 18285-000"
+    },
+    {
+      "value": "-20.6524181,-48.5513064",
+      "nome": "Auto Posto Rodeio Barretos Ltda",
+      "endereco": "Rod. Brig. Faria Lima, Km 427 - Zona Rural, Barretos - SP, 14780-000"
+    },
+    {
+      "value": "-16.620674,-41.5019552",
+      "nome": "Auto Posto Transanimais",
+      "endereco": "Rod. BR-116, Km 123 - Ponto dos Volantes - MG, 39615-000"
+    },
+    {
+      "value": "-14.5273757,-40.3800524",
+      "nome": "Auto Posto Reforço",
+      "endereco": "Rod. BR-116, Km 753 - Poções - BA, 45260-000"
+    },
+    {
+      "value": "-20.296207,-54.5001054",
+      "nome": "Auto Posto Amigão",
+      "endereco": "Rod. BR-163, Km 484 - Jardim Presidente, Campo Grande - MS, 79013-020"
+    },
+    {
+      "value": "-15.7112657,-55.6969166",
+      "nome": "AUTO POSTO CHAPADÃO",
+      "endereco": "Rod. BR-070, Km 355 - Primavera do Leste - MT, 78850-000"
+    },
+    {
+      "value": "-21.554573,-47.636122",
+      "nome": "Auto Posto Astro Km 265 Norte Rede Maxxi Petrol",
+      "endereco": "Rod. Anhanguera, Km 265 - Zona Rural, São Simão - SP, 14200-000"
+    },
+    {
+      "value": "-26.1938898,-50.4217322",
+      "nome": "Auto Posto Piedade",
+      "endereco": "Rod. BR-116, Km 10 - Piedade, Canoinhas - SC, 89460-000"
+    },
+    {
+      "value": "-17.840478,-54.710948",
+      "nome": "Auto Posto Piquiry",
+      "endereco": "Rod. BR-163, Km 692 - Zona Rural, Sonora - MS, 79415-000"
+    },
+    {
+      "value": "-25.1768217,-48.8738025",
+      "nome": "Auto Posto Represa.",
+      "endereco": "Rod. Régis Bittencourt, BR-116, Km 42 - Zona Rural, Campina Grande do Sul - PR, 83430-000"
+    },
+    {
+      "value": "-16.6183346,-54.7006252",
+      "nome": "Auto Posto Ursão I",
+      "endereco": "Rod. BR-163, Km 115 - Distrito Industrial, Rondonópolis - MT, 78745-000"
+    },
+    {
+      "value": "-26.1897079,-50.3724932",
+      "nome": "Auto Posto Eldorado",
+      "endereco": "Rod. BR-116, Km 7 - Industrial, Mafra - SC, 89300-000"
+    },
+    {
+      "value": "-11.299875,-38.9367968",
+      "nome": "Auto Posto Rodagem II",
+      "endereco": "Rod. BR-116, Km 385 - Centro, Serrinha - BA, 48700-000"
+    },
+    {
+      "value": "-16.3725904,-48.9447922",
+      "nome": "Auto Posto Cerrado II",
+      "endereco": "Rod. BR-060, Km 120 - Zona Rural, Anápolis - GO, 75134-800"
+    },
+    {
+      "value": "-17.032553,-48.3114329",
+      "nome": "Auto Posto Orizona",
+      "endereco": "Rod. GO-330, Km 104 - Zona Rural, Orizona - GO, 75280-000"
+    },
+    {
+      "value": "-15.4685791,-49.4984333",
+      "nome": "Auto Posto Recreio I",
+      "endereco": "Rod. BR-153, Km 302 - Zona Rural, Rianápolis - GO, 76355-000"
+    },
+    {
+      "value": "-19.4745605,-40.1135838",
+      "nome": "Auto Posto Schueng - Bebedouro",
+      "endereco": "Rod. BR-101, Km 142 - Bebedouro, Linhares - ES, 29900-495"
+    },
+    {
+      "value": "-25.9946532,-49.6678666",
+      "nome": "Auto Posto Nuele 2",
+      "endereco": "Rod. BR-116, Km 152 - Mandirituba - PR, 83800-000"
+    },
+        {
+      "value": "-18.8577241,-41.8025251",
+      "nome": "Auto Posto Carretão",
+      "endereco": "Rod. BR-116, Km 415 - Governador Valadares - MG, 35010-000"
+    },
+    {
+      "value": "-21.6881,-47.5029",
+      "nome": "Auto Posto Vassununga - Santa Rita do Passa Quatro - SP",
+      "endereco": "Rod. Anhanguera, KM 250 - S/N - Santa Rita do Passa Quatro - SP, 13670-000"
+    },
+    {
+      "value": "-22.4588402,-44.4252638",
+      "nome": "Ponto de encontro 150km - Posto Olá - Resendão",
+      "endereco": "Posto Olá - Resendão, Rod. Pres. Dutra, Km 304 - s/n - Paraíso, Resende - RJ, 27356-000"
+    },
+    {
+      "value": "-21.8662556,-47.4901579",
+      "nome": "Posto 6 Shell - Porto Ferreira - SP",
+      "endereco": "Av. João Martins da Silveira Sobrinho, 2101, Porto Ferreira - SP, 13660-000"
+    },
+    {
+      "value": "-22.3577,-47.3849",
+      "nome": "Posto 7 - Araras - SP",
+      "endereco": "Rod. Anhanguera, KM 164 - S/N - Jardim Europa, Araras - SP, 13600-780"
+    },
+    {
+      "value": "-21.6841,-47.5002",
+      "nome": "Posto Anhanguera - Santa Rita do Passa Quatro - SP",
+      "endereco": "Rod. Anhanguera, KM 248 - S/N - Zona Rural, Santa Rita do Passa Quatro - SP, 13670-000"
+    },
+    {
+      "value": "-21.4673,-47.5756",
+      "nome": "Posto do Tim - São Simão - SP",
+      "endereco": "Rod. Anhanguera, KM 266 + 630 metros - Zona Rural, São Simão - SP, 14200-000"
+    },
+    {
+      "value": "-21.1396,-47.7816",
+      "nome": "Posto Ipiranga (KM 320) - Ribeirão Preto - SP",
+      "endereco": "Rod. Anhangüera, Km 320 - Avelino Alves Palma, Ribeirão Preto - SP, 14070-730"
+    },
+    {
+      "value": "-22.2536,-47.3828",
+      "nome": "Posto Pica Pau (Petrobras) - Leme - SP",
+      "endereco": "Rod. Anhangüera, KM 186 - S/N - Serelepe, Leme - SP, 13610-000"
+    },
+    {
+      "value": "-19.1972983,-40.097984",
+      "nome": "Posto Reserva - CLIENTE: DIS COMERCIO DE ELETROMESTICOS S/A",
+      "endereco": "Posto Reserva, Rod. Governador Mário Covas, 13709, Sooretama - ES, 29927-000, Brasil"
+    },
+    {
+      "value": "-23.0185,-47.1354",
+      "nome": "Supersonic - Campinas - SP",
+      "endereco": "Av. Br. Smith de Vasconcelos, 630 - Distrito Industrial, Campinas - SP, 13054-740"
+    },
+    {
+      "value": "-19.7639977,-47.9754255",
+      "nome": "Graal Antares",
+      "endereco": "Rod. BR-050, Km 171 - Distrito Industrial, Uberaba - MG, 38064-750"
+    },
+    {
+      "value": "-20.441039,-47.8359397",
+      "nome": "Posto Algodoeira",
+      "endereco": "Rod. Anhanguera, Km 396 - Zona Rural, Guará - SP, 14580-000"
+    },
+    {
+      "value": "-19.592306,-46.4935698",
+      "nome": "Posto Alpa",
+      "endereco": "Rodovia BR-354, Km 327 - Zona Rural, São Gotardo - MG, 38800-000"
+    },
+    {
+      "value": "-21.7801304,-47.5344314",
+      "nome": "Posto Anhanguera",
+      "endereco": "Rod. Anhanguera, Km 242 - Santa Cruz da Estrela, Santa Rita do Passa Quatro - SP, 13670-000"
+    },
+    {
+      "value": "-20.0122421,-45.9505726",
+      "nome": "Posto Caxuxa Girassol",
+      "endereco": "Rua Indalécio Álvares Gonzáles, 1755 - Centro, Bambuí - MG, 38900-000"
+    },
+    {
+      "value": "-19.8052656,-47.9045239",
+      "nome": "Posto Caxuxa MGM-Restaurante 050",
+      "endereco": "Rod. BR-050, Km 161 - Zona Rural, Uberaba - MG, 38001-970"
+    },
+    {
+      "value": "-19.292965,-48.1157559",
+      "nome": "Posto Cinquentão I Petrobras",
+      "endereco": "Rod. BR-050, Km 101 - Zona Rural, Uberlândia - MG, 38400-000"
+    },
+    {
+      "value": "-22.4801234,-46.011225",
+      "nome": "Posto da Gruta I",
+      "endereco": "Rod. Fernão Dias, Km 882 - Três Irmãos, Estiva - MG, 37542-000"
+    },
+    {
+      "value": "-19.0144373,-48.208273",
+      "nome": "Posto Décio",
+      "endereco": "Rod. BR-050, Km 41 - Shopping Park, Uberlândia - MG, 38425-410"
+    },
+    {
+      "value": "-22.4008208,-45.962388",
+      "nome": "Posto Dom Pedro Pouso Alegre",
+      "endereco": "Rod. Fernão Dias, Km 859 - Cruz Alta, Pouso Alegre - MG, 37550-000"
+    },
+    {
+      "value": "-20.1773041,-45.7155811",
+      "nome": "Posto Douradão - Iguatama",
+      "endereco": "Rodovia BR-354, Km 452 - Auto São Francisco, Iguatama - MG, 38910-000"
+    },
+    {
+      "value": "-19.6684322,-46.0528533",
+      "nome": "Posto Estalagem - Rede HG",
+      "endereco": "Rodovia BR-262, Km 589 - Zona Rural, Córrego Danta - MG, 35594-000"
+    },
+    {
+      "value": "-21.1600633,-47.755404",
+      "nome": "Posto Gavião",
+      "endereco": "Rod. Anhanguera, Km 312 - Zona Rural, Ribeirão Preto - SP, 14075-800"
+    },
+    {
+      "value": "-18.92561,-46.999574",
+      "nome": "Posto Ipiranga - Rota do Sol",
+      "endereco": "Rodovia BR-365, Km 412 - Zona Rural, Patos de Minas - MG, 38700-000"
+    },
+    {
+      "value": "-19.6662095,-46.0572307",
+      "nome": "Posto Minas Gerais I e restaurante",
+      "endereco": "Rodovia BR-262, Km 590 - Zona Rural, Córrego Danta - MG, 35594-000"
+    },
+    {
+      "value": "-20.300778,-45.543417",
+      "nome": "Posto Novo Xodo",
+      "endereco": "Rodovia BR-354, Km 496 - Zona Rural, Formiga - MG, 35570-000"
+    },
+    {
+      "value": "-19.6578427,-46.2125694",
+      "nome": "Posto Patão - Ipiranga",
+      "endereco": "Rodovia BR-365, Km 407 - Planalto, Patos de Minas - MG, 38706-326"
+    },
+    {
+      "value": "-22.2174928,-47.3920386",
+      "nome": "Posto Pica Pau - Petrobras",
+      "endereco": "Rod. Anhanguera, Km 186 - Serelepe, Leme - SP, 13610-000"
+    },
+    {
+      "value": "-21.316565,-47.73465",
+      "nome": "Posto Shell - C SERV FRANGO ASSADO ANHANGUERA LTD",
+      "endereco": "Rod. Anhanguera, Km 293 - Cravinhos - SP, 14140-000"
+    },
+    {
+      "value": "-19.4408031,-48.0648892",
+      "nome": "Posto Tijuco BR-050",
+      "endereco": "Rodovia BR-050, Km 140 - Distrito Industrial, Uberaba - MG, 38056-545"
+    },
+        {
+      "value": "-22.4855005,-47.3994635",
+      "nome": "Auto Posto Marrakech",
+      "endereco": "Rod. Anhanguera, Km 150 - Leme - SP, 13612-200"
+    },
+    {
+      "value": "-20.8396734,-41.1129806",
+      "nome": "Auto Posto Cachoeiro",
+      "endereco": "Rod. Eng. Fabiano Vivacqua, Km 10 - Safra, Cachoeiro de Itapemirim - ES, 29324-400"
+    },
+    {
+      "value": "-20.6506499,-40.642324",
+      "nome": "Auto Posto Jaqueira",
+      "endereco": "Rod. Gov. Mário Covas, Km 350 - Jaqueira, Guarapari - ES, 29223-550"
+    },
+    {
+      "value": "-23.1236451,-45.7302469",
+      "nome": "Auto Posto Sete Estrelas GNV",
+      "endereco": "Rod. Pres. Dutra, Km 152 - Jardim das Indústrias, São José dos Campos - SP, 12240-420"
+    },
+    {
+      "value": "-22.484953,-44.5482678",
+      "nome": "Graal Itatiaia",
+      "endereco": "Rod. Pres. Dutra, Km 316 - Vila Paraíso, Itatiaia - RJ, 27580-000"
+    },
+    {
+      "value": "-20.8989784,-42.3470187",
+      "nome": "Hotel e Churrascaria Timbozão",
+      "endereco": "Rod. BR-116, Km 680 - Miradouro - MG, 36893-000"
+    },
+    {
+      "value": "-22.4519869,-44.359017",
+      "nome": "Ola",
+      "endereco": "Rod. Pres. Dutra, Km 304 - Paraíso, Resende - RJ, 27356-000"
+    },
+    {
+      "value": "-20.3174954,-40.3966781",
+      "nome": "Posto ALE Contorno (GNV)",
+      "endereco": "Rod. Gov. Mário Covas, Km 5,5 - Santana, Cariacica - ES, 29154-100"
+    },
+    {
+      "value": "-20.3815011,-42.1475819",
+      "nome": "Posto Astro (BR)",
+      "endereco": "Rod. BR-262, Km 119 - Bom Jardim, Manhuaçu - MG, 36906-340"
+    },
+    {
+      "value": "-20.0675141,-40.3670969",
+      "nome": "Posto 5 Estrelas",
+      "endereco": "Rod. ES-010, Km 4 - Jardim Limoeiro, Serra - ES, 29164-010"
+    },
+    {
+      "value": "-20.409962,-40.459039",
+      "nome": "Posto 13 de Maio - Shell",
+      "endereco": "Rod. Gov. Mário Covas, Km 302 - Amarelos, Guarapari - ES, 29226-725"
+    },
+    {
+      "value": "-22.0294495,-42.9806054",
+      "nome": "Posto 3D de Anta - BR",
+      "endereco": "Rod. BR-393, Km 56 - Anta, Sapucaia - RJ, 25845-000"
+    },
+    {
+      "value": "-21.0722201,-41.2273429",
+      "nome": "Posto Caju - Posto de Combustível em Mimoso do Sul",
+      "endereco": "Rod. BR-101, Km 435 - Zona Rural, Mimoso do Sul - ES, 29440-000"
+    },
+    {
+      "value": "-20.3776024,-40.4487184",
+      "nome": "Posto Canaã",
+      "endereco": "Rod. Gov. Mário Covas, Km 298 - Amarelos, Guarapari - ES, 29226-725"
+    },
+    {
+      "value": "-20.0520833,-40.3838339",
+      "nome": "Posto Chapada Grande - Localização",
+      "endereco": "Rod. Gov. Mário Covas, Km 257 - Chapada Grande, Serra - ES, 29182-303"
+    },
+    {
+      "value": "-19.52657,-40.67826",
+      "nome": "Posto Dalla's",
+      "endereco": "Rod. BR-259, Km 55 - Honório Fraga, Colatina - ES, 29704-410"
   },
   {
-    "value": "-20.9317,-48.4984",
-    "nome": "Auto Posto Delevatti - Bebedouro - SP",
-    "endereco": "Auto Posto Delevatti"
+      "value": "-22.7293782,-45.0760603",
+      "nome": "Posto Dom Pedro",
+      "endereco": "Rod. Pres. Dutra, Km 74 - Vila Paraíba, Guaratinguetá - SP, 12515-460"
   },
   {
-    "value": "-20.7228022,-47.8926955",
-    "nome": "Auto Posto Estoril de Orlândia",
-    "endereco": "Auto Posto Estoril de Orlândia, Av. Marginal Esquerda, 313 - Centro, Orlândia - SP, 14620-000"
+      "value": "-20.9759444,-42.3556297",
+      "nome": "Posto Dom Pedro Muriaé",
+      "endereco": "Rod. BR-116, Km 707 - Barra, Muriaé - MG, 36884-013"
   },
   {
-    "value": "-21.6402,-47.7543",
-    "nome": "Auto Posto Gironda - SP",
-    "endereco": "Auto Posto Gironda, SP-253, 1 - Gironda, Luís Antônio - SP"
+      "value": "-21.0098202,-41.1448647",
+      "nome": "Posto dos Motoristas",
+      "endereco": "Rod. BR-101, Km 414 - Safra, Itapemirim - ES, 29330-000"
   },
   {
-    "value": "-21.2829,-48.3349",
-    "nome": "Auto Posto Guanabara - Jaboticabal - SP",
-    "endereco": "Rod. Brg. Faria Lima, km 340 - S/N - Zona Rural, Jaboticabal - SP, 14870-000"
+      "value": "-22.9091152,-45.3159599",
+      "nome": "Posto e Restaurante Arco Iris Roseira",
+      "endereco": "Rod. Pres. Dutra, Km 81 - Roseira - SP, 12580-000"
   },
   {
-    "value": "-15.0285,-49.1242",
-    "nome": "Auto Posto Oliveira - Santa Rita do Novo Destino - GO (Povoado da Placa)",
-    "endereco": "Rodovia BR-080, Km 152, Povoado da Placa, Zona Rural, Santa Rita do Novo Destino - GO, CEP 76395-000"
+      "value": "-22.4545606,-44.3884212",
+      "nome": "Posto Graal Embaixador - Petrobrás",
+      "endereco": "Rod. Pres. Dutra, Km 299 - Bulhões, Resende - RJ, 27365-000"
   },
   {
-    "value": "-21.6881,-47.5029",
-    "nome": "Auto Posto Vassununga - Santa Rita do Passa Quatro - SP",
-    "endereco": "Rod. Anhanguera, KM 250 - S/N - Santa Rita do Passa Quatro - SP, 13670-000"
+      "value": "-22.5304038,-44.751602",
+      "nome": "POSTO IPIRANGA Graal Estrela",
+      "endereco": "Rod. Pres. Dutra, Km 248 - Cruzeiro Novo, Cruzeiro - SP, 12800-000"
   },
   {
-    "value": "-22.4588402,-44.4252638",
-    "nome": "Ponto de encontro 150km - Posto Olá - Resendão",
-    "endereco": "Posto Olá - Resendão, Rod. Pres. Dutra, Km 304 - s/n - Paraíso, Resende - RJ, 27356-000"
+      "value": "-18.6760725,-41.988731",
+      "nome": "POSTO IPIRANGA E RESTAURANTE BARRIGÃO",
+      "endereco": "Rod. BR-116, Km 398 - Central de Minas - MG, 35260-000"
   },
   {
-    "value": "-21.8662556,-47.4901579",
-    "nome": "Posto 6 Shell - Porto Ferreira - SP",
-    "endereco": "Av. João Martins da Silveira Sobrinho, 2101, Porto Ferreira - SP, 13660-000"
+      "value": "-21.0939979,-41.2506969",
+      "nome": "Posto JR - Posto de Combustível Ipiranga",
+      "endereco": "Rod. BR-101, Km 438 - Mimoso do Sul - ES, 29440-000"
   },
   {
-    "value": "-22.3577,-47.3849",
-    "nome": "Posto 7 - Araras - SP",
-    "endereco": "Rod. Anhanguera, KM 164 - S/N - Jardim Europa, Araras - SP, 13600-780"
+      "value": "-21.6584743,-42.3441834",
+      "nome": "Posto lampiao",
+      "endereco": "Rod. BR-116, Km 790 - Leopoldina - MG, 36700-000"
   },
   {
-    "value": "-21.6841,-47.5002",
-    "nome": "Posto Anhanguera - Santa Rita do Passa Quatro - SP",
-    "endereco": "Rod. Anhanguera, KM 248 - S/N - Zona Rural, Santa Rita do Passa Quatro - SP, 13670-000"
+      "value": "-20.2180934,-40.2912196",
+      "nome": "Posto Metropolitano (TIMS)",
+      "endereco": "Rod. BR-101, Km 269 - Terminal de Cargas, Serra - ES, 29161-376"
   },
   {
-    "value": "-21.4673,-47.5756",
-    "nome": "Posto do Tim - São Simão - SP",
-    "endereco": "Rod. Anhanguera, KM 266 + 630 metros - Zona Rural, São Simão - SP, 14200-000"
+      "value": "-22.6067621,-44.8971716",
+      "nome": "Posto Olá Retiro da Mantiqueira",
+      "endereco": "Rod. Pres. Dutra, Km 262 - Retiro, Barra Mansa - RJ, 27360-000"
   },
   {
-    "value": "-22.2536,-47.3828",
-    "nome": "Posto Pica Pau (Petrobras) - Leme - SP",
-    "endereco": "Rod. Anhangüera, KM 186 - S/N - Serelepe, Leme - SP, 13610-000"
+      "value": "-20.928031,-41.0796746",
+      "nome": "Posto Santa Gema - Shangrilá + GNV",
+      "endereco": "Rod. BR-101, Km 402 - Safra, Cachoeiro de Itapemirim - ES, 29324-400"
   },
   {
-    "value": "-19.1972983,-40.097984",
-    "nome": "Posto Reserva - CLIENTE: DIS COMERCIO DE ELETROMESTICOS S/A",
-    "endereco": "Posto Reserva, Rod. Governador Mário Covas, 13709, Sooretama - ES, 29927-000, Brasil"
+      "value": "-20.5997937,-40.5030758",
+      "nome": "Posto Tigrão | Shell",
+      "endereco": "Rod. Gov. Mário Covas, Km 335 - Amarelos, Guarapari - ES, 29226-725"
   },
   {
-    "value": "-23.0185,-47.1354",
-    "nome": "Supersonic - Campinas - SP",
-    "endereco": "Av. Br. Smith de Vasconcelos, 630 - Distrito Industrial, Campinas - SP, 13054-740"
+      "value": "-21.4395702,-42.535001",
+      "nome": "POSTO VALE DO POMBA",
+      "endereco": "Rod. BR-116, Km 743 - Laranjal - MG, 36760-000"
   },
-  { 
-  "value": "-21.1396,-47.7816",
-  "nome": "Posto Ipiranga (KM 320) - Ribeirão Preto - SP",
-  "endereco": "Rod. Anhangüera, Km 320 - Avelino Alves Palma, Ribeirão Preto - SP, 14070-730" 
+      {
+      "value": "-22.186142,-45.8450198",
+      "nome": "Graal Bela Vista",
+      "endereco": "Rod. Fernão Dias, Km 837 - Bela Vista, São Sebastião da Bela Vista - MG, 37567-000"
+    },
+    {
+      "value": "-20.364358,-41.0626214",
+      "nome": "Ipiranga - Posto Dois Irmãos",
+      "endereco": "Rod. BR-262, Km 43 - Centro, Domingos Martins - ES, 29260-000"
+    },
+    {
+      "value": "-20.3009774,-41.7082793",
+      "nome": "Petrobras - Posto Boas Novas",
+      "endereco": "Rod. BR-262, Km 182 - Ibatiba - ES, 29395-000"
+    },
+    {
+      "value": "-21.5307976,-42.6543568",
+      "nome": "Posto 3D",
+      "endereco": "Rod. BR-116, Km 773 - Leopoldina - MG, 36700-000"
+    },
+    {
+      "value": "-22.7688916,-46.2300528",
+      "nome": "Posto Batistella",
+      "endereco": "Rod. Fernão Dias, Km 927 - Camanducaia - MG, 37650-000"
+    },
+    {
+      "value": "-22.1027533,-45.72492",
+      "nome": "Posto Capixaba - PARADAS RAPIDAS",
+      "endereco": "Rod. Fernão Dias, Km 821 - Careaçu - MG, 37524-000"
+    },
+    {
+      "value": "-15.5304956,-41.2473404",
+      "nome": "Posto Caxias do Sul",
+      "endereco": "Rod. BR-116, Km 25 - Cândido Sales - BA, 45160-000"
+    },
+    {
+      "value": "-20.4228671,-40.7760901",
+      "nome": "Posto do Café",
+      "endereco": "Rod. BR-262, Km 14 - Viana - ES, 29135-000"
+    },
+    {
+      "value": "-20.3821555,-40.4576456",
+      "nome": "Posto do Elias - PARADAS RAPIDAS",
+      "endereco": "Rod. BR-101, Km 299 - Amarelos, Guarapari - ES, 29226-725"
+  },
+  {
+      "value": "-15.805771,-41.3640649",
+      "nome": "Posto Dom Pedro",
+      "endereco": "Rod. BR-116, Km 901 - Cândido Sales - BA, 45160-000"
+  },
+  {
+      "value": "-16.1347572,-42.2621365",
+      "nome": "Posto Dom Pedro Salinas",
+      "endereco": "Rod. BR-116, Km 325 - Salinas - MG, 39560-000"
+  },
+  {
+      "value": "-15.8100473,-41.3770524",
+      "nome": "Posto JR Faisão",
+      "endereco": "Rod. BR-116, Km 903 - Cândido Sales - BA, 45160-000"
+  },
+  {
+      "value": "-22.8770747,-46.3709853",
+      "nome": "Posto JR Faisão X Ltda",
+      "endereco": "Rod. Fernão Dias, Km 941 - Extrema - MG, 37640-000"
+  },
+  {
+      "value": "-15.4353848,-41.2213084",
+      "nome": "Posto Ômega",
+      "endereco": "Rod. BR-116, Km 855 - Encruzilhada - BA, 45150-000"
+  },
+  {
+      "value": "-16.4768917,-43.500781",
+      "nome": "Posto PS4 COMBUSTIVEIS",
+      "endereco": "Rod. BR-251, Km 298 - Zona Rural, Francisco Sá - MG, 39580-000"
+  },
+  {
+      "value": "-14.9515001,-40.898954",
+      "nome": "Posto São Marcos - Rede HG",
+      "endereco": "Rod. BR-116, Km 821 - Jurema, Vitória da Conquista - BA, 45023-490"
+  },
+  {
+      "value": "-15.121886,-41.0331523",
+      "nome": "Posto Taboleiro da Baiana",
+      "endereco": "Rod. BR-116, Km 842 - Vitória da Conquista - BA, 45000-000"
+  },
+  {
+      "value": "-16.2645228,-42.5837358",
+      "nome": "Posto União",
+      "endereco": "Rod. BR-116, Km 268 - Medina - MG, 39620-000"
+  },
+  {
+      "value": "-15.085745,-41.0126953",
+      "nome": "Rede Lubrijau - Posto Conquista",
+      "endereco": "Rod. BR-116, Km 838 - Vitória da Conquista - BA, 45031-300"
+  },
+  {
+    "value": "-22.5254689,-46.9928867",
+    "nome": "Area de Descanso",
+    "endereco": "Rod. Gov. Dr. Adhemar Pereira de Barros, Km 169 - Mogi Mirim - SP, 13800-000"
+  },
+  {
+    "value": "-21.2186111,-45.1280132",
+    "nome": "Bar e Restaurante Auto Posto Sandrele",
+    "endereco": "Rod. Fernão Dias, Km 678 - Zona Rural, Perdões - MG, 37260-000"
+  },
+  {
+    "value": "-21.7194635,-47.0796312",
+    "nome": "Auto Posto RVM Casa Branca",
+    "endereco": "Rod. Sgto. Arnaldo Mayoli, Km 2 - Lagoa Branca, Casa Branca - SP, 13700-000"
+  },
+  {
+    "value": "-20.2789662,-44.4285332",
+    "nome": "AUTO POSTO RODOCHAVES LTDA",
+    "endereco": "Rod. Fernão Dias, Km 568 - Chácaras Bandeirantes, Itaguara - MG, 35514-000"
+  },
+  {
+    "value": "-22.3774811,-46.9714185",
+    "nome": "Auto Posto Rio Guaçu",
+    "endereco": "Rod. Gov. Dr. Adhemar Pereira de Barros, Km 150 - Mogi Guaçu - SP, 13840-000"
+  },
+  {
+    "value": "-20.6908002,-44.7453383",
+    "nome": "Graal Oliveira",
+    "endereco": "Rod. Fernão Dias, Km 612 - Eldorado, Oliveira - MG, 35540-000"
+  },
+  {
+    "value": "-21.3090574,-46.9341905",
+    "nome": "Picoro Auto Posto",
+    "endereco": "Rod. SP-350, Km 252 - Zona Rural, Itobi - SP, 13715-000"
+  },
+  {
+    "value": "-20.5729616,-47.3790604",
+    "nome": "Posto Beta",
+    "endereco": "Rod. Cândido Portinari, Km 397 - Franca - SP, 14400-000"
+  },
+  {
+    "value": "-20.7342276,-46.5759402",
+    "nome": "Posto Bnb",
+    "endereco": "Rod. MG-050, Km 354 - Passos - MG, 37900-000"
+  },
+  {
+    "value": "-17.899937,-44.169073",
+    "nome": "Posto Boa Vista - Buenópolis",
+    "endereco": "Rod. BR-135, Km 512 - Buenópolis - MG, 39230-000"
+  },
+  {
+    "value": "-17.0986548,-43.8266087",
+    "nome": "Posto Boa Vista VI",
+    "endereco": "Rod. BR-135, Km 421 - Bocaiúva - MG, 39390-000"
+  },
+      {
+      "value": "-20.5341281,-47.8467709",
+      "nome": "Posto Buritizinho Anhaguera",
+      "endereco": "Rod. Anhanguera, Km 406 - Buritizinho, Ituverava - SP, 14570-000"
+    },
+    {
+      "value": "-19.4506201,-44.3172337",
+      "nome": "Posto Canecão",
+      "endereco": "Rod. BR-040, Km 471 - Sete Lagoas - MG, 35700-000"
+    },
+    {
+      "value": "-18.7089914,-44.4423961",
+      "nome": "Posto Caxuxa Curvelo - Rede Caxuxa",
+      "endereco": "Rod. BR-135, Km 603 - Curvelo - MG, 35790-000"
+    },
+    {
+      "value": "-18.4083373,-44.4582558",
+      "nome": "Posto Cerradão",
+      "endereco": "Rod. BR-135, Km 569 - Augusto de Lima - MG, 39220-000"
+    },
+    {
+      "value": "-18.5690221,-46.4609148",
+      "nome": "Posto Cometa",
+      "endereco": "Rod. BR-365, Km 363 - Patos de Minas - MG, 38700-000"
+    },
+    {
+      "value": "-21.1084343,-45.092105",
+      "nome": "Posto Crossville",
+      "endereco": "Rod. Fernão Dias, Km 667 - Lavras - MG, 37200-000"
+    },
+    {
+      "value": "-16.6585279,-43.7394876",
+      "nome": "Posto D'Angelis I",
+      "endereco": "Rod. BR-135, Km 371 - Montes Claros - MG, 39404-000"
+    },
+    {
+      "value": "-16.6582905,-43.7270806",
+      "nome": "Posto D'Angelis II",
+      "endereco": "Rod. BR-135, Km 370 - Montes Claros - MG, 39404-000"
+    },
+    {
+      "value": "-16.6049559,-43.65485",
+      "nome": "Posto do Chimba",
+      "endereco": "Rod. BR-135, Km 362 - Montes Claros - MG, 39404-000"
+    },
+    {
+      "value": "-20.2855162,-44.4349833",
+      "nome": "Posto Dom Pedro Itaguara",
+      "endereco": "Rod. Fernão Dias, Km 569 - Itaguara - MG, 35514-000"
+    },
+    {
+      "value": "-20.184037,-44.380246",
+      "nome": "Posto Dom Pedro Itatiaiuçu",
+      "endereco": "Rod. Fernão Dias, Km 553 - Itatiaiuçu - MG, 35685-000"
+    },
+    {
+      "value": "-18.6581111,-46.4796124",
+      "nome": "Posto e Restaurante Avenue",
+      "endereco": "Rod. BR-365, Km 373 - Patos de Minas - MG, 38700-000"
+    },
+    {
+      "value": "-17.8653292,-45.5135738",
+      "nome": "Posto Formoso",
+      "endereco": "Rod. BR-365, Km 268 - Buritizeiro - MG, 39280-000"
+    },
+    {
+      "value": "-22.1865032,-46.9878109",
+      "nome": "Posto Frango Assado Mogi Guaçu",
+      "endereco": "Rod. Gov. Dr. Adhemar Pereira de Barros, Km 127 - Mogi Guaçu - SP, 13840-000"
+    },
+    {
+      "value": "-20.6443,-47.8802907",
+      "nome": "Posto Monte Carlo Santa Rita",
+      "endereco": "Rod. Anhanguera, Km 418 - Santa Rita do Sapucaí, Igarapava - SP, 14540-000"
+    },
+    {
+      "value": "-20.4667,-47.4136419",
+      "nome": "Posto Paineirão",
+      "endereco": "Rod. Cândido Portinari, Km 392 - Franca - SP, 14400-000"
+    },
+    {
+      "value": "-21.6675582,-45.3241188",
+      "nome": "Posto Transabril Sul",
+      "endereco": "Rod. Fernão Dias, Km 732 - Carmo da Cachoeira - MG, 37225-000"
+    },
+    {
+      "value": "-21.1659164,-45.1266403",
+      "nome": "Petrobras - Posto Castelo",
+      "endereco": "Rod. Fernão Dias, Km 677 - Perdões - MG, 37260-000"
+    },
+    {
+      "value": "-23.2107862,-48.9681884",
+      "nome": "Auto Posto Bizungão Ilha Verde",
+      "endereco": "Rod. Castelo Branco, Km 268 - Zona Rural, Cerqueira César - SP, 18760-000"
+    },
+    {
+      "value": "-16.5625289,-41.503538",
+      "nome": "Auto Posto Itaobim",
+      "endereco": "Rod. BR-116, Km 116 - Zona Rural, Itaobim - MG, 39625-000"
+    },
+    {
+      "value": "-21.78336,-48.2238399",
+      "nome": "Auto Posto Pau Seco",
+      "endereco": "Rod. Washington Luís, Km 277 - Zona Rural, Araraquara - SP, 14800-000"
+    },
+    {
+      "value": "-23.4297367,-47.1382722",
+      "nome": "Auto Posto Quinta do Marquês",
+      "endereco": "Rod. Castelo Branco, Km 57 - City Castelo, São Roque - SP, 18132-350"
+    },
+    {
+      "value": "-23.2500715,-47.9975209",
+      "nome": "Auto Posto Rei da Castelo II",
+      "endereco": "Rod. Castelo Branco, Km 152 - Distrito Industrial, Quadra - SP, 18285-000"
+    },
+    {
+      "value": "-20.6524181,-48.5513064",
+      "nome": "Auto Posto Rodeio Barretos Ltda",
+      "endereco": "Rod. Brig. Faria Lima, Km 427 - Zona Rural, Barretos - SP, 14780-000"
+    },
+    {
+      "value": "-16.620674,-41.5019552",
+      "nome": "Auto Posto Transanimais",
+      "endereco": "Rod. BR-116, Km 123 - Ponto dos Volantes - MG, 39615-000"
+    },
+    {
+      "value": "-23.34085684,-47.2871735",
+      "nome": "Frango Assado",
+      "endereco": "Rod. Castelo Branco, Km 72 - Itaim, Itu - SP, 13312-000"
+    },
+    {
+      "value": "-23.2920104,-46.5742994",
+      "nome": "Graal Mairiporã",
+      "endereco": "Rod. Fernão Dias, Km 62 - Rio Abaixo, Mairiporã - SP, 07600-000"
+    },
+    {
+      "value": "-23.1386699,-48.4471397",
+      "nome": "Graal Maristela",
+      "endereco": "Rod. Castelo Branco, Km 207 - Distrito de Maristela, Laranjal Paulista - SP, 18500-000"
+    },
+    {
+      "value": "-22.3950986,-45.9570492",
+      "nome": "Petrobras - Posto Servsul",
+      "endereco": "Rod. Fernão Dias, Km 856 - Zona Rural, Pouso Alegre - MG, 37550-000"
+    },
+    {
+      "value": "-18.3045859,-51.145073",
+      "nome": "Posto Abobrão",
+      "endereco": "Rod. BR-364, Km 12 - Zona Rural, Cachoeira Alta - GO, 75870-000"
+    },
+        {
+      "value": "-19.7514196,-48.9679658",
+      "nome": "Posto Balanção",
+      "endereco": "Rod. BR-153, Km 204 - Frutal - MG, 38200-000"
+    },
+    {
+      "value": "-18.290504,-41.748855",
+      "nome": "Posto Bicho Grosso",
+      "endereco": "Rod. BR-116, Km 292 - Frei Inocêncio - MG, 35112-000"
+    },
+    {
+      "value": "-18.5753362,-49.1946761",
+      "nome": "Posto Decio Centralina",
+      "endereco": "Rod. BR-153, Km 16 - Centralina - MG, 38390-000"
+    },
+    {
+      "value": "-18.965293,-49.5001979",
+      "nome": "Posto Decio Ituiutaba",
+      "endereco": "Rod. BR-365, Km 757 - Junqueira, Ituiutaba - MG, 38300-000"
+    },
+    {
+      "value": "-17.7512081,-50.8763198",
+      "nome": "Posto Decio Rio Verde",
+      "endereco": "Rod. BR-060, Km 378 - Setor Industrial, Rio Verde - GO, 75904-740"
+    },
+    {
+      "value": "-22.8647871,-49.1579281",
+      "nome": "Posto Restaurante e Lanchonete Taquari",
+      "endereco": "Rod. Castelo Branco, Km 297 - Taquari, Santa Cruz do Rio Pardo - SP, 18900-000"
+    },
+    {
+      "value": "-22.9266654,-49.0349691",
+      "nome": "Posto Ipiranga",
+      "endereco": "Rod. Castelo Branco, Km 308 - Águas de Santa Bárbara - SP, 18770-000"
+    },
+    {
+      "value": "-18.0162845,-41.6413389",
+      "nome": "Posto Monte Alto",
+      "endereco": "Rod. BR-116, Km 254 - Teófilo Otoni - MG, 39800-000"
+    },
+    {
+      "value": "-22.3129638,-49.4917224",
+      "nome": "Posto Panorama",
+      "endereco": "Rod. Comandante João Ribeiro de Barros, Km 365 - Bauru - SP, 17047-001"
+    },
+    {
+      "value": "-22.2328001,-47.7380107",
+      "nome": "Posto Pantanal Fonte",
+      "endereco": "Rod. Washington Luís, Km 214 - Jardim Inocoop, São Carlos - SP, 13563-330"
+    },
+    {
+      "value": "-18.9976522,-50.5627986",
+      "nome": "Posto Recanto",
+      "endereco": "Rod. BR-365, Km 660 - Santa Vitória - MG, 38320-000"
+    },
+    {
+      "value": "-21.5383555,-47.6408511",
+      "nome": "Posto do Tim (JJA Petro Auto Posto Ltda.)",
+      "endereco": "Rod. Anhanguera, Km 266 - Zona Rural, São Simão - SP, 14200-000"
+    },
+    {
+      "value": "-21.2260311,-47.7601292",
+      "nome": "Posto Shell",
+      "endereco": "Rod. Anhanguera, Km 305 - Ribeirão Preto - SP, 14075-800"
+    },
+    {
+      "value": "-22.0861093,-45.7026565",
+      "nome": "Posto Shell",
+      "endereco": "Rod. Fernão Dias, Km 818 - Careaçu - MG, 37524-000"
+    },
+    {
+      "value": "-16.6993787,-41.4988248",
+      "nome": "REDE HG COMBUSTIVEIS LTDA",
+      "endereco": "Rod. BR-116, Km 132 - Ponto dos Volantes - MG, 39615-000"
+    },
+    {
+      "value": "-18.1754714,-41.7064309",
+      "nome": "Rede HG - Posto Periquito",
+      "endereco": "Rod. BR-116, Km 276 - Governador Valadares - MG, 35010-000"
+    },
+    {
+      "value": "-16.7001863,-41.4989045",
+      "nome": "Rede HG - Posto Papa Léguas I",
+      "endereco": "Rod. BR-116, Km 132,5 - Ponto dos Volantes - MG, 39615-000"
+    },
+    {
+      "value": "-14.5273757,-40.3800524",
+      "nome": "Auto Posto Reforço",
+      "endereco": "Rod. BR-116, Km 753 - Poções - BA, 45260-000"
+    },
+    {
+      "value": "-12.4386205,-39.2269005",
+      "nome": "Pau de vela",
+      "endereco": "Rod. BR-116, Km 435 - Feira de Santana - BA, 44000-000"
+    },
+    {
+      "value": "-6.9395571,-38.7212008",
+      "nome": "POSTO CACHOEIRA l",
+      "endereco": "Rod. BR-116, Km 451 - Cachoeira dos Índios - PB, 58940-000"
+    },
+    {
+      "value": "-15.737384,-41.338811",
+      "nome": "Posto Dom Pedro Divisa Alegre",
+      "endereco": "Rod. BR-116, Km 1 - Zona Rural, Divisa Alegre - MG, 39915-000"
+    },
+    {
+      "value": "-18.5070498,-41.8789522",
+      "nome": "Posto Dom Pedro Frei Inocêncio",
+      "endereco": "Rod. BR-116, Km 331 - Frei Inocêncio - MG, 35112-000"
+    },
+    {
+      "value": "-14.765982,-40.7069924",
+      "nome": "Posto Dom Pedro São Jorge",
+      "endereco": "Rod. BR-116, Km 796 - Planalto - BA, 45190-000"
+    },
+    {
+      "value": "-15.8112073,-41.3764757",
+      "nome": "Posto Faisão",
+      "endereco": "Rod. BR-116, Km 903 - Cândido Sales - BA, 45160-000"
+    },
+    {
+      "value": "-14.6831264,-40.5381238",
+      "nome": "Posto Frei Damião",
+      "endereco": "Rod. BR-116, Km 778 - Planalto - BA, 45190-000"
+    },
+    {
+      "value": "-12.1683479,-38.9641652",
+      "nome": "Posto Jaguar",
+      "endereco": "Rod. BR-116, Km 398 - Feira de Santana - BA, 44000-000"
+    },
+    {
+      "value": "-17.0729843,-41.4857049",
+      "nome": "Posto JK",
+      "endereco": "Rod. BR-116, Km 182 - Padre Paraíso - MG, 39160-000"
+    },
+    {
+      "value": "-12.511137,-39.3716077",
+      "nome": "Posto JR Faisão VIII",
+      "endereco": "Rod. BR-116, Km 448 - Antônio Cardoso - BA, 44180-000"
+    },
+    {
+      "value": "-7.3020159,-38.893362",
+      "nome": "Posto Magnólia 14",
+      "endereco": "Rod. BR-116, Km 486 - Milagres - CE, 63250-000"
+    },
+    {
+      "value": "-6.3645466,-38.7821822",
+      "nome": "POSTO PARAIBANO BR116",
+      "endereco": "Rod. BR-116, Km 382 - Icó - CE, 63430-000"
+    },
+        {
+      "value": "-6.3646653,-38.7838288",
+      "nome": "POSTO PARAIBANO III",
+      "endereco": "Rod. BR-116, Km 382,5 - Icó - CE, 63430-000"
+    },
+    {
+      "value": "-13.5472742,-40.0704753",
+      "nome": "Posto Paraná",
+      "endereco": "Rod. BR-116, Km 643 - Jaguaquara - BA, 45345-000"
+    },
+    {
+      "value": "-10.4963033,-39.0141892",
+      "nome": "POSTO RALENE LTDA",
+      "endereco": "Rod. BR-116, Km 202 - Euclides da Cunha - BA, 48500-000"
+    },
+    {
+      "value": "-19.8821286,-43.9602066",
+      "nome": "POSTO SÃO FRANCISCO ( Posto de Combustivel)",
+      "endereco": "Anel Rodoviário Celso Mello Azevedo, 13400 - Engenho Nogueira, Belo Horizonte - MG, 31310-260"
+    },
+    {
+      "value": "-14.9515001,-40.898954",
+      "nome": "Posto São Marcos - Rede HG",
+      "endereco": "Rod. BR-116, Km 821 - Jurema, Vitória Conquista - BA, 45023-490"
+    },
+    {
+      "value": "-15.1218275,-41.0332557",
+      "nome": "Posto Taboleiro da Baiana",
+      "endereco": "Rod. BR-116, Km 842 - Vitória da Conquista - BA, 45000-000"
+    },
+    {
+      "value": "-12.5500643,-39.4535624",
+      "nome": "Posto Trevo 17",
+      "endereco": "Rod. BR-116, Km 462 - Santo Estêvão - BA, 44190-000"
+    },
+    {
+      "value": "-14.6570378,-40.4603805",
+      "nome": "Posto Turbo - Rede HG",
+      "endereco": "Rod. BR-116, Km 772 - Planalto - BA, 45190-000"
+    },
+    {
+      "value": "-18.578295,-41.9221587",
+      "nome": "Posto Turmalina",
+      "endereco": "Rod. BR-116, Km 342 - Governador Valadares - MG, 35010-000"
+    },
+    {
+      "value": "-19.0443115,-41.9939194",
+      "nome": "Posto Turmalina II",
+      "endereco": "Rod. BR-116, Km 412 - Governador Valadares - MG, 35010-000"
+    },
+    {
+      "value": "-16.3378867,-41.4734579",
+      "nome": "Posto Visual Arco Iris (Rede Caxias do Sul)",
+      "endereco": "Rod. BR-116, Km 82 - Divisópolis - MG, 39985-000"
+    },
+    {
+      "value": "-12.8151595,-39.8237238",
+      "nome": "Pousada Irmão Caminhoneiro",
+      "endereco": "Rod. BR-116, Km 502 - Itatim - BA, 46875-000"
+    },
+    {
+      "value": "-18.4909787,-41.8702286",
+      "nome": "Rede HG - Posto Casa Branca",
+      "endereco": "Rod. BR-116, Km 328 - Frei Inocêncio - MG, 35112-000"
+    },
+    {
+      "value": "-16.700191,-41.4989498",
+      "nome": "Rede HG - Posto Papa Léguas I",
+      "endereco": "Rod. BR-116, Km 132,5 - Ponto dos Volantes - MG, 39615-000"
+    },
+    {
+      "value": "-12.6971374,-39.7069986",
+      "nome": "Rede HG - Posto Parque dos Coqueiros",
+      "endereco": "Rod. BR-116, Km 486 - Rafael Jambeiro - BA, 44520-000"
+    },
+    {
+      "value": "-18.1754714,-41.7064309",
+      "nome": "Rede HG - Posto Periquito",
+      "endereco": "Rod. BR-116, Km 276 - Governador Valadares - MG, 35010-000"
+    },
+    {
+      "value": "-18.6822306,-41.9887966",
+      "nome": "Rede HG - Posto Pinheiros",
+      "endereco": "Rod. BR-116, Km 402 - Central de Minas - MG, 35260-000"
+    },
+    {
+      "value": "-20.296207,-54.5001054",
+      "nome": "Auto Posto Amigão",
+      "endereco": "Rod. BR-163, Km 484 - Jardim Presidente, Campo Grande - MS, 79013-020"
+    },
+    {
+      "value": "-15.7112657,-55.6969166",
+      "nome": "AUTO POSTO CHAPADÃO",
+      "endereco": "Rod. BR-070, Km 355 - Primavera do Leste - MT, 78850-000"
+    },
+    {
+      "value": "-21.554573,-47.636122",
+      "nome": "Auto Posto Astro Km 265 Norte Rede Maxxi Petrol",
+      "endereco": "Rod. Anhanguera, Km 265 - Zona Rural, São Simão - SP, 14200-000"
+    },
+    {
+      "value": "-26.1938898,-50.4217322",
+      "nome": "Auto Posto Piedade",
+      "endereco": "Rod. BR-116, Km 10 - Piedade, Canoinhas - SC, 89460-000"
+    },
+    {
+      "value": "-17.840478,-54.710948",
+      "nome": "Auto Posto Piquiry",
+      "endereco": "Rod. BR-163, Km 692 - Zona Rural, Sonora - MS, 79415-000"
+    },
+    {
+      "value": "-25.1768217,-48.8738025",
+      "nome": "Auto Posto Represa.",
+      "endereco": "Rod. Régis Bittencourt, BR-116, Km 42 - Zona Rural, Campina Grande do Sul - PR, 83430-000"
+    },
+    {
+      "value": "-16.6183346,-54.7006252",
+      "nome": "Auto Posto Ursão I",
+      "endereco": "Rod. BR-163, Km 115 - Distrito Industrial, Rondonópolis - MT, 78745-000"
+    },
+    {
+      "value": "-26.5284366,-48.7142877",
+      "nome": "Mime Rainha Araquari",
+      "endereco": "Rod. BR-101, Km 68 - Rainha, Araquari - SC, 89245-000"
+    },
+    {
+      "value": "-22.735209,-47.282839",
+      "nome": "Posto 7 Americana",
+      "endereco": "Rod. Anhanguera, Km 125 - Machadinho, Americana - SP, 13478-200"
+    },
+    {
+      "value": "-22.4094562,-47.3890342",
+      "nome": "Posto 7 Araras",
+      "endereco": "Rod. Anhanguera, Km 166 - Jardim Maria Lucia, Araras - SP, 13607-339"
+    },
+    {
+      "value": "-22.7788663,-47.2322396",
+      "nome": "Posto 7 Cherokee",
+      "endereco": "Rod. Luiz de Queiroz, SP-304, Km 128 - Distrito Industrial, Americana - SP, 13478-800"
+    },
+    {
+      "value": "-20.261598,-56.344288",
+      "nome": "Posto Arara Azul (Shell)",
+      "endereco": "Rod. BR-262, Km 500 - Zona Rural, Anastácio - MS, 79210-000"
+    },
+    {
+      "value": "-20.1306486,-54.4428422",
+      "nome": "Posto Campeao",
+      "endereco": "Rod. BR-163, Km 502 - Zona Rural, Jaraguari - MS, 79140-000"
+    },
+        {
+      "value": "-25.824006,-49.1233703",
+      "nome": "Posto e Costelão Monte Carlo III",
+      "endereco": "Rod. Régis Bittencourt, BR-116, Km 114 - Zona Rural, Tunas do Paraná - PR, 83480-000"
+    },
+    {
+      "value": "-24.1516619,-47.3164517",
+      "nome": "Posto Dom Pedro Miracatu Norte",
+      "endereco": "Rod. Régis Bittencourt, BR-116, Km 354 - Oliveira Barros, Miracatu - SP, 11850-000"
+    },
+    {
+      "value": "-13.7462645,-56.0523239",
+      "nome": "Posto Maria e José I",
+      "endereco": "Rod. BR-163, Km 584 - Nova Mutum - MT, 78450-000"
+    },
+    {
+      "value": "-13.8217448,-56.078123",
+      "nome": "Posto Maria e José III",
+      "endereco": "Rod. BR-163, Km 592 - Zona Rural, Nova Mutum - MT, 78450-000"
+    },
+    {
+      "value": "-25.6447707,-49.1588153",
+      "nome": "Posto Parque Do Bosque",
+      "endereco": "Rod. Régis Bittencourt, BR-116, Km 94 - Costeira, São José dos Pinhais - PR, 83015-132"
+    },
+    {
+      "value": "-18.0323491,-54.6853135",
+      "nome": "Posto Pegoraro",
+      "endereco": "Rod. BR-163, Km 734 - Zona Rural, Coxim - MS, 79400-000"
+    },
+    {
+      "value": "-17.5935147,-54.7462481",
+      "nome": "Posto Petrobras Nova Brescia",
+      "endereco": "Rod. BR-163, Km 760 - Pedro Gomes - MS, 79410-000"
+    },
+    {
+      "value": "-22.77501,-42.94249",
+      "nome": "Posto Ipiranga - Manilha",
+      "endereco": "Rod. Gov. Mário Covas, BR-101, Km 295 - Manilha, Itaboraí - RJ, CEP 24855-000"
+    },
+    {
+      "value": "-22.78117,-42.97015",
+      "nome": "Posto Shell - Três Pontes",
+      "endereco": "Rod. Gov. Mário Covas, BR-101, Km 299 - Três Pontes, Itaboraí - RJ, CEP 24859-660"
+    },
+    {
+      "value": "-22.78515,-42.9882",
+      "nome": "Auto Posto Marambaia (Ale)",
+      "endereco": "Rod. Gov. Mário Covas, BR-101, Km 301 - Marambaia, São Gonçalo - RJ, CEP 24754-000"
+    },
+    {
+      "value": "-22.79182,-43.01875",
+      "nome": "Posto Ipiranga - Guaxindiba",
+      "endereco": "Rod. Gov. Mário Covas, BR-101, Km 304 - Guaxindiba, São Gonçalo - RJ, CEP 24722-030"
+    },
+    {
+      "value": "-22.79557,-43.03816",
+      "nome": "Posto Petrobras - Bom Retiro",
+      "endereco": "Rod. Gov. Mário Covas, BR-101, Km 306 - Bom Retiro, São Gonçalo - RJ, CEP 24722-340"
+    },
+    {
+      "value": "-22.81317,-43.07364",
+      "nome": "Posto Shell - Gradim",
+      "endereco": "Rod. Gov. Mário Covas, BR-101, Km 310 - Gradim, São Gonçalo - RJ, CEP 24430-000"
+    },
+    {
+      "value": "-22.77119,-42.92378",
+      "nome": "Auto Posto Trevo de Manilha (Petrobras)",
+      "endereco": "Rod. Gov. Mário Covas, BR-101, Km 293 - Manilha, Itaboraí - RJ, CEP 24855-246"
+    },
+    {
+      "value": "-22.77143,-42.92508",
+      "nome": "Posto Ipiranga - Trevo de Manilha",
+      "endereco": "Rod. Gov. Mário Covas, BR-101, Km 293,5 - Manilha, Itaboraí - RJ, CEP 24855-000"
+    },
+    {
+      "value": "-22.79108,-42.94263",
+      "nome": "Posto Shell - Manilha",
+      "endereco": "Rod. Gov. Mário Covas, BR-101, Km 295 - Manilha, Itaboraí - RJ, CEP 24855-246"
+    },
+    {
+      "value": "-22.79656,-42.95555",
+      "nome": "Posto Texaco / Rede de Postos Manilha",
+      "endereco": "Rod. Gov. Mário Covas, BR-101, Km 296,5 - Manilha, Itaboraí - RJ, CEP 24855-246"
+    },
+    {
+      "value": "-22.80616,-42.98219",
+      "nome": "Auto Posto Marambaia (Ale) [Duplicado]",
+      "endereco": "Rod. Gov. Mário Covas, BR-101, Km 301 - Marambaia, São Gonçalo - RJ, CEP 24754-000"
+    },
+    {
+      "value": "-22.81531,-43.00136",
+      "nome": "Posto Ipiranga - Guaxindiba [Duplicado]",
+      "endereco": "Rod. Gov. Mário Covas, BR-101, Km 304 - Guaxindiba, São Gonçalo - RJ, CEP 24722-030"
+    },
+    {
+      "value": "-22.87859,-43.22883",
+      "nome": "Posto Shell - Linha Vermelha / Manguinhos",
+      "endereco": "Av. Brasil, 3360 - Manguinhos, Rio de Janeiro - RJ, CEP 20930-040"
+    },
+    {
+      "value": "-22.86348,-43.23503",
+      "nome": "Auto Posto Parque União (Vibra)",
+      "endereco": "Av. Brasil, 7015 - Bonsucesso, Rio de Janeiro - RJ, CEP 21040-360"
+    },
+    {
+      "value": "-22.85421,-43.23897",
+      "nome": "Posto Ipiranga - Passarela 9 (Bonsucesso)",
+      "endereco": "Av. Brasil, 8645 - Bonsucesso, Rio de Janeiro - RJ, CEP 21041-010"
+    },
+    {
+      "value": "-22.83926,-43.24155",
+      "nome": "Posto Shell - Olaria / Passarela 12",
+      "endereco": "Av. Brasil, 11555 - Olaria, Rio de Janeiro - RJ, CEP 21030-000"
+    },
+    {
+      "value": "-22.82707,-43.25069",
+      "nome": "Posto Petrobras - Penha / Passarela 15",
+      "endereco": "Av. Brasil, 13750 - Penha, Rio de Janeiro - RJ, CEP 21012-350"
+    },
+    {
+      "value": "-22.81432,-43.26734",
+      "nome": "Auto Posto Marajó da Penha (Ipiranga)",
+      "endereco": "Av. Brasil, 15200 - Penha Circular, Rio de Janeiro - RJ, CEP 21012-351"
+    },
+    {
+      "value": "-22.80742,-43.28073",
+      "nome": "Posto Shell - Brás de Pina / Passarela 19",
+      "endereco": "Av. Brasil, 17800 - Brás de Pina, Rio de Janeiro - RJ, CEP 21241-051"
+    },
+    {
+      "value": "-22.86108,-43.23715",
+      "nome": "Auto Posto Parque União (Vibra) [Duplicado]",
+      "endereco": "Av. Brasil, 7015 - Bonsucesso, Rio de Janeiro - RJ, CEP 21040-360"
+    },
+    {
+      "value": "-22.85421,-43.23897",
+      "nome": "Posto Ipiranga - Passarela 9 (Bonsucesso) [Duplicado]",
+      "endereco": "Av. Brasil, 8645 - Bonsucesso, Rio de Janeiro - RJ, CEP 21041-010"
+    },
+    {
+      "value": "-22.83926,-43.24155",
+      "nome": "Posto Shell - Olaria / Passarela 12 [Duplicado]",
+      "endereco": "Av. Brasil, 11555 - Olaria, Rio de Janeiro - RJ, CEP 21030-000"
+    },
+        {
+      "value": "-22.82707,-43.25069",
+      "nome": "Posto Petrobras - Penha / Passarela 15 [Duplicado]",
+      "endereco": "Av. Brasil, 13750 - Penha, Rio de Janeiro - RJ, CEP 21012-350"
+    },
+    {
+      "value": "-22.81432,-43.26734",
+      "nome": "Auto Posto Marajó da Penha (Ipiranga) [Duplicado]",
+      "endereco": "Av. Brasil, 15200 - Penha Circular, Rio de Janeiro - RJ, CEP 21012-351"
+    },
+    {
+      "value": "-22.80742,-43.28073",
+      "nome": "Posto Shell - Brás de Pina / Passarela 19 [Duplicado]",
+      "endereco": "Av. Brasil, 17800 - Brás de Pina, Rio de Janeiro - RJ, CEP 21241-051"
+    },
+    {
+      "value": "-22.80137,-43.30335",
+      "nome": "Posto Shell - Trevo das Missões / Cordovil",
+      "endereco": "Av. Brasil, 10200 - Cordovil, Rio de Janeiro - RJ, CEP 21241-050"
+    },
+    {
+      "value": "-22.9500371,-43.3832974",
+      "nome": "Curicica, Rio de Janeiro - RJ",
+      "endereco": "Bairro Curicica, Rio de Janeiro - RJ, CEP 22780-805"
+    },
+    {
+      "value": "-22.7868557,-43.3130887",
+      "nome": "Duque de Caxias, RJ",
+      "endereco": "Duque de Caxias - RJ, CEP 25000-000"
+    },
+    {
+      "value": "-22.8575324,-43.2303321",
+      "nome": "Ilha do Fundão - Cidade Universitária, Rio de Janeiro - RJ",
+      "endereco": "Ilha do Fundão, Cidade Universitária, Rio de Janeiro - RJ, CEP 21941-590"
+    },
+    {
+      "value": "-22.9020673,-43.2803264",
+      "nome": "Méier, Rio de Janeiro - RJ",
+      "endereco": "Bairro Méier, Rio de Janeiro - RJ, CEP 20711-130"
+    },
+    {
+      "value": "-22.8786444,-43.4284705",
+      "nome": "Realengo, Rio de Janeiro - RJ",
+      "endereco": "Bairro Realengo, Rio de Janeiro - RJ, CEP 21715-000"
+    }
+  ]
 }
 
-]
 
-}
+
+
+
+
+
+
+
+
+
+
