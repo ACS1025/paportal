@@ -176,7 +176,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Origem (Início da Escolta)</label>
+                        <label>Origem (Início da viagem)</label>
                         <select id="origemSelect">
                             <option value="">Carregando origens...</option>
                         </select>
@@ -328,7 +328,8 @@ function calcularDistancia(lat1, lon1, lat2, lon2) {
 
 function filtrarPontosPorKM() {
 
-    const kmSelecionado = document.getElementById("km").value;
+    const kmSelecionado =
+        document.getElementById("km").value;
 
     const latLongDestinoVal =
         document.getElementById("latLongDestino").value;
@@ -341,7 +342,7 @@ function filtrarPontosPorKM() {
     if (!latLongDestinoVal) {
 
         pontoSelect.innerHTML =
-            '<option value="">Selecione primeiro o Destino e o KM...</option>';
+            '<option value="">Selecione primeiro o Destino...</option>';
 
         resetCamposPonto();
         return;
@@ -349,8 +350,8 @@ function filtrarPontosPorKM() {
 
     const [latD, lonD] =
         latLongDestinoVal
-            .split(',')
-            .map(v => parseFloat(v.trim()));
+        .split(',')
+        .map(v => parseFloat(v.trim()));
 
     let opcoesFiltradas = [];
 
@@ -360,8 +361,8 @@ function filtrarPontosPorKM() {
 
             const [latP, lonP] =
                 ponto.value
-                    .split(',')
-                    .map(v => parseFloat(v.trim()));
+                .split(',')
+                .map(v => parseFloat(v.trim()));
 
             const dist =
                 calcularDistancia(
@@ -371,7 +372,7 @@ function filtrarPontosPorKM() {
                     lonP
                 );
 
-            return dist > 350 || dist < 15;
+            return dist <= 30;
 
         });
 
@@ -379,41 +380,49 @@ function filtrarPontosPorKM() {
 
         const alvoKM = parseFloat(kmSelecionado);
 
-        opcoesFiltradas = todosOsPontos.filter(ponto => {
+        opcoesFiltradas = todosOsPontos
+            .map(ponto => {
 
-            const [latP, lonP] =
-                ponto.value
+                const [latP, lonP] =
+                    ponto.value
                     .split(',')
                     .map(v => parseFloat(v.trim()));
 
-            const dist =
-                calcularDistancia(
-                    latD,
-                    lonD,
-                    latP,
-                    lonP
-                );
+                const dist =
+                    calcularDistancia(
+                        latD,
+                        lonD,
+                        latP,
+                        lonP
+                    );
 
-            return (
-                dist >= (alvoKM - 35) &&
-                dist <= (alvoKM + 35)
+                return {
+                    ...ponto,
+                    distancia: Math.round(dist),
+                    diferenca: Math.abs(dist - alvoKM)
+                };
+
+            })
+            .filter(ponto =>
+                ponto.distancia >= (alvoKM - 80) &&
+                ponto.distancia <= (alvoKM + 80)
+            )
+            .sort((a, b) =>
+                a.diferenca - b.diferenca
             );
-
-        });
     }
 
     if (opcoesFiltradas.length === 0) {
 
         pontoSelect.innerHTML =
-            '<option value="">Nenhum ponto encontrado na faixa selecionada. Exibindo todos...</option>';
+            '<option value="">Nenhum posto encontrado próximo da distância desejada.</option>';
 
-        opcoesFiltradas = todosOsPontos;
+        return;
 
-    } else {
-
-        pontoSelect.innerHTML =
-            '<option value="">Selecione o ponto ideal encontrado...</option>';
     }
+
+    pontoSelect.innerHTML =
+        '<option value="">Selecione o ponto de encontro...</option>';
 
     opcoesFiltradas.forEach(ponto => {
 
@@ -424,18 +433,15 @@ function filtrarPontosPorKM() {
             `${ponto.value}|${ponto.endereco}`;
 
         option.textContent =
-            ponto.nome;
+            ponto.nome +
+            (ponto.distancia
+                ? ` (${ponto.distancia} km do destino)`
+                : "");
 
         pontoSelect.appendChild(option);
     });
 
     resetCamposPonto();
-}
-
-function resetCamposPonto() {
-    document.getElementById("latLongEncontro").value = "";
-    document.getElementById("postoApoio").value = "";
-    atualizarDistancia();
 }
 
 document.getElementById("link").addEventListener("input", function() {
@@ -481,6 +487,38 @@ document.getElementById("origemSelect").addEventListener("change", function () {
     filtrarPontosPorKM();
 });
 
+document.getElementById("destinoSelect")
+.addEventListener("change", function () {
+
+    const select = this.value;
+
+    const latLongDestinoInput =
+        document.getElementById("latLongDestino");
+
+    const enderecoDestinoInput =
+        document.getElementById("enderecoDestino");
+
+    if (!select) {
+
+        latLongDestinoInput.value = "";
+        enderecoDestinoInput.value = "";
+
+        filtrarPontosPorKM();
+
+        return;
+    }
+
+    const partes = select.split("|");
+
+    latLongDestinoInput.value = partes[0];
+    enderecoDestinoInput.value = partes[1];
+
+    filtrarPontosPorKM();
+
+    atualizarDistancia();
+
+});
+
 document.getElementById("destinoSelect").addEventListener("change", function () {
     const select = this.value;
     const latLongDestinoInput = document.getElementById("latLongDestino");
@@ -522,7 +560,8 @@ function atualizarDistancia() {
     const boxEncontro = document.getElementById("distanciaEncontroBox"); // Captura o novo box
     
     const latLongValue = document.getElementById("latLong").value;
-    const latLongOrigemValue = document.getElementById("latLongOrigem").value;
+    const latLongDestinoVal =
+    document.getElementById("latLongDestino").value;
     const latLongDestinoValue = document.getElementById("latLongDestino").value;
     const latLongEncontroValue = document.getElementById("latLongEncontro").value;
 
