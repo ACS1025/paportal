@@ -159,11 +159,6 @@
       "endereco": "Rod. Pres. Dutra, Km 152 - Jardim das Indústrias, São José dos Campos - SP, 12240-420"
     },
     {
-      "value": "-22.4939,-44.5583",
-      "nome": "Itatiaia - Posto Shell - RJ (KM 320)",
-      "endereco": "Rod. Presidente Dutra, S/N, KM 320 - Campo Alegre, Itatiaia - RJ, 27580-000"
-    },
-    {
       "value": "-23.2107862,-48.9681884",
       "nome": "Auto Posto Bizungão Ilha Verde",
       "endereco": "Rod. Castelo Branco, Km 268 - Zona Rural, Cerqueira César - SP, 18760-000"
@@ -457,6 +452,11 @@
       "value": "-22.484953,-44.5482678",
       "nome": "Graal Itatiaia",
       "endereco": "Rod. Pres. Dutra, Km 316 - Vila Paraíso, Itatiaia - RJ, 27580-000"
+    },
+    {
+      "value": "-22.4939,-44.5583",
+      "nome": "Posto Shell- Itatiaia",
+      "endereco": "Rod. Presidente Dutra, S/N, KM 320 - Campo Alegre, Itatiaia - RJ, 27580-000"
     },
     {
       "value": "-20.8989784,-42.3470187",
