@@ -327,47 +327,105 @@ function calcularDistancia(lat1, lon1, lat2, lon2) {
 }
 
 function filtrarPontosPorKM() {
+
     const kmSelecionado = document.getElementById("km").value;
-    const latLongOrigemVal = document.getElementById("latLongOrigem").value;
-    const pontoSelect = document.getElementById("pontoSelect");
-    
+
+    const latLongDestinoVal =
+        document.getElementById("latLongDestino").value;
+
+    const pontoSelect =
+        document.getElementById("pontoSelect");
+
     pontoSelect.innerHTML = "";
 
-    if (!latLongOrigemVal) {
-        pontoSelect.innerHTML = '<option value="">Selecione primeiro a Origem e o KM Destino...</option>';
+    if (!latLongDestinoVal) {
+
+        pontoSelect.innerHTML =
+            '<option value="">Selecione primeiro o Destino e o KM...</option>';
+
         resetCamposPonto();
         return;
     }
 
-    const [latO, lonO] = latLongOrigemVal.split(',').map(v => parseFloat(v.trim()));
+    const [latD, lonD] =
+        latLongDestinoVal
+            .split(',')
+            .map(v => parseFloat(v.trim()));
+
     let opcoesFiltradas = [];
 
     if (kmSelecionado === "ORIGEM") {
+
         opcoesFiltradas = todosOsPontos.filter(ponto => {
-            const [latP, lonP] = ponto.value.split(',').map(v => parseFloat(v.trim()));
-            const dist = calcularDistancia(latO, lonO, latP, lonP);
+
+            const [latP, lonP] =
+                ponto.value
+                    .split(',')
+                    .map(v => parseFloat(v.trim()));
+
+            const dist =
+                calcularDistancia(
+                    latD,
+                    lonD,
+                    latP,
+                    lonP
+                );
+
             return dist > 350 || dist < 15;
+
         });
+
     } else {
+
         const alvoKM = parseFloat(kmSelecionado);
+
         opcoesFiltradas = todosOsPontos.filter(ponto => {
-            const [latP, lonP] = ponto.value.split(',').map(v => parseFloat(v.trim()));
-            const dist = calcularDistancia(latO, lonO, latP, lonP);
-            return dist >= (alvoKM - 35) && dist <= (alvoKM + 35);
+
+            const [latP, lonP] =
+                ponto.value
+                    .split(',')
+                    .map(v => parseFloat(v.trim()));
+
+            const dist =
+                calcularDistancia(
+                    latD,
+                    lonD,
+                    latP,
+                    lonP
+                );
+
+            return (
+                dist >= (alvoKM - 35) &&
+                dist <= (alvoKM + 35)
+            );
+
         });
     }
 
     if (opcoesFiltradas.length === 0) {
-        pontoSelect.innerHTML = '<option value="">Nenhum ponto no raio geográfico. Exibindo todos...</option>';
+
+        pontoSelect.innerHTML =
+            '<option value="">Nenhum ponto encontrado na faixa selecionada. Exibindo todos...</option>';
+
         opcoesFiltradas = todosOsPontos;
+
     } else {
-        pontoSelect.innerHTML = '<option value="">Selecione o ponto ideal encontrado...</option>';
+
+        pontoSelect.innerHTML =
+            '<option value="">Selecione o ponto ideal encontrado...</option>';
     }
 
     opcoesFiltradas.forEach(ponto => {
-        const option = document.createElement("option");
-        option.value = `${ponto.value}|${ponto.endereco}`;
-        option.textContent = ponto.nome;
+
+        const option =
+            document.createElement("option");
+
+        option.value =
+            `${ponto.value}|${ponto.endereco}`;
+
+        option.textContent =
+            ponto.nome;
+
         pontoSelect.appendChild(option);
     });
 
