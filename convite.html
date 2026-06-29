@@ -390,62 +390,7 @@
     </aside>
 </div>
 
-        <form id="formOcorrencia">
-            <div class="form-grid">
-                <!-- Seleção de texto -->
-                <div class="form-group full-width">
-                    <label for="modeloTexto">Selecione o modelo de texto:</label>
-                    <select id="modeloTexto" name="modeloTexto" onchange="carregarTexto()">
-                        <option value="" disabled selected>Escolha um modelo</option>
-                        <option value="checklist">Check list vencido</option>
-                        <option value="fotos">Fotos de paradas</option>
-                        <option value="manutencao">Agendamento de manutenção</option>
-                        <option value="briefing">Briefing digital</option>
-                        <option value="reciclagem">Reciclagem motorista</option>
-                    </select>
-                </div>
-
-                <!-- Texto Pronto -->
-                <div class="form-group full-width">
-                    <label for="textoPronto">Texto Pronto:</label>
-                    <textarea id="textoPronto" name="textoPronto" rows="6" readonly></textarea>
-                </div>
-
-                <!-- Espaço para digitação adicional -->
-                <div class="form-group full-width">
-                    <label for="textoAdicional">Digite informações adicionais:</label>
-                    <textarea id="textoAdicional" name="textoAdicional" rows="4" placeholder="Digite suas informações adicionais aqui"></textarea>
-                </div>
-
-                <!-- Seleção de imagem -->
-                <div class="form-group">
-                    <label for="imagemSVG">Selecione uma Imagem:</label>
-                    <select id="imagemSVG" name="imagemSVG">
-                        <option value="" disabled selected>Escolha uma imagem</option>
-                        <option value="src/img/imagem1.jpg">Imagem JPG 1</option>
-                        <option value="src/img/imagem2.png">Imagem PNG 2</option>
-                        <option value="src/svg/imagem1.svg">Imagem SVG</option>
-                    </select>
-                </div>
-
-                <!-- Upload de arquivo -->
-                <div class="form-group">
-                    <label for="arquivoExterno">Imagem do seu dispositivo:</label>
-                    <input type="file" id="arquivoExterno" name="arquivoExterno" accept=".svg,.png,.jpg,.jpeg">
-                </div>
-
-                <!-- Pré-visualização -->
-                <div class="form-group">
-                    <img id="previewSVG" src="" alt="Pré-visualização da imagem">
-                </div>
-
-                <!-- Botão Enviar -->
-                <button type="button" onclick="enviarWhatsApp()">Enviar</button>
-            </div>
-        </form>
-    </div>
-
-    <script>
+<script>
         // Saudação dinâmica
         function updateGreeting() {
             const now = new Date();
@@ -501,4 +446,6 @@
         });
     </script>
     
+</html>
+</body>
 </html>
