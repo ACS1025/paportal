@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material de Apoio | Portal Unificado</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+
+        /* =========================
+           AJUSTES GLOBAIS
+        ========================== */
+
+        *{
+            box-sizing: border-box;
+        }
+
+        body{
+            margin: 0;
+            background: #f8fafc;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .hidden{
+            display: none !important;
+        }
+
+        .container{
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* =========================
+           SIDEBAR ESQUERDA
+        ========================== */
+
+        .sidebar{
+            width: 260px;
+            background: #111827;
+            color: white;
+            padding: 20px;
+        }
+
+        .logo h2{
+            margin: 0 0 25px;
+            font-size: 20px;
+        }
+
+        .menu{
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .menu-label{
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            margin-top: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .menu a{
+            color: #e2e8f0;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 10px;
+            transition: 0.2s;
+            font-size: 14px;
+        }
+
+        .menu a:hover,
+        .menu a.active{
+            background: #1e293b;
+        }
+
+        /* =========================
+           CONTEÚDO PRINCIPAL
+        ========================== */
+
+        .main-content{
+            flex: 1;
+            padding: 25px;
+            overflow-x: hidden;
+        }
+
+        .top-info{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        /* =========================
+           BOTÕES SUPERIORES
+        ========================== */
+
+        .btn-toggle{
+            border: none;
+            background: #1e293b;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .btn-toggle:hover{
+            opacity: 0.9;
+        }
+
+        /* =========================
+           DOCUMENTOS - CARDS
+        ========================== */
+
+        .doc-search{
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+            outline: none;
+            font-size: 14px;
+            background: white;
+            color: #334155;
+        }
+
+        .doc-search:focus{
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .doc-container{
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        @media (max-width: 600px){
+            .doc-container{
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .doc-card{
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-top: 4px solid #6366f1;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .doc-card:hover{
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .doc-icon{
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        .doc-title{
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0 0 5px 0;
+        }
+
+        .doc-version{
+            color: #94a3b8;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .doc-actions{
+            margin-top: 15px;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .doc-btn{
+            padding: 8px 12px;
+            font-size: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .doc-btn:hover{
+            opacity: 0.9;
+            transform: scale(1.05);
+        }
+
+        .doc-btn-view{
+            background: #6366f1;
+            color: white;
+        }
+
+        .doc-btn-print{
+            background: #059669;
+            color: white;
+        }
+
+        .doc-btn-download{
+            background: #334155;
+            color: white;
+            text-decoration: none;
+        }
+
+        /* =========================
+           STATUS
+        ========================== */
+
+        .status-indicator{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: 1px solid #e2e8f0;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .dot{
+            width: 10px;
+            height: 10px;
+            background: #cbd5e0;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .dot.online{
+            background: #22c55e;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        .dot.offline{
+            background: #ef4444;
+        }
+
+        @keyframes pulse{
+            0%{ transform: scale(1); }
+            50%{ transform: scale(1.2); }
+            100%{ transform: scale(1); }
+        }
+
+        /* =========================
+           SIDEBAR DIREITA
+        ========================== */
+
+        .sidebar-right{
+            width: 220px;
+            background: #f1f5f9;
+            padding: 20px;
+            border-left: 1px solid #e2e8f0;
+        }
+
+        .icon-link{
+            transition: 0.2s;
+        }
+
+        .icon-link:hover{
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 1200px){
+            .sidebar-right{
+                display: none;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <h2>PA - Campinas</h2>
+        </div>
+
+        <nav class="menu">
+
+            <p class="menu-label">Monitoramento</p>
+
+            <a href="index.html">
+                <i class="ph ph-gauge"></i>
+                Dashboard Principal
+            </a>
+
+            <a href="torre.html">
+                <i class="ph ph-broadcast"></i>
+                Torre de Controle
+            </a>
+
+            <a href="posicao.html">
+                <i class="ph ph-map-pin"></i>
+                Posição Escolta
+            </a>
+
+            <a href="solicitacao-escolta.html">
+                <i class="ph ph-shield-plus"></i>
+                Solicitação Escolta
+            </a>
+
+            <p class="menu-label">Operação</p>
+
+            <a href="cftv.html">
+                <i class="ph ph-video-camera"></i>
+                Auditoria CFTV
+            </a>
+
+            <a href="cftv-email.html">
+                <i class="ph ph-envelope"></i>
+                E-mail CFTV
+            </a>
+
+            <a href="brief.html">
+                <i class="ph ph-clipboard-text"></i>
+                Briefing Digital
+            </a>
+
+            <a href="registros-saidas.html">
+                <i class="ph ph-sign-out"></i>
+                Registro de Saídas
+            </a>
+
+            <a href="comunicado.html">
+                <i class="ph ph-whatsapp-logo"></i>
+                Gerador de Comunicado
+            </a>
+
+            <a href="conhecimento.html">
+                <i class="ph ph-book-open"></i>
+                Para Conhecimento
+            </a>
+
+            <p class="menu-label">Capacitação</p>
+
+            <a href="https://pacampinas-avaliacao.streamlit.app/" target="_blank">
+                <i class="ph ph-graduation-cap"></i>
+                Histórico do Motorista</a>
+
+            <a href="Treinamento_Komando_Completo.html">
+                <i class="ph ph-graduation-cap"></i>
+                Avaliação do Treinamento
+            </a>
+
+            <p class="menu-label">Material de Apoio</p>
+
+            <a href="apoio.html" class="active">
+                <i class="ph ph-files"></i>
+                Documentos
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+
+        <!-- BOTÕES -->
+        <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 10px; flex-wrap: wrap;">
+
+            <button onclick="toggleSidebar('left')" class="btn-toggle">
+                <i class="ph ph-sidebar-simple"></i>
+                Menu
+            </button>
+
+            <button onclick="toggleSidebar('right')" class="btn-toggle">
+                <i class="ph ph-wrench"></i>
+                Ferramentas
+            </button>
+
+        </div>
+
+        <!-- HEADER -->
+        <div class="top-info">
+
+            <div>
+                <h1 style="font-size: 24px; color: #1e293b; margin: 0; text-transform: uppercase; font-weight: 800;">
+                    Material de Apoio
+                </h1>
+
+                <p style="color: #64748b; font-size: 14px;">
+                    <span id="greetingMessage"></span>
+                </p>
+            </div>
+
+            <div id="status-sincro" class="status-indicator">
+                <span id="status-dot" class="dot online"></span>
+                <span id="status-com">Sistema Online</span>
+            </div>
+
+        </div>
+
+        <!-- SEARCH -->
+        <input id="search" class="doc-search" type="text" placeholder="🔍 Pesquisar documento...">
+
+        <!-- LISTA DE DOCUMENTOS -->
+        <div class="doc-container" id="docContainer"></div>
+
+    </main>
+
+    <!-- SIDEBAR DIREITA -->
+    <aside class="sidebar-right">
+
+        <h4 style="font-size: 10px; color: #94a3b8; margin-bottom: 20px; letter-spacing: 1.5px; font-weight: 800;">
+            FERRAMENTAS
+        </h4>
+
+        <a href="comunicado.html" style="text-decoration:none; color:inherit;">
+
+            <div class="icon-link"
+                 style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 10px; text-align:center;">
+
+                <i class="ph ph-whatsapp-logo"
+                   style="font-size: 24px; color: #25D366;"></i>
+
+                <p style="font-size: 11px; font-weight: 700; margin-top:5px;">
+                    GERADOR ZAP
+                </p>
+
+            </div>
+
+        </a>
+
+        <a href="torre.html" style="text-decoration:none; color:inherit;">
+
+            <div class="icon-link"
+                 style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; text-align:center;">
+
+                <i class="ph ph-broadcast"
+                   style="font-size: 24px; color: #6366f1;"></i>
+
+                <p style="font-size: 11px; font-weight: 700; margin-top:5px;">
+                    TORRE 360
+                </p>
+
+            </div>
+
+        </a>
+
+    </aside>
+
+</div>
+
+<script>
+
+    // =========================
+    // SAUDAÇÃO
+    // =========================
+
+    function updateGreeting() {
+        const now = new Date();
+        const hour = now.getHours();
+
+        const greeting =
+            hour < 12 ? "Bom dia" :
+            hour < 18 ? "Boa tarde" : "Boa noite";
+
+        document.getElementById("greetingMessage").textContent =
+            `${greeting}! Hoje é ${now.toLocaleDateString('pt-BR')}.`;
+    }
+
+    updateGreeting();
+    setInterval(updateGreeting, 60000);
+
+    // =========================
+    // DOCUMENTOS
+    // =========================
+
+    const documentos = [
+        {
+            titulo: "Manual Auditoria CFTV",
+            versao: "1.0",
+            arquivo: "src/pdf/Manual_Auditoria_CFTV.pdf"
+        },
+        {
+            titulo: "Guia Operacional CFTV",
+            versao: "1.1",
+            arquivo: "src/pdf/Guia_Operacional_Auditoria_CFTV.pdf"
+        }
+    ];
+
+    const container = document.getElementById("docContainer");
+    const search = document.getElementById("search");
+
+    function render(lista) {
+        container.innerHTML = "";
+
+        if (lista.length === 0) {
+            container.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #94a3b8;">
+                    <i class="ph ph-magnifying-glass" style="font-size: 40px;"></i>
+                    <p style="margin-top: 10px; font-weight: 600;">Nenhum documento encontrado</p>
+                </div>
+            `;
+            return;
+        }
+
+        lista.forEach(doc => {
+            const el = document.createElement("div");
+            el.className = "doc-card";
+
+            el.innerHTML = `
+                <div class="doc-icon">📄</div>
+                <p class="doc-title">${doc.titulo}</p>
+                <p class="doc-version">Versão ${doc.versao}</p>
+
+                <div class="doc-actions">
+                    <button onclick="visualizar('${doc.arquivo}')" class="doc-btn doc-btn-view">
+                        <i class="ph ph-eye"></i> Ver
+                    </button>
+
+                    <button onclick="imprimir('${doc.arquivo}')" class="doc-btn doc-btn-print">
+                        <i class="ph ph-printer"></i> Imprimir
+                    </button>
+
+                    <a href="${doc.arquivo}" download class="doc-btn doc-btn-download">
+                        <i class="ph ph-download-simple"></i> Baixar
+                    </a>
+                </div>
+            `;
+
+            container.appendChild(el);
+        });
+    }
+
+    function visualizar(url) {
+        window.open(url, "_blank");
+    }
+
+    function imprimir(url) {
+        const w = window.open(url);
+        if (w) {
+            w.addEventListener('load', () => w.print(), { once: true });
+            setTimeout(() => {
+                try { w.print(); } catch(e) {}
+            }, 2000);
+        }
+    }
+
+    // SEARCH
+    search.addEventListener("input", e => {
+        const value = e.target.value.toLowerCase();
+        const filtered = documentos.filter(d =>
+            d.titulo.toLowerCase().includes(value)
+        );
+        render(filtered);
+    });
+
+    render(documentos);
+
+    // =========================
+    // TOGGLE SIDEBAR
+    // =========================
+
+    function toggleSidebar(side) {
+        const selector = side === 'left' ? '.sidebar' : '.sidebar-right';
+        const element = document.querySelector(selector);
+        if (element) {
+            element.classList.toggle('hidden');
+        }
+    }
+
+</script>
+
+</body>
+</html>
