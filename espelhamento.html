@@ -630,10 +630,11 @@
             sub: "Satélite / Prime",
             icon: "AT",
             fields: [
-                { k: "Tecnologia", v: "Autotrac — transferência de subconta (Satélite e Prime)" },
-                { k: "CNPJ", v: "42.966.297/0001-02", mono: true }
+                { k: "Tecnologia", v: "Autotrac - Transferência de Subconta (Satélite e Prime)" },
+                { k: "CNPJ", v: "42.966.297/0001-02", mono: true },
+                { k: "Projeto", v: "Projeto Caminhoneiro" }
             ],
-            note: "Projeto Caminhoneiro: o espelhamento segue os 4 primeiros números da conta do motorista. Use o campo abaixo para identificar a conta de destino.",
+            
             autotrac: true
         },
         outras: {
@@ -676,17 +677,45 @@
     }
 
     function buildWhatsText(key, extra){
-        const d = DATA[key];
-        let lines = [`*ESPELHAMENTO — ${d.name.toUpperCase()}*`, `PA Campinas • Komando`, ``];
-        d.fields.forEach(f => lines.push(`*${f.k}:* ${f.v}`));
+    const d = DATA[key];
+
+    let lines = [
+        `*ESPELHAMENTO — ${d.name.toUpperCase()}*`,
+        `PA Campinas • Komando`,
+        ``
+    ];
+
+    d.fields.forEach(f => lines.push(`*${f.k}:* ${f.v}`));
+
+    // Informações completas do Autotrac
+    if(key === "autotrac"){
+
+        lines.push("");
+        lines.push("*PROJETO CAMINHONEIRO*");
+        lines.push("Os espelhamentos devem ser realizados conforme os 4 primeiros números da conta do motorista.");
+
+        lines.push("");
+        lines.push("• Prefixo *1065* → Transferir para *Conta 1*");
+        lines.push("  Conta 1: *10656278*");
+
+        lines.push("");
+        lines.push("• Prefixo *3006* → Transferir para *Conta 2*");
+        lines.push("  Conta 2: *36069350*");
+
         if(extra){
-            lines.push(``);
-            lines.push(`*Conta do motorista:* ${extra.inputAccount}`);
-            lines.push(`*Espelhar para:* ${extra.conta} (${extra.numero})`);
+            lines.push("");
+            lines.push("*Conta informada:* " + extra.inputAccount);
+            lines.push("*Destino identificado:* " + extra.conta + " (" + extra.numero + ")");
         }
-        if(d.note) { lines.push(``); lines.push(d.note); }
-        return lines.join('\n');
     }
+
+    if(d.note){
+        lines.push("");
+        lines.push(d.note);
+    }
+
+    return lines.join("\n");
+}
 
     function selectTech(key){
         selectedKey = key;
@@ -707,17 +736,112 @@
         `).join('');
 
         let autotracHtml = '';
-        if(d.autotrac){
-            autotracHtml = `
-                <div class="autotrac-input">
-                    <label>Nº da conta do motorista</label>
-                    <input type="text" id="acctInput" inputmode="numeric" placeholder="Ex: 1065XXXX" value="${extra ? extra.inputAccount : ''}">
-                    <div class="autotrac-result ${extra && extra.conta ? 'show' : ''}" id="acctResult">
-                        ${extra && extra.conta ? `<span class="pill">→ Espelhar para ${extra.conta} (${extra.numero})</span>` : (extra && extra.conta === null ? `<span style="color:#dc2626;font-size:12.5px;">Prefixo não reconhecido — confirme com a equipe de monitoramento.</span>` : '')}
-                    </div>
+
+if(d.autotrac){
+
+    autotracHtml = `
+        <div class="autotrac-input">
+
+            <div class="note" style="margin-bottom:15px;">
+                <strong>PROJETO CAMINHONEIRO</strong><br><br>
+
+                Informe o número da conta do motorista.
+
+                O Portal identifica automaticamente os
+                <strong>4 primeiros números</strong> da conta e informa
+                para qual conta deve ser realizado o espelhamento.
+            </div>
+
+            <div class="field">
+                <div class="k">Regra de Espelhamento</div>
+
+                <div class="v">
+
+                    <table style="width:100%;border-collapse:collapse;font-size:13px">
+
+                        <tr style="background:#f8fafc">
+                            <th style="padding:8px;border:1px solid #e2e8f0">Prefixo</th>
+                            <th style="padding:8px;border:1px solid #e2e8f0">Destino</th>
+                            <th style="padding:8px;border:1px solid #e2e8f0">Conta</th>
+                        </tr>
+
+                        <tr>
+                            <td style="padding:8px;border:1px solid #e2e8f0"><strong>1065</strong></td>
+                            <td style="padding:8px;border:1px solid #e2e8f0">Conta 1</td>
+                            <td style="padding:8px;border:1px solid #e2e8f0"><strong>10656278</strong></td>
+                        </tr>
+
+                        <tr>
+                            <td style="padding:8px;border:1px solid #e2e8f0"><strong>3006</strong></td>
+                            <td style="padding:8px;border:1px solid #e2e8f0">Conta 2</td>
+                            <td style="padding:8px;border:1px solid #e2e8f0"><strong>36069350</strong></td>
+                        </tr>
+
+                    </table>
+
                 </div>
-            `;
-        }
+            </div>
+
+            <label style="margin-top:18px;">Número da Conta do Motorista</label>
+
+            <input
+                type="text"
+                id="acctInput"
+                inputmode="numeric"
+                placeholder="Ex.: 1065XXXX"
+                value="${extra ? extra.inputAccount : ''}">
+
+            <div class="autotrac-result ${extra && extra.conta ? 'show' : ''}" id="acctResult">
+
+                ${
+                    extra && extra.conta ?
+
+                    `
+                    <div class="note" style="border-left:4px solid #059669;background:#ecfdf5">
+
+                        <strong>✔ Destino identificado</strong><br><br>
+
+                        Conta informada:
+                        <strong>${extra.inputAccount}</strong><br>
+
+                        Prefixo:
+                        <strong>${extra.inputAccount.substring(0,4)}</strong><br><br>
+
+                        Espelhar para
+                        <strong>${extra.conta}</strong><br>
+
+                        Conta:
+                        <strong>${extra.numero}</strong>
+
+                    </div>
+                    `
+
+                    :
+
+                    (
+
+                        extra && extra.conta === null
+
+                        ?
+
+                        `<div class="note" style="border-left:4px solid #dc2626;background:#fef2f2">
+
+                            Prefixo não reconhecido.<br>
+                            Confirme a conta com a equipe de Monitoramento.
+
+                        </div>`
+
+                        : ''
+
+                    )
+
+                }
+
+            </div>
+
+        </div>
+    `;
+}
 
         resultEl.innerHTML = `
             <p class="step-label">2. Card gerado</p>
