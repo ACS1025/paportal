@@ -141,9 +141,10 @@
         }
 
         .doc-container{
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 20px;
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+            gap:24px;
+            align-items:stretch;
         }
 
         @media (max-width: 600px){
@@ -510,7 +511,18 @@
             titulo: "Guia Operacional CFTV",
             versao: "1.1",
             arquivo: "src/pdf/Guia_Operacional_Auditoria_CFTV.pdf"
+        },
+        {
+            titulo: "Checklist Presencial",
+            versao: "1.0",
+            arquivo: "src/pdf/Checklist Presencial - Modelo.pdf"
+        },
+        {
+            titulo: "Procedimentos",
+            versao: "1.0",
+            arquivo: "src/pdf/panfleto_procedimentos.pdf"
         }
+        
     ];
 
     const container = document.getElementById("docContainer");
