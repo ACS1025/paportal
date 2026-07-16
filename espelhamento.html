@@ -269,8 +269,61 @@
             font-size: 14px;
             letter-spacing: -0.02em;
         }
+                /* ONIXSAT */
+        .tech-btn[data-key="onixsat"]::before{
+            background:#2563eb;
+        }
 
-        .tech-btn.selected .tech-icon { background: #6366f1; color: #fff; }
+        .tech-btn[data-key="onixsat"]:hover .tech-icon,
+        .tech-btn[data-key="onixsat"].selected .tech-icon{
+            background:#2563eb;
+        }
+
+        /* SASCAR */
+        .tech-btn[data-key="sascar"]::before{
+            background:#0ea5e9;
+        }
+
+        .tech-btn[data-key="sascar"]:hover .tech-icon,
+        .tech-btn[data-key="sascar"].selected .tech-icon{
+            background:#0ea5e9;
+        }
+
+        /* OMNILINK */
+        .tech-btn[data-key="omnilink"]::before{
+            background:#10b981;
+        }
+
+        .tech-btn[data-key="omnilink"]:hover .tech-icon,
+        .tech-btn[data-key="omnilink"].selected .tech-icon{
+            background:#10b981;
+        }
+
+        /* AUTOTRAC */
+        .tech-btn[data-key="autotrac"]::before{
+            background:#f59e0b;
+        }
+
+        .tech-btn[data-key="autotrac"]:hover .tech-icon,
+        .tech-btn[data-key="autotrac"].selected .tech-icon{
+            background:#f59e0b;
+        }
+
+        /* OUTRAS */
+        .tech-btn[data-key="outras"]::before{
+            background:#8b5cf6;
+        }
+
+        .tech-btn[data-key="outras"]:hover .tech-icon,
+        .tech-btn[data-key="outras"].selected .tech-icon{
+            background:#8b5cf6;
+        }
+
+        .tech-btn.selected{
+            transform:translateY(-4px);
+            box-shadow:0 14px 30px rgba(99,102,241,.18);
+            border-color:transparent;
+        }
 
         .tech-name { font-weight: 700; font-size: 13.5px; color: #1e293b; }
         .tech-sub { font-size: 10.5px; color: #64748b; margin-top: -6px; }
