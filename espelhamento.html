@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='icon' href='src/img/kmd-16x16.png' type='image/png'>
+    <title>Espelhamento | Tecnologias</title>
+    <link rel="stylesheet" href="https://unpkg.com/phosphor-icons@1.4.2/src/css/icons.css">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --accent: #6366f1;
+            --success: #059669;
+            --danger: #dc2626;
+            --slate: #475569;
+        }
+
+        /* --- RESET E BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #f8fafc;
+            color: #334155;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 280px 1fr 200px;
+            min-height: 100vh;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 30px 20px;
+            color: white;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .logo { text-align: center; margin-bottom: 40px; }
+        .logo h2 { font-size: 18px; font-weight: 800; color: #f8fafc; }
+
+        .menu { list-style: none; }
+        .menu-label {
+            font-size: 10px;
+            color: #94a3b8;
+            margin: 25px 0 10px 0;
+            letter-spacing: 1.5px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .menu a {
+            display: block;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            transition: 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .menu a:hover, .menu a.active {
+            background: #6366f1;
+            color: white;
+        }
+
+        .menu a i { margin-right: 10px; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content {
+            padding: 30px;
+            background: white;
+            overflow-y: auto;
+        }
+
+        .top-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .top-info h1 {
+            font-size: 28px;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .top-info p {
+            color: #64748b;
+            font-size: 14px;
+            margin: 5px 0 0 0;
+        }
+
+        .badge {
+            background: #f1f5f9;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #475569;
+        }
+
+        /* --- SIDEBAR RIGHT --- */
+        .sidebar-right {
+            background: white;
+            padding: 30px 20px;
+            border-left: 1px solid #e2e8f0;
+        }
+
+        .sidebar-right h4 {
+            font-size: 10px;
+            color: #94a3b8;
+            margin-bottom: 20px;
+            letter-spacing: 1.5px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .sidebar-right a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-right div {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .sidebar-right div:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .sidebar-right i {
+            font-size: 24px;
+            color: #6366f1;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-right p {
+            font-size: 11px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        /* --- CONTAINER PRINCIPAL (CARD) --- */
+        .form-container {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 30px;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-top: 0;
+            color: #1e293b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 24px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* --- CAMPOS (PADRÃO DO PORTAL) --- */
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #555;
+            font-size: 12px;
+            text-transform: uppercase;
+            display: block;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            border-color: #6366f1;
+            background: white;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        /* --- SELEÇÃO DE TECNOLOGIA --- */
+        .step-label {
+            font-size: 10px;
+            color: #94a3b8;
+            margin: 5px 0 12px 0;
+            letter-spacing: 1.5px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .tech-btn {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .tech-btn:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .tech-btn:active { transform: scale(.97); }
+
+        .tech-btn.selected {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+            background: #f8fafc;
+        }
+
+        .tech-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            background: #1e293b;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14px;
+            letter-spacing: -0.02em;
+        }
+
+        .tech-btn.selected .tech-icon { background: #6366f1; color: #fff; }
+
+        .tech-name { font-weight: 700; font-size: 13.5px; color: #1e293b; }
+        .tech-sub { font-size: 10.5px; color: #64748b; margin-top: -6px; }
+
+        /* --- CARD DE RESULTADO --- */
+        .result {
+            display: none;
+            margin-top: 25px;
+            animation: rise .25s ease;
+        }
+        .result.show { display: block; }
+        @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-head {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-head h2 {
+            color: #fff;
+            font-size: 15px;
+            margin: 0;
+            font-weight: 800;
+            letter-spacing: 0.01em;
+            text-transform: none;
+            text-align: left;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .card-head .tag {
+            background: #6366f1;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .card-body { padding: 16px 18px 8px; }
+
+        .field {
+            padding: 10px 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        .field:last-child { border-bottom: none; }
+
+        .field .k {
+            font-size: 10.5px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #64748b;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+
+        .field .v {
+            font-size: 14px;
+            color: #334155;
+            line-height: 1.45;
+        }
+
+        .field .v.mono {
+            font-family: Consolas, Menlo, monospace;
+            font-size: 13.5px;
+            color: #1e293b;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .note {
+            background: #f8fafc;
+            border-left: 3px solid #6366f1;
+            padding: 10px 12px;
+            font-size: 12.5px;
+            color: #334155;
+            border-radius: 8px;
+            margin: 10px 0 4px;
+            line-height: 1.5;
+        }
+
+        /* --- CONSULTA AUTOTRAC --- */
+        .autotrac-input { padding: 14px 18px 4px; }
+
+        .autotrac-input input {
+            font-family: Consolas, Menlo, monospace;
+            color: #1e293b;
+        }
+
+        .autotrac-result {
+            margin-top: 10px;
+            font-size: 13px;
+            display: none;
+        }
+        .autotrac-result.show { display: block; }
+
+        .autotrac-result .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #6366f1;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 12.5px;
+        }
+
+        /* --- AÇÕES --- */
+        .actions {
+            padding: 14px 18px 18px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            border: none;
+            border-radius: 8px;
+            padding: 13px 14px;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: inherit;
+            transition: 0.3s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-whats { background: #059669; color: white; }
+        .btn-whats:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        .btn-copy {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+        .btn-copy:hover { background: #e2e8f0; }
+        .btn-copy.copied { background: #6366f1; border-color: #6366f1; color: #fff; }
+
+        .empty-hint {
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+            padding: 26px 20px;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .container { grid-template-columns: 250px 1fr; }
+            .sidebar-right { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+            .main-content { padding: 20px; }
+        }
+
+        @media (max-width: 480px) {
+            .actions { flex-direction: column; }
+            .tech-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <aside class="sidebar">
+        <div class="logo"><h2>PA - Campinas</h2></div>
+        <nav class="menu">
+            <p class="menu-label">Monitoramento</p>
+            <a href="index.html"><i class="ph ph-gauge"></i> Dashboard Principal</a>
+            <a href="torre.html"><i class="ph ph-broadcast"></i> Torre de Controle</a>
+            <a href="posicao.html"><i class="ph ph-map-pin"></i> Posição Escolta</a>
+            <a href="solicitacao-escolta.html"><i class="ph ph-shield-plus"></i> Solicitação Escolta</a>
+
+            <p class="menu-label">Operação</p>
+            <a href="cftv.html"><i class="ph ph-video-camera"></i> Auditoria CFTV</a>
+            <a href="cftv-email.html"><i class="ph ph-envelope"></i> E-mail CFTV</a>
+            <a href="brief.html"><i class="ph ph-clipboard-text"></i> Briefing Digital</a>
+            <a href="registros-saidas.html"><i class="ph ph-sign-out"></i> Registro de Saídas</a>
+            <a href="comunicado.html"><i class="ph ph-whatsapp-logo"></i> Gerador de Comunicado</a>
+            <a href="conhecimento.html"><i class="ph ph-book-open"></i> Para Conhecimento</a>
+            <a href="espelhamento.html" class="active"><i class="ph ph-arrows-left-right"></i> Espelhamento</a>
+
+            <p class="menu-label">Material de Apoio</p>
+            <a href="apoio.html"><i class="ph ph-files"></i> Documentos</a>
+
+            <p class="menu-label">Capacitação</p>
+            <a href="https://pacampinas-avaliacao.streamlit.app/" target="_blank">
+                <i class="ph ph-graduation-cap"></i>
+                Histórico do Motorista</a>
+
+            <a href="Treinamento_Komando_Completo.html">
+                <i class="ph ph-graduation-cap"></i>
+                Avaliação do Treinamento
+            </a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="top-info">
+            <div>
+                <h1>Espelhamento de Tecnologia</h1>
+                <p id="greetingMessage"></p>
+            </div>
+            <div class="badge">Operação</div>
+        </div>
+
+        <div class="form-container">
+            <h2>Gerar Card de Espelhamento</h2>
+
+            <p class="step-label">1. Selecione a tecnologia</p>
+            <div class="tech-grid" id="techGrid"></div>
+
+            <div class="result" id="result"></div>
+            <p class="empty-hint" id="emptyHint">Selecione uma tecnologia acima para ver os dados de espelhamento e enviar o card pelo WhatsApp.</p>
+        </div>
+    </main>
+
+    <aside class="sidebar-right">
+        <h4>FERRAMENTAS</h4>
+        <a href="conhecimento.html">
+            <div>
+                <i class="ph ph-book-open"></i>
+                <p>BASE CONHECIMENTO</p>
+            </div>
+        </a>
+        <a href="torre.html">
+            <div>
+                <i class="ph ph-broadcast"></i>
+                <p>TORRE 360</p>
+            </div>
+        </a>
+    </aside>
+</div>
+
+<script>
+    // Saudação dinâmica
+    function updateGreeting() {
+        const now = new Date();
+        const hour = now.getHours();
+        const greeting = hour < 12 ? 'Bom dia' : hour < 18 ? 'Boa tarde' : 'Boa noite';
+        const timeString = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('greetingMessage').textContent = `${greeting}! Agora são ${timeString}.`;
+    }
+    updateGreeting();
+    setInterval(updateGreeting, 60000); // Atualiza a cada minuto
+
+    const DATA = {
+        onixsat: {
+            name: "Onixsat",
+            sub: "Trucks Control",
+            icon: "OX",
+            fields: [
+                { k: "Tecnologia", v: "Onixsat (Trucks Control)" },
+                { k: "CNPJ", v: "04.670.780/0001-38", mono: true }
+            ],
+            note: null
+        },
+        sascar: {
+            name: "Sascar",
+            sub: "Integração",
+            icon: "SC",
+            fields: [
+                { k: "Tecnologia", v: "Sascar" },
+                { k: "Empresa para integração", v: "Komando Gerenciamento de Riscos Ltda" }
+            ],
+            note: null
+        },
+        omnilink: {
+            name: "Omnilink",
+            sub: "Ficha de ativação",
+            icon: "OM",
+            fields: [
+                { k: "Tecnologia", v: "Omnilink" },
+                { k: "Enviar ficha de ativação para", v: "pa.supersonic@komando.com.br", mono: true },
+                { k: "Ou via WhatsApp", v: "+55 19 98103-2053", mono: true },
+                { k: "Solicitar à Omnilink", v: "Replicar o sinal para a Komando Secundário — porta 9001" }
+            ],
+            note: "Após enviar a ficha de ativação, confirmar a replicação do sinal antes de encerrar o atendimento."
+        },
+        autotrac: {
+            name: "Autotrac",
+            sub: "Satélite / Prime",
+            icon: "AT",
+            fields: [
+                { k: "Tecnologia", v: "Autotrac — transferência de subconta (Satélite e Prime)" },
+                { k: "CNPJ", v: "42.966.297/0001-02", mono: true }
+            ],
+            note: "Projeto Caminhoneiro: o espelhamento segue os 4 primeiros números da conta do motorista. Use o campo abaixo para identificar a conta de destino.",
+            autotrac: true
+        },
+        outras: {
+            name: "Outras",
+            sub: "Demais tecnologias",
+            icon: "?",
+            fields: [
+                { k: "Tecnologia não listada", v: "Entrar em contato com a equipe de Monitoramento Komando pelo WhatsApp" }
+            ],
+            note: null
+        }
+    };
+
+    const grid = document.getElementById('techGrid');
+    const resultEl = document.getElementById('result');
+    const emptyHint = document.getElementById('emptyHint');
+    let selectedKey = null;
+
+    Object.keys(DATA).forEach(key => {
+        const d = DATA[key];
+        const btn = document.createElement('button');
+        btn.className = 'tech-btn';
+        btn.dataset.key = key;
+        btn.innerHTML = `
+            <div class="tech-icon">${d.icon}</div>
+            <div class="tech-name">${d.name}</div>
+            <div class="tech-sub">${d.sub}</div>
+        `;
+        btn.addEventListener('click', () => selectTech(key));
+        grid.appendChild(btn);
+    });
+
+    function accountLookup(raw){
+        const digits = raw.replace(/\D/g,'');
+        if(digits.length < 4) return null;
+        const prefix = digits.substring(0,4);
+        if(prefix === '1065') return { conta: 'Conta 1', numero: '10656278' };
+        if(prefix === '3006') return { conta: 'Conta 2', numero: '36069350' };
+        return { conta: null, numero: null };
+    }
+
+    function buildWhatsText(key, extra){
+        const d = DATA[key];
+        let lines = [`*ESPELHAMENTO — ${d.name.toUpperCase()}*`, `PA Campinas • Komando`, ``];
+        d.fields.forEach(f => lines.push(`*${f.k}:* ${f.v}`));
+        if(extra){
+            lines.push(``);
+            lines.push(`*Conta do motorista:* ${extra.inputAccount}`);
+            lines.push(`*Espelhar para:* ${extra.conta} (${extra.numero})`);
+        }
+        if(d.note) { lines.push(``); lines.push(d.note); }
+        return lines.join('\n');
+    }
+
+    function selectTech(key){
+        selectedKey = key;
+        document.querySelectorAll('.tech-btn').forEach(b => {
+            b.classList.toggle('selected', b.dataset.key === key);
+        });
+        emptyHint.style.display = 'none';
+        renderResult(key);
+    }
+
+    function renderResult(key, extra){
+        const d = DATA[key];
+        let fieldsHtml = d.fields.map(f => `
+            <div class="field">
+                <div class="k">${f.k}</div>
+                <div class="v ${f.mono ? 'mono' : ''}">${f.v}</div>
+            </div>
+        `).join('');
+
+        let autotracHtml = '';
+        if(d.autotrac){
+            autotracHtml = `
+                <div class="autotrac-input">
+                    <label>Nº da conta do motorista</label>
+                    <input type="text" id="acctInput" inputmode="numeric" placeholder="Ex: 1065XXXX" value="${extra ? extra.inputAccount : ''}">
+                    <div class="autotrac-result ${extra && extra.conta ? 'show' : ''}" id="acctResult">
+                        ${extra && extra.conta ? `<span class="pill">→ Espelhar para ${extra.conta} (${extra.numero})</span>` : (extra && extra.conta === null ? `<span style="color:#dc2626;font-size:12.5px;">Prefixo não reconhecido — confirme com a equipe de monitoramento.</span>` : '')}
+                    </div>
+                </div>
+            `;
+        }
+
+        resultEl.innerHTML = `
+            <p class="step-label">2. Card gerado</p>
+            <div class="card">
+                <div class="card-head">
+                    <h2>${d.name}</h2>
+                    <span class="tag">Card gerado</span>
+                </div>
+                ${autotracHtml}
+                <div class="card-body">
+                    ${fieldsHtml}
+                    ${d.note ? `<div class="note">${d.note}</div>` : ''}
+                </div>
+                <div class="actions">
+                    <button class="btn btn-copy" id="copyBtn"><i class="ph ph-copy"></i> Copiar</button>
+                    <button class="btn btn-whats" id="sendBtn"><i class="ph ph-whatsapp-logo"></i> Enviar WhatsApp</button>
+                </div>
+            </div>
+        `;
+        resultEl.classList.add('show');
+
+        if(d.autotrac){
+            const input = document.getElementById('acctInput');
+            input.addEventListener('input', () => {
+                const lookup = accountLookup(input.value);
+                const newExtra = lookup ? { inputAccount: input.value, conta: lookup.conta, numero: lookup.numero } : null;
+                renderResult(key, newExtra);
+                input.focus();
+                input.setSelectionRange(input.value.length, input.value.length);
+            });
+        }
+
+        document.getElementById('sendBtn').addEventListener('click', () => {
+            let extraData = null;
+            if(d.autotrac){
+                const input = document.getElementById('acctInput');
+                const lookup = accountLookup(input ? input.value : '');
+                if(input && input.value){
+                    extraData = { inputAccount: input.value, conta: lookup && lookup.conta ? lookup.conta : 'não identificada', numero: lookup && lookup.numero ? lookup.numero : '—' };
+                }
+            }
+            const text = buildWhatsText(key, extraData);
+            const url = 'https://wa.me/?text=' + encodeURIComponent(text);
+            window.open(url, '_blank');
+        });
+
+        document.getElementById('copyBtn').addEventListener('click', (e) => {
+            let extraData = null;
+            if(d.autotrac){
+                const input = document.getElementById('acctInput');
+                const lookup = accountLookup(input ? input.value : '');
+                if(input && input.value){
+                    extraData = { inputAccount: input.value, conta: lookup && lookup.conta ? lookup.conta : 'não identificada', numero: lookup && lookup.numero ? lookup.numero : '—' };
+                }
+            }
+            const text = buildWhatsText(key, extraData);
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = e.currentTarget;
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="ph ph-check"></i> Copiado';
+                btn.classList.add('copied');
+                setTimeout(() => { btn.innerHTML = original; btn.classList.remove('copied'); }, 1600);
+            });
+        });
+    }
+</script>
+
+</body>
+</html>
