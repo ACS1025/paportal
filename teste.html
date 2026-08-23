@@ -1,794 +1,133 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
-    <base target="_top">
-    <title>Briefing Digital | Portal Unificado</title>
-    <link rel="stylesheet" href="https://unpkg.com/phosphor-icons@1.4.2/src/css/icons.css">
-    <style>
-        /* --- RESET E BASE --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body { 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-            background: #f8fafc; 
-            color: #334155; 
-        }
-
-        .container { 
-            display: grid; 
-            grid-template-columns: 280px 1fr 200px; 
-            min-height: 100vh; 
-        }
-
-        /* --- SIDEBAR --- */
-        .sidebar { 
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%); 
-            padding: 30px 20px; 
-            color: white; 
-            position: sticky; 
-            top: 0; 
-            height: 100vh; 
-            overflow-y: auto; 
-        }
-
-        .logo { text-align: center; margin-bottom: 40px; }
-        .logo h2 { font-size: 18px; font-weight: 800; color: #f8fafc; }
-
-        .menu { list-style: none; }
-        .menu-label { 
-            font-size: 10px; 
-            color: #94a3b8; 
-            margin: 25px 0 10px 0; 
-            letter-spacing: 1.5px; 
-            font-weight: 800; 
-            text-transform: uppercase; 
-        }
-
-        .menu a { 
-            display: block; 
-            color: #cbd5e1; 
-            text-decoration: none; 
-            padding: 12px 15px; 
-            border-radius: 8px; 
-            margin-bottom: 5px; 
-            transition: 0.2s; 
-            font-size: 14px; 
-            font-weight: 500; 
-        }
-
-        .menu a:hover, .menu a.active { 
-            background: #6366f1; 
-            color: white; 
-        }
-
-        .menu a i { margin-right: 10px; }
-
-        /* --- MAIN CONTENT --- */
-        .main-content { 
-            padding: 30px; 
-            background: white; 
-            overflow-y: auto; 
-        }
-
-        .top-info { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 30px; 
-            padding-bottom: 20px; 
-            border-bottom: 1px solid #e2e8f0; 
-        }
-
-        .top-info h1 { 
-            font-size: 28px; 
-            color: #1e293b; 
-            margin: 0; 
-        }
-
-        .top-info p { 
-            color: #64748b; 
-            font-size: 14px; 
-            margin: 5px 0 0 0; 
-        }
-
-        .badge { 
-            background: #f1f5f9; 
-            padding: 8px 15px; 
-            border-radius: 20px; 
-            font-size: 12px; 
-            font-weight: 700; 
-            color: #475569; 
-        }
-
-        /* --- SIDEBAR RIGHT --- */
-        .sidebar-right { 
-            background: white; 
-            padding: 30px 20px; 
-            border-left: 1px solid #e2e8f0; 
-        }
-
-        .sidebar-right h4 { 
-            font-size: 10px; 
-            color: #94a3b8; 
-            margin-bottom: 20px; 
-            letter-spacing: 1.5px; 
-            font-weight: 800; 
-            text-transform: uppercase; 
-        }
-
-        .sidebar-right a { 
-            text-decoration: none; 
-            color: inherit; 
-            display: block; 
-            margin-bottom: 10px; 
-        }
-
-        .sidebar-right div { 
-            background: white; 
-            padding: 15px; 
-            border-radius: 12px; 
-            border: 1px solid #e2e8f0; 
-            text-align: center; 
-            transition: 0.2s; 
-        }
-
-        .sidebar-right div:hover { 
-            background: #f8fafc; 
-            border-color: #cbd5e1; 
-        }
-
-        .sidebar-right i { 
-            font-size: 24px; 
-            color: #6366f1; 
-            display: block; 
-            margin-bottom: 5px; 
-        }
-
-        .sidebar-right p { 
-            font-size: 11px; 
-            font-weight: 700; 
-            margin: 0; 
-        }
-
-        /* --- FORM STYLES --- */
-        .form-container { 
-            background: white; 
-            border-radius: 16px; 
-            padding: 30px; 
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
-            border: 1px solid #e2e8f0; 
-        }
-
-        .form-container h3 { 
-            margin-bottom: 30px; 
-            font-size: 24px; 
-            text-align: center; 
-            color: #1e293b; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-        }
-
-        label { 
-            display: block; 
-            margin-top: 20px; 
-            font-size: 12px; 
-            font-weight: 700; 
-            color: #475569; 
-            text-transform: uppercase; 
-            margin-bottom: 8px; 
-        }
-
-        input, select, textarea { 
-            width: 100%; 
-            padding: 12px 15px; 
-            border: 1px solid #cbd5e1; 
-            border-radius: 8px; 
-            background: white; 
-            font-size: 15px; 
-            color: #1e293b; 
-            transition: all 0.2s ease; 
-        }
-
-        input:focus, textarea:focus { 
-            outline: none; 
-            border-color: #6366f1; 
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1); 
-        }
-
-        .row { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-            gap: 15px; 
-        }
-
-        /* --- TEMPLATES --- */
-        .template-section { 
-            background: #f8fafc; 
-            padding: 20px; 
-            border-radius: 12px; 
-            margin: 25px 0; 
-            border: 1px solid #e2e8f0; 
-        }
-
-        .template-section .section-label { 
-            margin-top: 0; 
-            margin-bottom: 15px; 
-        }
-
-        .template-buttons { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
-            gap: 10px; 
-        }
-
-        .template-btn { 
-            padding: 12px; 
-            background: white; 
-            color: #475569; 
-            border: 1px solid #cbd5e1; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-size: 13px; 
-            font-weight: 600; 
-            transition: 0.2s; 
-        }
-
-        .template-btn:hover { 
-            background: #6366f1; 
-            color: white; 
-            border-color: #6366f1; 
-        }
-
-        /* --- AUTOCOMPLETE --- */
-        .autocomplete-list { 
-            position: absolute; 
-            z-index: 1000; 
-            left: 0; 
-            right: 0; 
-            max-height: 180px; 
-            overflow-y: auto; 
-            background: white; 
-            border-radius: 8px; 
-            margin-top: 2px; 
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); 
-            list-style: none; 
-            border: 1px solid #e2e8f0; 
-        }
-
-        .autocomplete-list li { 
-            padding: 10px 15px; 
-            color: #334155; 
-            border-bottom: 1px solid #f1f5f9; 
-            cursor: pointer; 
-            font-size: 13px; 
-        }
-
-        .autocomplete-list li:hover { 
-            background: #f1f5f9; 
-            color: #6366f1; 
-        }
-
-        .autocomplete-list li:last-child { 
-            border-bottom: none; 
-        }
-
-        /* --- BOTÕES --- */
-        #btnEnviar { 
-            margin-top: 25px; 
-            width: 100%; 
-            padding: 16px; 
-            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); 
-            color: white; 
-            border: none; 
-            border-radius: 12px; 
-            cursor: pointer; 
-            font-weight: 800; 
-            font-size: 16px; 
-            text-transform: uppercase; 
-            transition: 0.3s; 
-            box-shadow: 0 10px 15px -3px rgba(22, 163, 74, 0.3); 
-        }
-
-        #btnEnviar:hover { 
-            transform: translateY(-2px); 
-            filter: brightness(1.1); 
-        }
-
-        #btnEnviar:disabled { 
-            opacity: 0.6; 
-            cursor: not-allowed; 
-            transform: none; 
-        }
-
-        /* --- STATUS MESSAGES --- */
-        #resultado { 
-            margin-top: 20px; 
-        }
-
-        .link { 
-            padding: 12px; 
-            border-radius: 8px; 
-            font-size: 13px; 
-            text-align: center; 
-        }
-
-        .link.success { 
-            background: #dcfce7; 
-            border: 1px solid #22c55e; 
-            color: #166534; 
-        }
-
-        .link.error { 
-            background: #fef2f2; 
-            border: 1px solid #ef4444; 
-            color: #991b1b; 
-        }
-
-        /* ═══════════════════════════════════════════════════════
-           NOVO: ESTILOS PARA AUTOPREENCHIMENTO E ALERTAS DE ROTA
-           ═══════════════════════════════════════════════════════ */
-        input.autofilled {
-            background: rgba(34, 197, 94, 0.08) !important;
-            border-color: rgba(34, 197, 94, 0.4) !important;
-            color: #14532d !important;
-        }
-        input.searching {
-            animation: pulse-border 1s infinite;
-        }
-        @keyframes pulse-border {
-            0%, 100% { border-color: #cbd5e1; }
-            50% { border-color: #6366f1; }
-        }
-        .rota-alert {
-            margin-top: 10px;
-            padding: 12px 14px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            display: none;
-            align-items: center;
-            gap: 8px;
-            line-height: 1.4;
-        }
-        .rota-alert.show { display: flex; }
-        .rota-alert.info {
-            background: rgba(59, 130, 246, 0.08);
-            border: 1px solid rgba(59, 130, 246, 0.25);
-            color: #1d4ed8;
-        }
-        .rota-alert.warn {
-            background: rgba(245, 158, 11, 0.08);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            color: #b45309;
-        }
-        .rota-alert.danger {
-            background: rgba(239, 68, 68, 0.08);
-            border: 1px solid rgba(239, 68, 68, 0.25);
-            color: #b91c1c;
-        }
-        .rota-alert.positive {
-            background: rgba(34, 197, 94, 0.08);
-            border: 1px solid rgba(34, 197, 94, 0.25);
-            color: #15803d;
-        }
-        .hint-sm {
-            font-size: 12px;
-            color: #94a3b8;
-            margin-top: 4px;
-        }
-        /* ═══════════════════════════════════════════════════════ */
-
-        /* --- RESPONSIVE --- */
-        @media (max-width: 1024px) { 
-            .container { grid-template-columns: 250px 1fr; } 
-            .sidebar-right { display: none; } 
-        }
-
-        @media (max-width: 768px) { 
-            .container { grid-template-columns: 1fr; } 
-            .sidebar { display: none; } 
-            .main-content { padding: 20px; } 
-            .row { grid-template-columns: 1fr; } 
-            .template-buttons { grid-template-columns: 1fr; } 
-        }
-    </style>
-<base target="_blank">
+<meta charset="utf-8">
+<title>Diagnóstico SM</title>
+<style>
+body { font-family: system-ui, sans-serif; padding: 20px; max-width: 700px; margin: 0 auto; background: #f8fafc; }
+.box { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin: 12px 0; }
+h3 { margin: 0 0 12px; }
+label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin-top: 12px; margin-bottom: 4px; }
+input { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; box-sizing: border-box; }
+button { padding: 10px 16px; font-size: 14px; cursor: pointer; border: none; border-radius: 8px; margin: 4px 4px 0 0; font-weight: 600; }
+.btn-fetch { background: #3b82f6; color: white; }
+.btn-jsonp { background: #22c55e; color: white; }
+.btn-direct { background: #f59e0b; color: white; }
+pre { background: #1e293b; color: #e2e8f0; padding: 12px; border-radius: 8px; overflow-x: auto; font-size: 12px; line-height: 1.5; }
+.ok { color: #22c55e; font-weight: 600; }
+.err { color: #ef4444; font-weight: 600; }
+.warn { color: #f59e0b; font-weight: 600; }
+.info { color: #64748b; }
+#resultado { min-height: 100px; }
+#resultado div { margin: 4px 0; font-size: 13px; }
+</style>
 <base target="_blank">
 </head>
 <body>
 
-<div class="container">
-    <aside class="sidebar">
-        <div class="logo"><h2>PA - Campinas</h2></div>
-        <nav class="menu">
-            <p class="menu-label">Monitoramento</p>
-            <a href="index.html"><i class="ph ph-gauge"></i> Dashboard Principal</a>
-            <a href="torre.html"><i class="ph ph-broadcast"></i> Torre de Controle</a>
-            <a href="posicao.html"><i class="ph ph-map-pin"></i> Posição Escolta</a>
-            <a href="solicitacao-escolta.html"><i class="ph ph-shield-plus"></i> Solicitação Escolta</a>
+<div class="box">
+  <h3>🔍 Diagnóstico — Busca por SM</h3>
+  <label>Endpoint do Apps Script</label>
+  <input id="endpoint" value="https://script.google.com/macros/s/AKfycbz-VPu2CEaxnrTtwItYcoeJaClpJhZsCscUfBvmY_s4oJ4fTQwykSyb0Uq7B2RMewY-/exec">
+  <label>Código SM</label>
+  <input id="sm" placeholder="1269564" value="1269564">
+  <div style="margin-top:12px;">
+    <button class="btn-fetch" onclick="testarFetch()">1️⃣ Testar FETCH</button>
+    <button class="btn-jsonp" onclick="testarJSONP()">2️⃣ Testar JSONP</button>
+    <button class="btn-direct" onclick="abrirDireto()">3️⃣ Abrir URL direto</button>
+  </div>
+</div>
 
-            <p class="menu-label">Operação</p>
-            <a href="cftv.html"><i class="ph ph-video-camera"></i> Auditoria CFTV</a>
-            <a href="cftv-email.html"><i class="ph ph-envelope"></i> E-mail CFTV</a>
-            <a href="brief.html" class="active"><i class="ph ph-clipboard-text"></i> Briefing Digital</a>
-            <a href="registros-saidas.html"><i class="ph ph-sign-out"></i> Registro de Saídas</a>
-            <a href="comunicado.html"><i class="ph ph-whatsapp-logo"></i> Gerador de Comunicado</a>
-            <a href="conhecimento.html"><i class="ph ph-book-open"></i> Para Conhecimento</a>
-            <a href="espelhamento.html" class=""><i class="ph ph-arrows-left-right"></i> Espelhamento</a>
-
-            <p class="menu-label">Material de Apoio</p>
-            <a href="apoio.html"><i class="ph ph-files"></i> Documentos</a>
-
-            <p class="menu-label">Capacitação</p>
-            <a href="https://pacampinas-avaliacao.streamlit.app/" target="_blank">
-                <i class="ph ph-graduation-cap"></i>
-                Histórico do Motorista</a>
-
-            <a href="Treinamento_Komando_Completo.html">
-                <i class="ph ph-graduation-cap"></i>
-                Avaliação do Treinamento
-            </a>
-        </nav>
-    </aside>
-
-    <main class="main-content">
-        <div class="top-info">
-            <div>
-                <h1>Briefing Digital</h1>
-                <p id="greetingMessage"></p>
-            </div>
-            <div class="badge">Comunicação</div>
-        </div>
-
-        <div class="form-container">
-            <h3>Briefing Digital WhatsApp</h3>
-
-            <!-- ═══════ CAMPO SM COM BUSCA NA PLANILHA (NOVO) ═══════ -->
-            <label for="sm">Código SM *</label>
-            <input id="sm" placeholder="Ex: 1175983" required autocomplete="off"/>
-            <div class="hint-sm">Digite o código SM completo para buscar dados na planilha</div>
-            <!-- ════════════════════════════════════════════════════ -->
-
-            <div class="row">
-                <div style="position: relative;">
-                  <label for="motorista">Motorista *</label>
-                  <input id="motorista" placeholder="Autocomplete..." required autocomplete="off"/>
-                  <ul id="lista-motorista" class="autocomplete-list" style="display:none"></ul>
-                </div>
-                <div style="position: relative;">
-                  <label for="placa_cavalo">Placa Cavalo</label>
-                  <input id="placa_cavalo" placeholder="ABC-1234" autocomplete="off"/>
-                  <ul id="lista-placa" class="autocomplete-list" style="display:none"></ul>
-                </div>
-                <div style="position: relative;">
-                  <label for="placa_carreta">Placa Carreta</label>
-                  <input id="placa_carreta" placeholder="XYZ-5678" autocomplete="off"/>
-                  <ul id="lista-carreta" class="autocomplete-list" style="display:none"></ul>
-                </div>
-            </div>
-
-            <!-- ═══════ CAMPO ROTA COM ALERTA CONDICIONAL (NOVO) ═══════ -->
-            <label for="rota">Rota</label>
-            <input id="rota" placeholder="Campinas/SP X Rio de Janeiro/RJ"/>
-            <div id="rotaAlert" class="rota-alert"></div>
-            <!-- ════════════════════════════════════════════════════════ -->
-
-            <div class="template-section">
-                <p class="section-label">📋 Modelos de Mensagem:</p>
-                <div class="template-buttons">
-                  <button type="button" class="template-btn" onclick="inserirTemplate('briefing')">📍 Briefing</button>
-                  <button type="button" class="template-btn" onclick="inserirTemplate('reciclagem')">♻️ Reciclagem</button>
-                  <button type="button" class="template-btn" onclick="inserirTemplate('fotos')">📸 Fotos</button>
-                  <button type="button" class="template-btn" style="color: #f59e0b; border-color: #f59e0b;" onclick="ativarEdicaoLivre()">✍️ Personalizado</button>
-                </div>
-            </div>
-
-            <label for="textoPronto">Mensagem para WhatsApp:</label>
-            <textarea id="textoPronto" rows="6"></textarea>
-
-            <button id="btnEnviar">📱 Enviar via WhatsApp</button>
-            <div id="resultado"></div>
-        </div>
-    </main>
-
-    <aside class="sidebar-right">
-        <h4 style="font-size: 10px; color: #94a3b8; margin-bottom: 20px; letter-spacing: 1.5px; font-weight: 800;">FERRAMENTAS</h4>
-        <a href="comunicado.html" style="text-decoration:none; color:inherit;">
-            <div style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 10px; text-align:center;">
-                <i class="ph ph-whatsapp-logo" style="font-size: 24px; color: #25D366;"></i>
-                <p style="font-size: 11px; font-weight: 700; margin-top:5px;">GERADOR ZAP</p>
-            </div>
-        </a>
-        <a href="torre.html" style="text-decoration:none; color:inherit;">
-            <div style="background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; text-align:center;">
-                <i class="ph ph-broadcast" style="font-size: 24px; color: #6366f1;"></i>
-                <p style="font-size: 11px; font-weight: 700; margin-top:5px;">TORRE 360</p>
-            </div>
-        </a>
-    </aside>
+<div class="box">
+  <h4>📋 Resultado:</h4>
+  <div id="resultado">Clique em um botão acima para testar.</div>
 </div>
 
 <script>
-    // Greeting message
-    const hour = new Date().getHours();
-    const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
-    document.getElementById("greetingMessage").textContent = greeting;
+function limpar() {
+  document.getElementById('resultado').innerHTML = '';
+}
+function log(tipo, msg) {
+  const r = document.getElementById('resultado');
+  const cor = tipo === 'ok' ? 'ok' : tipo === 'err' ? 'err' : tipo === 'warn' ? 'warn' : 'info';
+  r.innerHTML += '<div class="' + cor + '">' + msg + '</div>';
+  r.scrollTop = r.scrollHeight;
+}
 
-    const textos = {
-        reciclagem: `*Reciclagem Obrigatória*
+async function testarFetch() {
+  limpar();
+  const ep = document.getElementById('endpoint').value.trim();
+  const sm = document.getElementById('sm').value.trim();
+  log('info', '⏳ Testando FETCH...');
+  log('info', '🔗 URL: ' + ep + '?sm=' + encodeURIComponent(sm));
 
-Sr. Motorista.
-
-Seu checklist está suspenso para novas viagens. Será necessário reciclagem com a equipe Komando para validá-lo no sistema. Por favor, preencha os dados no formulário e compareça na unidade em horário comercial.
-
-https://forms.gle/tt4LVq24EjBsVC7WA
-
-Qualquer dúvida pode nos chamar.
-
-*Equipe Komando*`,
-        briefing: `*Viagem Monitorada*
-
-Sr. Motorista.
-
-Você tem uma viagem programada que será monitorada pela Komando. Por favor, acesse o briefing de viagem no link.
-
-https://res.cloudinary.com/dijagbe0r/image/upload/v1773329384/Briefing_Kmd_tiecpz.jpg 
-
-Qualquer dúvida pode nos chamar.
-
-*Equipe Komando*`,
-        fotos: `*Confirmação de Parada/Pernoite*
-
-Sr. Motorista.
-
-Ao informar paradas e pernoite via macro, por favor confirme a ação em nosso WhatsApp: *(19 98103-2053)*
-
-É preciso que você nos envie:
-
-*→ FOTO DO BAÚ*
-*→ FOTO DOS LACRES*
-*→ FOTO DO ENGATE*
-
-Este procedimento de envio deverá ser repetido quando você reiniciar a viagem também.
-
-Qualquer dúvida pode nos chamar.
-
-*Equipe Komando*`
-    };
-
-    const endpointBase = "https://script.google.com/macros/s/AKfycbxmP_eYN2Bq_MDX_fyeUOZHqCoEQ8eV-JZ6SMDTC88NDPsYklZdF_vfzNEIkQD8wk7k/exec";
-    let listaNomes=[], listaPlacas=[], listaCarretas=[];
-    let edicaoLivre = false; // TRAVA DE SEGURANÇA
-    let buscaTimeout; // NOVO: debounce para busca SM
-
-    function showMessage(msg, type='success'){ 
-      document.getElementById('resultado').innerHTML = `<div class="link ${type}">${msg}</div>`;
+  try {
+    const resp = await fetch(ep + '?sm=' + encodeURIComponent(sm));
+    log('ok', '✅ HTTP Status: ' + resp.status + ' ' + resp.statusText);
+    const texto = await resp.text();
+    log('info', '📄 Corpo (300 primeiros chars):<pre>' + texto.substring(0, 300).replace(/</g,'&lt;') + '</pre>');
+    try {
+      const json = JSON.parse(texto);
+      log('ok', '📦 JSON parseado:<pre>' + JSON.stringify(json, null, 2).substring(0, 400).replace(/</g,'&lt;') + '</pre>');
+    } catch(e) {
+      log('err', '❌ Não é JSON válido: ' + e.message);
     }
-
-    function ativarEdicaoLivre() {
-        edicaoLivre = true;
-        document.getElementById('textoPronto').value = "";
-        document.getElementById('textoPronto').focus();
-        showMessage('✍️ Modo livre: O preenchimento automático está pausado.', 'success');
+  } catch(err) {
+    log('err', '❌ ERRO FETCH: ' + err.name + ': ' + err.message);
+    if (err.message.includes('Failed to fetch') || err.message.includes('CORS') || err.message.includes('NetworkError')) {
+      log('warn', '⚠️ Isso indica problema de CORS — o FETCH não funciona no GitHub Pages/Live Server');
+      log('warn', '💡 Solução: usar JSONP (botão verde)');
     }
+  }
+}
 
-    function inserirTemplate(tipo){
-      edicaoLivre = true;
-      document.getElementById('textoPronto').value = textos[tipo];
-      showMessage('✅ Modelo inserido!', 'success');
+let cbId = 0;
+function testarJSONP() {
+  limpar();
+  const ep = document.getElementById('endpoint').value.trim();
+  const sm = document.getElementById('sm').value.trim();
+  log('info', '⏳ Testando JSONP...');
+
+  const cbName = '_test_' + (++cbId) + '_' + Date.now();
+  const script = document.createElement('script');
+  const t = setTimeout(() => {
+    cleanup();
+    log('err', '❌ JSONP Timeout (8s) — o script não respondeu');
+  }, 8000);
+
+  function cleanup() {
+    clearTimeout(t);
+    if (script.parentNode) script.parentNode.removeChild(script);
+    delete window[cbName];
+  }
+
+  window[cbName] = function(dados) {
+    cleanup();
+    log('ok', '✅ JSONP funcionou!');
+    log('info', '📦 Dados recebidos:<pre>' + JSON.stringify(dados, null, 2).substring(0, 500).replace(/</g,'&lt;') + '</pre>');
+    if (dados.encontrado) {
+      log('ok', '🎯 SM encontrado! Motorista: ' + (dados.motorista || '(vazio)'));
+    } else {
+      log('warn', '⚠️ SM não encontrado na planilha');
     }
+  };
 
-    function atualizarMensagem(){
-      if(edicaoLivre) return;
-      const sm = document.getElementById('sm').value.trim();
-      const motorista = document.getElementById('motorista').value.trim();
-      const pc = document.getElementById('placa_cavalo').value.trim();
-      const pcr = document.getElementById('placa_carreta').value.trim();
-      const rota = document.getElementById('rota').value.trim();
+  script.onerror = function(e) {
+    cleanup();
+    log('err', '❌ JSONP falhou ao carregar o script');
+    log('err', '💡 Verifique se a URL do endpoint está correta e se o Apps Script foi deployado');
+  };
 
-      let msg = '';
-      if(sm) msg += `*SM:* ${sm}
-`;
-      if(motorista) msg += `*Motorista:* ${motorista}
-`;
-      if(pc) msg += `*Placa Cavalo:* ${pc}
-`;
-      if(pcr) msg += `*Placa Carreta:* ${pcr}
-`;
-      if(rota) msg += `*Rota:* ${rota}
-`;
-      document.getElementById('textoPronto').value = msg;
-    }
+  script.src = ep + '?sm=' + encodeURIComponent(sm) + '&callback=' + cbName;
+  log('info', '📡 Script: ' + script.src.substring(0, 120) + '...');
+  document.head.appendChild(script);
+}
 
-    // Retorna ao modo automático se apagar tudo
-    document.getElementById('textoPronto').addEventListener('input', () => {
-        if(document.getElementById('textoPronto').value === "") edicaoLivre = false;
-    });
-
-    async function loadList(tipo){
-      try {
-        const resp = await fetch(`${endpointBase}?list=${tipo}`);
-        const json = await resp.json();
-        return Array.isArray(json) ? json : [];
-      } catch(e) { return []; }
-    }
-
-    (async function init(){
-      listaNomes = await loadList('motoristas');
-      listaPlacas = await loadList('placas');
-      listaCarretas = await loadList('carretas');
-    })();
-
-    function setupAutocomplete(inputId, listId, getDataSrc) {
-      const input = document.getElementById(inputId);
-      const list = document.getElementById(listId);
-      input.addEventListener('input', () => {
-        const val = input.value.toLowerCase();
-        const dataSrc = getDataSrc();
-        list.innerHTML = '';
-        if(!val) { list.style.display='none'; return; }
-        const matches = dataSrc.filter(x => x.toLowerCase().startsWith(val)).slice(0,10);
-        matches.forEach(m => {
-          const li = document.createElement('li');
-          li.textContent = m;
-          li.onclick = () => { input.value = m; list.style.display='none'; atualizarMensagem(); };
-          list.appendChild(li);
-        });
-        list.style.display = matches.length ? 'block' : 'none';
-        atualizarMensagem();
-      });
-    }
-
-    setupAutocomplete('motorista', 'lista-motorista', () => listaNomes);
-    setupAutocomplete('placa_cavalo', 'lista-placa', () => listaPlacas);
-    setupAutocomplete('placa_carreta', 'lista-carreta', () => listaCarretas);
-    document.getElementById('sm').addEventListener('input', atualizarMensagem);
-    document.getElementById('rota').addEventListener('input', atualizarMensagem);
-
-    document.getElementById('btnEnviar').addEventListener('click', async () => {
-        const btn = document.getElementById('btnEnviar');
-        const payload = {
-            data_envio: new Date().toISOString(),
-            codigo_sm: document.getElementById('sm').value,
-            motorista: document.getElementById('motorista').value,
-            placa_cavalo: document.getElementById('placa_cavalo').value,
-            placa_carreta: document.getElementById('placa_carreta').value,
-            rota: document.getElementById('rota').value,
-            texto_pronto: document.getElementById('textoPronto').value
-        };
-
-        if(!payload.codigo_sm || !payload.motorista) {
-            showMessage('❌ SM e Motorista são obrigatórios!', 'error');
-            return;
-        }
-
-        btn.disabled = true;
-        showMessage('⏳ Salvando na planilha...', 'success');
-
-        try {
-            await fetch(endpointBase, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            window.open('https://wa.me/?text=' + encodeURIComponent(payload.texto_pronto), '_blank');
-        } catch(e) {
-            // Fallback
-            const formData = new URLSearchParams();
-            formData.append('data', JSON.stringify(payload));
-            await fetch(endpointBase, { method: 'POST', body: formData });
-            window.open('https://wa.me/?text=' + encodeURIComponent(payload.texto_pronto), '_blank');
-        } finally {
-            btn.disabled = false;
-        }
-    });
-
-    /* ═══════════════════════════════════════════════════════════════
-       NOVO: BUSCA POR SM NA PLANILHA + AUTOPREENCHIMENTO + ALERTA ROTA
-       ═══════════════════════════════════════════════════════════════ */
-
-    const campoSM = document.getElementById('sm');
-    const campoMotorista = document.getElementById('motorista');
-    const campoPlacaCavalo = document.getElementById('placa_cavalo');
-    const campoPlacaCarreta = document.getElementById('placa_carreta');
-    const campoRota = document.getElementById('rota');
-    const alertaRota = document.getElementById('rotaAlert');
-
-    function limparCamposSM() {
-        campoMotorista.value = '';
-        campoPlacaCavalo.value = '';
-        campoPlacaCarreta.value = '';
-        campoRota.value = '';
-        [campoMotorista, campoPlacaCavalo, campoPlacaCarreta, campoRota].forEach(el => {
-            el.classList.remove('autofilled');
-        });
-        alertaRota.className = 'rota-alert';
-        alertaRota.innerHTML = '';
-    }
-
-    function preencherCampo(el, valor) {
-        el.value = valor || '';
-        if (valor) el.classList.add('autofilled');
-    }
-
-    function avaliarRotaCondicional(rotaValor) {
-        alertaRota.className = 'rota-alert';
-        alertaRota.innerHTML = '';
-        if (!rotaValor) return;
-        const r = rotaValor.toLowerCase();
-
-        if (r.includes('rio de janeiro') || r.includes('/rj')) {
-            alertaRota.classList.add('danger', 'show');
-            alertaRota.innerHTML = '⚠️ <b>Atenção — Rota RJ:</b> Escolta obrigatória. Check-in a cada 2h.';
-        } else if (r.includes('são paulo') || r.includes('/sp') || r.includes('santos') || r.includes('campinas')) {
-            alertaRota.classList.add('info', 'show');
-            alertaRota.innerHTML = 'ℹ️ <b>Rota SP:</b> Monitoramento padrão. Verificar congestionamento.';
-        } else if (r.includes('minas gerais') || r.includes('/mg') || r.includes('belo horizonte') || r.includes('bh')) {
-            alertaRota.classList.add('warn', 'show');
-            alertaRota.innerHTML = '⚡ <b>Rota MG:</b> Atenção às serras. Verificar condições climáticas.';
-        } else if (r.includes('paraná') || r.includes('/pr') || r.includes('curitiba') || r.includes('londrina')) {
-            alertaRota.classList.add('info', 'show');
-            alertaRota.innerHTML = '🛣️ <b>Rota PR:</b> Pistas em boas condições. Monitorar pedágios.';
-        } else if (r.includes('rio grande do sul') || r.includes('/rs') || r.includes('porto alegre') || r.includes('caxias')) {
-            alertaRota.classList.add('warn', 'show');
-            alertaRota.innerHTML = '🌧️ <b>Rota RS:</b> Verificar previsão de chuva e estado das rodovias.';
-        } else if (r.includes('santa catarina') || r.includes('/sc') || r.includes('florianópolis') || r.includes('joinville')) {
-            alertaRota.classList.add('warn', 'show');
-            alertaRota.innerHTML = '⛰️ <b>Rota SC:</b> Atencão às serras do Planalto. Neblina frequente nas manhãs.';
-        } else if (r.includes('bahia') || r.includes('/ba') || r.includes('salvador') || r.includes('feira de santana')) {
-            alertaRota.classList.add('info', 'show');
-            alertaRota.innerHTML = '🛣️ <b>Rota BA:</b> Rodovias com fluxo intenso de caminhões. Monitorar pontos de parada segura.';
-        } else if (r.includes('goiás') || r.includes('/go') || r.includes('brasília') || r.includes('/df')) {
-            alertaRota.classList.add('info', 'show');
-            alertaRota.innerHTML = '🛣️ <b>Rota GO/DF:</b> BR-060 com boas condições. Atenção ao tráfego intenso próximo ao DF.';
-        } else if (r.includes('espírito santo') || r.includes('/es') || r.includes('vitória') || r.includes('vila velha')) {
-            alertaRota.classList.add('warn', 'show');
-            alertaRota.innerHTML = '⚡ <b>Rota ES:</b> Serra das Araras — atenção às curvas fechadas e neblina.';
-        } else if (r.includes('mato grosso') || r.includes('/mt') || r.includes('/ms') || r.includes('cuiabá') || r.includes('campo grande')) {
-            alertaRota.classList.add('positive', 'show');
-            alertaRota.innerHTML = '✅ <b>Rota Centro-Oeste:</b> Rodovias amplas. Atenção ao cansaço em trechos longos.';
-        } else {
-            alertaRota.classList.add('info', 'show');
-            alertaRota.innerHTML = '✅ Rota cadastrada. Monitoramento ativo 24h. Fique atento às atualizações da equipe.';
-        }
-    }
-
-    campoSM.addEventListener('input', function() {
-        const val = this.value.trim();
-        limparCamposSM();
-        clearTimeout(buscaTimeout);
-        atualizarMensagem();
-
-        if (val.length >= 6) {
-            this.classList.add('searching');
-            buscaTimeout = setTimeout(async () => {
-                try {
-                    const resp = await fetch(`${endpointBase}?sm=${encodeURIComponent(val)}`);
-                    const dados = await resp.json();
-                    campoSM.classList.remove('searching');
-
-                    if (dados && dados.encontrado === true) {
-                        preencherCampo(campoMotorista, dados.motorista);
-                        preencherCampo(campoPlacaCavalo, dados.placaCavalo);
-                        preencherCampo(campoPlacaCarreta, dados.placaCarreta);
-                        preencherCampo(campoRota, dados.rota);
-                        avaliarRotaCondicional(dados.rota);
-                        atualizarMensagem();
-                        showMessage('✅ Dados autopreenchidos da planilha!', 'success');
-                    } else if (dados && dados.erro) {
-                        showMessage('❌ Erro: ' + dados.erro, 'error');
-                    }
-                } catch (err) {
-                    campoSM.classList.remove('searching');
-                    console.error('Erro busca SM:', err);
-                }
-            }, 500);
-        }
-    });
-    /* ═══════════════════════════════════════════════════════════════ */
+function abrirDireto() {
+  const ep = document.getElementById('endpoint').value.trim();
+  const sm = document.getElementById('sm').value.trim();
+  window.open(ep + '?sm=' + encodeURIComponent(sm), '_blank');
+}
 </script>
 </body>
 </html>

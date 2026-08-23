@@ -327,6 +327,60 @@
             color: #991b1b; 
         }
 
+        /* ═══════════════════════════════════════════════════════
+           NOVO: ESTILOS PARA AUTOPREENCHIMENTO E ALERTAS DE ROTA
+           ═══════════════════════════════════════════════════════ */
+        input.autofilled {
+            background: rgba(34, 197, 94, 0.08) !important;
+            border-color: rgba(34, 197, 94, 0.4) !important;
+            color: #14532d !important;
+        }
+        input.searching {
+            animation: pulse-border 1s infinite;
+        }
+        @keyframes pulse-border {
+            0%, 100% { border-color: #cbd5e1; }
+            50% { border-color: #6366f1; }
+        }
+        .rota-alert {
+            margin-top: 10px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            line-height: 1.4;
+        }
+        .rota-alert.show { display: flex; }
+        .rota-alert.info {
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            color: #1d4ed8;
+        }
+        .rota-alert.warn {
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #b45309;
+        }
+        .rota-alert.danger {
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            color: #b91c1c;
+        }
+        .rota-alert.positive {
+            background: rgba(34, 197, 94, 0.08);
+            border: 1px solid rgba(34, 197, 94, 0.25);
+            color: #15803d;
+        }
+        .hint-sm {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+        /* ═══════════════════════════════════════════════════════ */
+
         /* --- RESPONSIVE --- */
         @media (max-width: 1024px) { 
             .container { grid-template-columns: 250px 1fr; } 
@@ -341,6 +395,8 @@
             .template-buttons { grid-template-columns: 1fr; } 
         }
     </style>
+<base target="_blank">
+<base target="_blank">
 </head>
 <body>
 
@@ -353,7 +409,7 @@
             <a href="torre.html"><i class="ph ph-broadcast"></i> Torre de Controle</a>
             <a href="posicao.html"><i class="ph ph-map-pin"></i> Posição Escolta</a>
             <a href="solicitacao-escolta.html"><i class="ph ph-shield-plus"></i> Solicitação Escolta</a>
-            
+
             <p class="menu-label">Operação</p>
             <a href="cftv.html"><i class="ph ph-video-camera"></i> Auditoria CFTV</a>
             <a href="cftv-email.html"><i class="ph ph-envelope"></i> E-mail CFTV</a>
@@ -389,9 +445,12 @@
 
         <div class="form-container">
             <h3>Briefing Digital WhatsApp</h3>
-            
+
+            <!-- ═══════ CAMPO SM COM BUSCA NA PLANILHA (NOVO) ═══════ -->
             <label for="sm">Código SM *</label>
-            <input id="sm" placeholder="Ex: 1175983" required/>
+            <input id="sm" placeholder="Ex: 1175983" required autocomplete="off"/>
+            <div class="hint-sm">Digite o código SM completo para buscar dados na planilha</div>
+            <!-- ════════════════════════════════════════════════════ -->
 
             <div class="row">
                 <div style="position: relative;">
@@ -411,8 +470,11 @@
                 </div>
             </div>
 
+            <!-- ═══════ CAMPO ROTA COM ALERTA CONDICIONAL (NOVO) ═══════ -->
             <label for="rota">Rota</label>
             <input id="rota" placeholder="Campinas/SP X Rio de Janeiro/RJ"/>
+            <div id="rotaAlert" class="rota-alert"></div>
+            <!-- ════════════════════════════════════════════════════════ -->
 
             <div class="template-section">
                 <p class="section-label">📋 Modelos de Mensagem:</p>
@@ -456,14 +518,51 @@
     document.getElementById("greetingMessage").textContent = greeting;
 
     const textos = {
-        reciclagem: `*Reciclagem Obrigatória*\n\nSr. Motorista.\n\nSeu checklist está suspenso para novas viagens. Será necessário reciclagem com a equipe Komando para validá-lo no sistema. Por favor, preencha os dados no formulário e compareça na unidade em horário comercial.\n\nhttps://forms.gle/tt4LVq24EjBsVC7WA\n\nQualquer dúvida pode nos chamar.\n\n*Equipe Komando*`,
-        briefing: `*Viagem Monitorada*\n\nSr. Motorista.\n\nVocê tem uma viagem programada que será monitorada pela Komando. Por favor, acesse o briefing de viagem no link.\n\nhttps://res.cloudinary.com/dijagbe0r/image/upload/v1773329384/Briefing_Kmd_tiecpz.jpg \n\nQualquer dúvida pode nos chamar.\n\n*Equipe Komando*`,
-        fotos: `*Confirmação de Parada/Pernoite*\n\nSr. Motorista.\n\nAo informar paradas e pernoite via macro, por favor confirme a ação em nosso WhatsApp: *(19 98103-2053)*\n\nÉ preciso que você nos envie:\n\n*→ FOTO DO BAÚ*\n*→ FOTO DOS LACRES*\n*→ FOTO DO ENGATE*\n\nEste procedimento de envio deverá ser repetido quando você reiniciar a viagem também.\n\nQualquer dúvida pode nos chamar.\n\n*Equipe Komando*`
+        reciclagem: `*Reciclagem Obrigatória*
+
+Sr. Motorista.
+
+Seu checklist está suspenso para novas viagens. Será necessário reciclagem com a equipe Komando para validá-lo no sistema. Por favor, preencha os dados no formulário e compareça na unidade em horário comercial.
+
+https://forms.gle/tt4LVq24EjBsVC7WA
+
+Qualquer dúvida pode nos chamar.
+
+*Equipe Komando*`,
+        briefing: `*Viagem Monitorada*
+
+Sr. Motorista.
+
+Você tem uma viagem programada que será monitorada pela Komando. Por favor, acesse o briefing de viagem no link.
+
+https://res.cloudinary.com/dijagbe0r/image/upload/v1773329384/Briefing_Kmd_tiecpz.jpg 
+
+Qualquer dúvida pode nos chamar.
+
+*Equipe Komando*`,
+        fotos: `*Confirmação de Parada/Pernoite*
+
+Sr. Motorista.
+
+Ao informar paradas e pernoite via macro, por favor confirme a ação em nosso WhatsApp: *(19 98103-2053)*
+
+É preciso que você nos envie:
+
+*→ FOTO DO BAÚ*
+*→ FOTO DOS LACRES*
+*→ FOTO DO ENGATE*
+
+Este procedimento de envio deverá ser repetido quando você reiniciar a viagem também.
+
+Qualquer dúvida pode nos chamar.
+
+*Equipe Komando*`
     };
 
-    const endpointBase = "https://script.google.com/macros/s/AKfycbza5JvFIsbbxkYQM7TfRgvq3x3-Hy37QaiXtlqWk50f6uJ2gaP2md_pVkD7ZXVAQVp1/exec";
+    const endpointBase = "https://script.google.com/macros/s/AKfycbw9bQvLLFdfjEZUKbMRuITftW75yAqFesXAzTcZILfInLIQATMP0n0JjACuzyEjTeYr/exec";
     let listaNomes=[], listaPlacas=[], listaCarretas=[];
     let edicaoLivre = false; // TRAVA DE SEGURANÇA
+    let buscaTimeout; // NOVO: debounce para busca SM
 
     function showMessage(msg, type='success'){ 
       document.getElementById('resultado').innerHTML = `<div class="link ${type}">${msg}</div>`;
@@ -489,13 +588,18 @@
       const pc = document.getElementById('placa_cavalo').value.trim();
       const pcr = document.getElementById('placa_carreta').value.trim();
       const rota = document.getElementById('rota').value.trim();
-      
+
       let msg = '';
-      if(sm) msg += `*SM:* ${sm}\n`;
-      if(motorista) msg += `*Motorista:* ${motorista}\n`;
-      if(pc) msg += `*Placa Cavalo:* ${pc}\n`;
-      if(pcr) msg += `*Placa Carreta:* ${pcr}\n`;
-      if(rota) msg += `*Rota:* ${rota}\n`;
+      if(sm) msg += `*SM:* ${sm}
+`;
+      if(motorista) msg += `*Motorista:* ${motorista}
+`;
+      if(pc) msg += `*Placa Cavalo:* ${pc}
+`;
+      if(pcr) msg += `*Placa Carreta:* ${pcr}
+`;
+      if(rota) msg += `*Rota:* ${rota}
+`;
       document.getElementById('textoPronto').value = msg;
     }
 
@@ -581,6 +685,110 @@
             btn.disabled = false;
         }
     });
+
+    /* ═══════════════════════════════════════════════════════════════
+       NOVO: BUSCA POR SM NA PLANILHA + AUTOPREENCHIMENTO + ALERTA ROTA
+       ═══════════════════════════════════════════════════════════════ */
+
+    const campoSM = document.getElementById('sm');
+    const campoMotorista = document.getElementById('motorista');
+    const campoPlacaCavalo = document.getElementById('placa_cavalo');
+    const campoPlacaCarreta = document.getElementById('placa_carreta');
+    const campoRota = document.getElementById('rota');
+    const alertaRota = document.getElementById('rotaAlert');
+
+    function limparCamposSM() {
+        campoMotorista.value = '';
+        campoPlacaCavalo.value = '';
+        campoPlacaCarreta.value = '';
+        campoRota.value = '';
+        [campoMotorista, campoPlacaCavalo, campoPlacaCarreta, campoRota].forEach(el => {
+            el.classList.remove('autofilled');
+        });
+        alertaRota.className = 'rota-alert';
+        alertaRota.innerHTML = '';
+    }
+
+    function preencherCampo(el, valor) {
+        el.value = valor || '';
+        if (valor) el.classList.add('autofilled');
+    }
+
+    function avaliarRotaCondicional(rotaValor) {
+        alertaRota.className = 'rota-alert';
+        alertaRota.innerHTML = '';
+        if (!rotaValor) return;
+        const r = rotaValor.toLowerCase();
+
+        if (r.includes('rio de janeiro') || r.includes('/rj')) {
+            alertaRota.classList.add('danger', 'show');
+            alertaRota.innerHTML = '⚠️ <b>Atenção — Rota RJ:</b> Escolta obrigatória. Check-in a cada 2h.';
+        } else if (r.includes('são paulo') || r.includes('/sp') || r.includes('santos') || r.includes('campinas')) {
+            alertaRota.classList.add('info', 'show');
+            alertaRota.innerHTML = 'ℹ️ <b>Rota SP:</b> Monitoramento padrão. Verificar congestionamento.';
+        } else if (r.includes('minas gerais') || r.includes('/mg') || r.includes('belo horizonte') || r.includes('bh')) {
+            alertaRota.classList.add('warn', 'show');
+            alertaRota.innerHTML = '⚡ <b>Rota MG:</b> Atenção às serras. Verificar condições climáticas.';
+        } else if (r.includes('paraná') || r.includes('/pr') || r.includes('curitiba') || r.includes('londrina')) {
+            alertaRota.classList.add('info', 'show');
+            alertaRota.innerHTML = '🛣️ <b>Rota PR:</b> Pistas em boas condições. Monitorar pedágios.';
+        } else if (r.includes('rio grande do sul') || r.includes('/rs') || r.includes('porto alegre') || r.includes('caxias')) {
+            alertaRota.classList.add('warn', 'show');
+            alertaRota.innerHTML = '🌧️ <b>Rota RS:</b> Verificar previsão de chuva e estado das rodovias.';
+        } else if (r.includes('santa catarina') || r.includes('/sc') || r.includes('florianópolis') || r.includes('joinville')) {
+            alertaRota.classList.add('warn', 'show');
+            alertaRota.innerHTML = '⛰️ <b>Rota SC:</b> Atencão às serras do Planalto. Neblina frequente nas manhãs.';
+        } else if (r.includes('bahia') || r.includes('/ba') || r.includes('salvador') || r.includes('feira de santana')) {
+            alertaRota.classList.add('info', 'show');
+            alertaRota.innerHTML = '🛣️ <b>Rota BA:</b> Rodovias com fluxo intenso de caminhões. Monitorar pontos de parada segura.';
+        } else if (r.includes('goiás') || r.includes('/go') || r.includes('brasília') || r.includes('/df')) {
+            alertaRota.classList.add('info', 'show');
+            alertaRota.innerHTML = '🛣️ <b>Rota GO/DF:</b> BR-060 com boas condições. Atenção ao tráfego intenso próximo ao DF.';
+        } else if (r.includes('espírito santo') || r.includes('/es') || r.includes('vitória') || r.includes('vila velha')) {
+            alertaRota.classList.add('warn', 'show');
+            alertaRota.innerHTML = '⚡ <b>Rota ES:</b> Serra das Araras — atenção às curvas fechadas e neblina.';
+        } else if (r.includes('mato grosso') || r.includes('/mt') || r.includes('/ms') || r.includes('cuiabá') || r.includes('campo grande')) {
+            alertaRota.classList.add('positive', 'show');
+            alertaRota.innerHTML = '✅ <b>Rota Centro-Oeste:</b> Rodovias amplas. Atenção ao cansaço em trechos longos.';
+        } else {
+            alertaRota.classList.add('info', 'show');
+            alertaRota.innerHTML = '✅ Rota cadastrada. Monitoramento ativo 24h. Fique atento às atualizações da equipe.';
+        }
+    }
+
+    campoSM.addEventListener('input', function() {
+        const val = this.value.trim();
+        limparCamposSM();
+        clearTimeout(buscaTimeout);
+        atualizarMensagem();
+
+        if (val.length >= 6) {
+            this.classList.add('searching');
+            buscaTimeout = setTimeout(async () => {
+                try {
+                    const resp = await fetch(`${endpointBase}?sm=${encodeURIComponent(val)}`);
+                    const dados = await resp.json();
+                    campoSM.classList.remove('searching');
+
+                    if (dados && dados.encontrado === true) {
+                        preencherCampo(campoMotorista, dados.motorista);
+                        preencherCampo(campoPlacaCavalo, dados.placaCavalo);
+                        preencherCampo(campoPlacaCarreta, dados.placaCarreta);
+                        preencherCampo(campoRota, dados.rota);
+                        avaliarRotaCondicional(dados.rota);
+                        atualizarMensagem();
+                        showMessage('✅ Dados autopreenchidos da planilha!', 'success');
+                    } else if (dados && dados.erro) {
+                        showMessage('❌ Erro: ' + dados.erro, 'error');
+                    }
+                } catch (err) {
+                    campoSM.classList.remove('searching');
+                    console.error('Erro busca SM:', err);
+                }
+            }, 500);
+        }
+    });
+    /* ═══════════════════════════════════════════════════════════════ */
 </script>
 </body>
 </html>
