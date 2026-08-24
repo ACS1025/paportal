@@ -544,7 +544,7 @@
         <nav class="menu">
             <p class="menu-label">Monitoramento</p>
 
-            <a href="index.html" class="active">
+            <a href="index.html">
                 <i class="ph ph-gauge"></i>
                 Dashboard Principal
             </a>
@@ -615,7 +615,7 @@
                 Avaliação do Treinamento
             </a>
 
-            <a href="perfil_motorista.html">
+            <a href="perfil_motorista.html" class="active">
     <i class="ph ph-user-focus"></i> Perfil do Motorista
 </a>
         </nav>
@@ -825,7 +825,7 @@ Realize uma busca para gerar a resposta automática ao stakeholder com base nos 
     // =========================
     // CONFIG
     // =========================
-    const API_URL = 'SUA_URL_DO_APPS_SCRIPT_AQUI';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwGCeJNVJxaeNanOw1or1mu5mfs3qtPJ-oTpkkgrsfQt_Tadk48XBs5lfpQYY_HAD_Wgg/exec';
     let buscaTimeout = null;
     let dadosMotorista = null;
 
@@ -868,13 +868,20 @@ Realize uma busca para gerar a resposta automática ao stakeholder com base nos 
         document.getElementById('status-com').textContent = 'Buscando...';
 
         try {
-            // Chamada real ao Apps Script (descomente quando configurar)
-            // const response = await fetch(API_URL + '?action=buscarMotorista&termo=' + encodeURIComponent(termo));
-            // const data = await response.json();
+            const url = API_URL + '?action=buscarMotorista&termo=' + encodeURIComponent(termo);
+            console.log('Buscando:', url);
 
-            // Simulação com dados mockados
-            await new Promise(r => setTimeout(r, 800));
-            const data = gerarDadosMock(termo);
+            const response = await fetch(url);
+            const data = await response.json();
+            console.log('Resposta do servidor:', data);
+
+            if (!data.ok) {
+                throw new Error(data.error || 'Erro desconhecido no servidor');
+            }
+
+            // Simulação com dados mockados (comentar após teste)
+            // await new Promise(r => setTimeout(r, 800));
+            // const data = gerarDadosMock(termo);
             dadosMotorista = data;
             renderizarPerfil(data);
 
