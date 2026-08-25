@@ -8,96 +8,44 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        /* =========================
-           AJUSTES GLOBAIS
-        ========================== */
         * { box-sizing: border-box; }
         body { margin: 0; background: #f8fafc; font-family: Arial, Helvetica, sans-serif; }
         .hidden { display: none !important; }
         .container { display: flex; min-height: 100vh; }
 
-        /* =========================
-           SIDEBAR ESQUERDA
-        ========================== */
         .sidebar {
-            width: 260px;
-            background: #111827;
-            color: white;
-            padding: 20px;
-            flex-shrink: 0;
+            width: 260px; background: #111827; color: white; padding: 20px; flex-shrink: 0;
         }
         .logo h2 { margin: 0 0 25px; font-size: 20px; }
         .menu { display: flex; flex-direction: column; gap: 8px; }
         .menu-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            color: #94a3b8;
-            margin-top: 15px;
-            font-weight: 700;
-            letter-spacing: 1px;
+            font-size: 11px; text-transform: uppercase; color: #94a3b8; margin-top: 15px;
+            font-weight: 700; letter-spacing: 1px;
         }
         .menu a {
-            color: #e2e8f0;
-            text-decoration: none;
-            padding: 12px;
-            border-radius: 10px;
-            transition: 0.2s;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            color: #e2e8f0; text-decoration: none; padding: 12px; border-radius: 10px;
+            transition: 0.2s; font-size: 14px; display: flex; align-items: center; gap: 10px;
         }
         .menu a:hover, .menu a.active { background: #1e293b; }
 
-        /* =========================
-           CONTEÚDO PRINCIPAL
-        ========================== */
         .main-content {
-            flex: 1;
-            padding: 25px;
-            overflow-x: hidden;
-            min-width: 0;
+            flex: 1; padding: 25px; overflow-x: hidden; min-width: 0;
         }
         .top-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            gap: 20px; flex-wrap: wrap; margin-bottom: 20px;
         }
 
-        /* =========================
-           BOTÕES
-        ========================== */
         .btn-toggle {
-            border: none;
-            background: #1e293b;
-            color: white;
-            padding: 10px 16px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 700;
-            transition: 0.2s;
-            font-family: inherit;
-            font-size: 14px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            border: none; background: #1e293b; color: white; padding: 10px 16px;
+            border-radius: 10px; cursor: pointer; font-weight: 700; transition: 0.2s;
+            font-family: inherit; font-size: 14px; display: inline-flex; align-items: center; gap: 8px;
         }
         .btn-toggle:hover { opacity: 0.9; }
         .btn {
-            border: none;
-            padding: 10px 18px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 700;
-            transition: 0.2s;
-            font-family: inherit;
-            font-size: 13px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            border: none; padding: 10px 18px; border-radius: 10px; cursor: pointer;
+            font-weight: 700; transition: 0.2s; font-family: inherit; font-size: 13px;
+            display: inline-flex; align-items: center; gap: 8px;
         }
         .btn-primary { background: #6366f1; color: white; }
         .btn-primary:hover { background: #4f46e5; }
@@ -107,350 +55,192 @@
         .btn-success:hover { background: #16a34a; }
         .btn-sm { padding: 8px 14px; font-size: 12px; }
 
-        /* =========================
-           STATUS INDICATOR
-        ========================== */
         .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: white;
-            padding: 8px 16px;
-            border-radius: 30px;
-            border: 1px solid #e2e8f0;
-            font-size: 12px;
-            font-weight: 700;
+            display: flex; align-items: center; gap: 10px; background: white;
+            padding: 8px 16px; border-radius: 30px; border: 1px solid #e2e8f0;
+            font-size: 12px; font-weight: 700;
         }
-        .dot {
-            width: 10px;
-            height: 10px;
-            background: #cbd5e0;
-            border-radius: 50%;
-            display: inline-block;
-        }
+        .dot { width: 10px; height: 10px; background: #cbd5e0; border-radius: 50%; display: inline-block; }
         .dot.online {
-            background: #22c55e;
-            box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+            background: #22c55e; box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
             animation: pulse 2s infinite;
         }
         .dot.offline { background: #ef4444; }
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+            0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); }
         }
 
-        /* =========================
-           NOME DO MOTORISTA NO TOPO
-        ========================== */
+        /* NOME DO MOTORISTA NO TOPO */
         .motorista-topo {
             background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-            color: white;
-            padding: 16px 24px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
+            color: white; padding: 16px 24px; border-radius: 12px;
+            margin-bottom: 20px; display: flex; align-items: center; gap: 14px;
             box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
         }
         .motorista-topo i { font-size: 32px; }
-        .motorista-topo .motorista-nome {
-            font-size: 22px;
-            font-weight: 800;
-            margin: 0;
-        }
-        .motorista-topo .motorista-meta {
-            font-size: 13px;
-            opacity: 0.9;
-            margin-top: 2px;
-        }
+        .motorista-topo .motorista-nome { font-size: 22px; font-weight: 800; margin: 0; }
+        .motorista-topo .motorista-meta { font-size: 13px; opacity: 0.9; margin-top: 2px; }
 
-        /* =========================
-           BUSCA
-        ========================== */
         .search-box {
-            display: flex;
-            gap: 10px;
-            background: white;
-            padding: 8px;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            margin-bottom: 25px;
-            max-width: 700px;
+            display: flex; gap: 10px; background: white; padding: 8px;
+            border-radius: 12px; border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 25px; max-width: 700px;
         }
         .search-box input {
-            flex: 1;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 12px 16px;
-            color: #1e293b;
-            font-size: 14px;
-            font-family: inherit;
-            outline: none;
+            flex: 1; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;
+            padding: 12px 16px; color: #1e293b; font-size: 14px; font-family: inherit; outline: none;
         }
         .search-box input:focus { border-color: #6366f1; }
         .search-box input::placeholder { color: #94a3b8; }
 
-        /* =========================
-           STATS CARDS
-        ========================== */
+        /* STATS CARDS */
         .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px;
         }
         @media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 600px) { .stats-grid { grid-template-columns: 1fr; } }
         .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            border-top: 4px solid #6366f1;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
+            background: white; padding: 20px; border-radius: 12px;
+            border-top: 4px solid #6366f1; text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.2s;
         }
         .stat-card:hover { transform: translateY(-2px); }
         .stat-card p {
-            font-size: 10px;
-            text-transform: uppercase;
-            color: #94a3b8;
-            margin-bottom: 8px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
+            font-size: 10px; text-transform: uppercase; color: #94a3b8;
+            margin-bottom: 8px; font-weight: 800; letter-spacing: 0.5px;
         }
-        .stat-card h2 {
-            font-size: 32px;
-            color: #1e293b;
-            margin: 0;
-            font-weight: 800;
-        }
-        .stat-card .stat-label {
-            font-size: 12px;
-            color: #64748b;
-            margin-top: 6px;
-            font-weight: 600;
-        }
+        .stat-card h2 { font-size: 32px; color: #1e293b; margin: 0; font-weight: 800; }
+        .stat-card .stat-label { font-size: 12px; color: #64748b; margin-top: 6px; font-weight: 600; }
         .stat-card.blue { border-top-color: #6366f1; }
         .stat-card.green { border-top-color: #22c55e; }
         .stat-card.orange { border-top-color: #f59e0b; }
         .stat-card.red { border-top-color: #ef4444; }
         .stat-card.cyan { border-top-color: #06b6d4; }
 
-        /* =========================
-           CONTENT GRID
-        ========================== */
+        /* SCORE CARD ESPECIAL */
+        .score-card {
+            background: white; padding: 20px; border-radius: 12px;
+            text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 2px solid #e2e8f0; transition: transform 0.2s;
+        }
+        .score-card:hover { transform: translateY(-2px); }
+        .score-card .score-value {
+            font-size: 42px; font-weight: 800; margin: 0; transition: color 0.3s;
+        }
+        .score-card .score-badge {
+            display: inline-block; padding: 4px 14px; border-radius: 20px;
+            font-size: 12px; font-weight: 800; margin-top: 8px; text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .score-card .score-bar {
+            width: 100%; height: 8px; background: #e2e8f0; border-radius: 4px;
+            overflow: hidden; margin-top: 12px;
+        }
+        .score-card .score-bar-fill {
+            height: 100%; border-radius: 4px; transition: width 0.5s ease, background 0.3s;
+        }
+        .score-card .score-legend {
+            font-size: 11px; color: #94a3b8; margin-top: 8px; font-weight: 600;
+        }
+
         .content-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 20px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;
         }
         @media (max-width: 1100px) { .content-grid { grid-template-columns: 1fr; } }
         .card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            overflow: hidden;
-            border: 1px solid #e2e8f0;
+            background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            overflow: hidden; border: 1px solid #e2e8f0;
         }
         .card-header {
-            padding: 18px 20px;
-            border-bottom: 1px solid #e2e8f0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #fafafa;
+            padding: 18px 20px; border-bottom: 1px solid #e2e8f0;
+            display: flex; align-items: center; justify-content: space-between; background: #fafafa;
         }
         .card-header h3 {
-            font-size: 14px;
-            font-weight: 800;
-            color: #1e293b;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-size: 14px; font-weight: 800; color: #1e293b; margin: 0;
+            display: flex; align-items: center; gap: 10px;
+            text-transform: uppercase; letter-spacing: 0.5px;
         }
         .card-actions { display: flex; gap: 8px; }
         .card-body { padding: 0; }
 
-        /* =========================
-           TABELA DARK
-        ========================== */
         .tabela-dark {
-            width: 100%;
-            border-collapse: collapse;
-            background: #1e293b;
-            color: white;
-            overflow: hidden;
+            width: 100%; border-collapse: collapse; background: #1e293b; color: white; overflow: hidden;
         }
         .tabela-dark th {
-            background: #334155;
-            text-align: left;
-            padding: 12px 14px;
-            color: #94a3b8;
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            background: #334155; text-align: left; padding: 12px 14px; color: #94a3b8;
+            font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;
         }
-        .tabela-dark td {
-            padding: 12px 14px;
-            border-bottom: 1px solid #334155;
-            font-size: 13px;
-        }
+        .tabela-dark td { padding: 12px 14px; border-bottom: 1px solid #334155; font-size: 13px; }
         .tabela-dark tr:hover td { background: #243447; }
         .tabela-dark tr:last-child td { border-bottom: none; }
 
-        /* =========================
-           LISTA INTERNA
-        ========================== */
         .list-container { padding: 16px 20px; }
         .list-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px 0;
-            border-bottom: 1px solid #e2e8f0;
+            display: flex; align-items: center; gap: 14px;
+            padding: 14px 0; border-bottom: 1px solid #e2e8f0;
         }
         .list-item:last-child { border-bottom: none; padding-bottom: 0; }
         .list-item:first-child { padding-top: 0; }
         .list-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: #f1f5f9;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 14px;
-            color: #6366f1;
-            flex-shrink: 0;
+            width: 36px; height: 36px; border-radius: 10px; background: #f1f5f9;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 14px; color: #6366f1; flex-shrink: 0;
         }
         .list-info { flex: 1; min-width: 0; }
         .list-info h4 {
-            font-size: 13px;
-            font-weight: 700;
-            color: #1e293b;
-            margin: 0 0 3px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-size: 13px; font-weight: 700; color: #1e293b; margin: 0 0 3px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
-        .list-info p {
-            font-size: 12px;
-            color: #64748b;
-            margin: 0;
-        }
-        .list-count {
-            font-size: 14px;
-            font-weight: 800;
-            color: #6366f1;
-            flex-shrink: 0;
-        }
+        .list-info p { font-size: 12px; color: #64748b; margin: 0; }
+        .list-count { font-size: 14px; font-weight: 800; color: #6366f1; flex-shrink: 0; }
         .list-bar {
-            width: 50px;
-            height: 4px;
-            background: #e2e8f0;
-            border-radius: 2px;
-            overflow: hidden;
-            flex-shrink: 0;
+            width: 50px; height: 4px; background: #e2e8f0; border-radius: 2px;
+            overflow: hidden; flex-shrink: 0;
         }
         .list-bar-fill {
-            height: 100%;
-            background: #6366f1;
-            border-radius: 2px;
-            transition: width 0.5s ease;
+            height: 100%; background: #6366f1; border-radius: 2px; transition: width 0.5s ease;
         }
 
-        /* =========================
-           BADGES
-        ========================== */
         .badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 800;
-            display: inline-block;
-            white-space: nowrap;
+            padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 800;
+            display: inline-block; white-space: nowrap;
         }
         .badge-success { background: #dcfce7; color: #166534; }
         .badge-warning { background: #fef3c7; color: #92400e; }
         .badge-danger { background: #fee2e2; color: #991b1b; }
         .badge-info { background: #e0e7ff; color: #3730a3; }
         .badge-neutral { background: #f1f5f9; color: #475569; }
+        .badge-critico { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+        .badge-alto { background: #ffedd5; color: #c2410c; border: 1px solid #fdba74; }
+        .badge-medio { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+        .badge-baixo { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+        .badge-informativo { background: #e0e7ff; color: #3730a3; border: 1px solid #a5b4fc; }
 
-        /* =========================
-           RESPOSTA STAKEHOLDER
-        ========================== */
         .stakeholder-box {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 20px;
-            font-size: 13px;
-            line-height: 1.8;
-            color: #475569;
-            white-space: pre-line;
+            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px;
+            padding: 20px; font-size: 13px; line-height: 1.8; color: #475569; white-space: pre-line;
         }
         .stakeholder-box strong { color: #1e293b; }
 
-        /* =========================
-           EMPTY STATE
-        ========================== */
-        .empty-state {
-            text-align: center;
-            padding: 48px 20px;
-            color: #94a3b8;
-        }
-        .empty-state i {
-            font-size: 40px;
-            margin-bottom: 12px;
-            display: block;
-            opacity: 0.4;
-        }
+        .empty-state { text-align: center; padding: 48px 20px; color: #94a3b8; }
+        .empty-state i { font-size: 40px; margin-bottom: 12px; display: block; opacity: 0.4; }
         .empty-state p { margin: 0; font-size: 13px; }
         .empty-state p:first-of-type { font-size: 15px; font-weight: 700; color: #64748b; margin-bottom: 6px; }
 
-        /* =========================
-           SIDEBAR DIREITA
-        ========================== */
         .sidebar-right {
-            width: 220px;
-            background: #f1f5f9;
-            padding: 20px;
-            border-left: 1px solid #e2e8f0;
-            flex-shrink: 0;
+            width: 220px; background: #f1f5f9; padding: 20px;
+            border-left: 1px solid #e2e8f0; flex-shrink: 0;
         }
-        .icon-link {
-            transition: 0.2s;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
+        .icon-link { transition: 0.2s; text-decoration: none; color: inherit; display: block; }
         .icon-link:hover { transform: translateY(-2px); }
         .icon-link div {
-            background: white;
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-            margin-bottom: 10px;
-            text-align: center;
+            background: white; padding: 15px; border-radius: 12px;
+            border: 1px solid #e2e8f0; margin-bottom: 10px; text-align: center;
         }
         .icon-link i { font-size: 24px; }
         .icon-link p { font-size: 11px; font-weight: 700; margin-top: 5px; }
         @media (max-width: 1200px) { .sidebar-right { display: none; } }
 
-        /* =========================
-           RESPONSIVO
-        ========================== */
         @media (max-width: 768px) {
             .sidebar { display: none; position: fixed; z-index: 100; height: 100vh; }
             .sidebar.open { display: block; }
@@ -459,15 +249,25 @@
             .top-info { flex-direction: column; align-items: flex-start; }
         }
 
-        /* =========================
-           ESTILOS PARA PDF
-        ========================== */
         @media print {
             .sidebar, .sidebar-right, .search-box, .btn-toggle,
             .card-actions, .motorista-topo { display: none !important; }
             .card { break-inside: avoid; page-break-inside: avoid; }
             body { background: white; }
         }
+
+        /* SUMÁRIO DE OCORRÊNCIAS */
+        .sumario-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px;
+            padding: 16px 20px; background: #f8fafc;
+        }
+        .sumario-item {
+            background: white; padding: 12px; border-radius: 8px;
+            border: 1px solid #e2e8f0; text-align: center;
+        }
+        .sumario-item .sumario-cat { font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; }
+        .sumario-item .sumario-count { font-size: 20px; font-weight: 800; color: #1e293b; margin: 4px 0; }
+        .sumario-item .sumario-peso { font-size: 11px; color: #94a3b8; font-weight: 600; }
     </style>
 <base target="_blank">
 </head>
@@ -476,7 +276,6 @@
 
 <div class="container">
 
-    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebarLeft">
         <div class="logo"><h2>PA - Campinas</h2></div>
         <nav class="menu">
@@ -505,16 +304,13 @@
         </nav>
     </aside>
 
-    <!-- MAIN -->
     <main class="main-content">
 
-        <!-- BOTÕES -->
         <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 10px; flex-wrap: wrap;">
             <button onclick="toggleSidebar('left')" class="btn-toggle"><i class="ph ph-sidebar-simple"></i> Menu</button>
             <button onclick="toggleSidebar('right')" class="btn-toggle"><i class="ph ph-wrench"></i> Ferramentas</button>
         </div>
 
-        <!-- HEADER -->
         <div class="top-info">
             <div>
                 <h1 style="font-size: 24px; color: #1e293b; margin: 0; text-transform: uppercase; font-weight: 800;">Perfil do Motorista</h1>
@@ -526,17 +322,14 @@
             </div>
         </div>
 
-        <!-- BUSCA -->
         <div class="search-box">
             <input type="text" id="buscaMotorista" placeholder="Buscar por Código SM ou Nome do Motorista..." onkeyup="debounceBusca()">
             <button class="btn btn-primary" onclick="buscarMotorista()"><i class="ph ph-magnifying-glass"></i> Buscar</button>
             <button class="btn btn-secondary" onclick="limparBusca()"><i class="ph ph-x"></i> Limpar</button>
         </div>
 
-        <!-- PERFIL -->
         <div id="perfilMotorista" class="hidden">
 
-            <!-- NOME DO MOTORISTA NO TOPO -->
             <div class="motorista-topo" id="motoristaTopo">
                 <i class="ph ph-user-circle"></i>
                 <div>
@@ -545,7 +338,19 @@
                 </div>
             </div>
 
-            <!-- STATS -->
+            <!-- SCORE DESTACADO -->
+            <div class="score-card" id="scoreCard" style="margin-bottom: 25px;">
+                <p style="font-size: 10px; text-transform: uppercase; color: #94a3b8; margin: 0 0 8px; font-weight: 800; letter-spacing: 0.5px;">Índice Comportamental</p>
+                <div class="score-value" id="scoreValue">0</div>
+                <div class="score-badge" id="scoreBadge">-</div>
+                <div class="score-bar">
+                    <div class="score-bar-fill" id="scoreBarFill" style="width: 0%;"></div>
+                </div>
+                <div class="score-legend" id="scoreLegend">
+                    Score baseado em ocorrências relevantes (exclui Operação Normal)
+                </div>
+            </div>
+
             <div class="stats-grid">
                 <div class="stat-card blue">
                     <p>Total de SM</p>
@@ -558,21 +363,19 @@
                     <div class="stat-label">Realizados com sucesso</div>
                 </div>
                 <div class="stat-card orange">
-                    <p>Ocorrências</p>
+                    <p>Ocorrências Relevantes</p>
                     <h2 id="statOcorrencias">0</h2>
-                    <div class="stat-label">Eventos registrados</div>
+                    <div class="stat-label">Eventos que impactam score</div>
                 </div>
                 <div class="stat-card cyan">
-                    <p>Índice Comp.</p>
-                    <h2 id="statIndice">0%</h2>
-                    <div class="stat-label">Score comportamental</div>
+                    <p>Peso Total</p>
+                    <h2 id="statPeso">0</h2>
+                    <div class="stat-label">Penalização acumulada</div>
                 </div>
             </div>
 
-            <!-- CONTENT GRID -->
             <div class="content-grid">
 
-                <!-- RASTREAMENTO -->
                 <div class="card" id="card-rastreamento">
                     <div class="card-header">
                         <h3><i class="ph ph-truck"></i> Rastreamento</h3>
@@ -590,7 +393,6 @@
                     </div>
                 </div>
 
-                <!-- BRIEFING -->
                 <div class="card" id="card-briefing">
                     <div class="card-header">
                         <h3><i class="ph ph-clipboard-text"></i> Briefing</h3>
@@ -603,7 +405,6 @@
                     </div>
                 </div>
 
-                <!-- OCORRÊNCIAS -->
                 <div class="card" id="card-ocorrencias">
                     <div class="card-header">
                         <h3><i class="ph ph-warning"></i> Ocorrências</h3>
@@ -612,11 +413,12 @@
                         </div>
                     </div>
                     <div class="card-body">
+                        <!-- SUMÁRIO POR CATEGORIA -->
+                        <div class="sumario-grid" id="sumarioOcorrencias"></div>
                         <div class="list-container" id="listaOcorrencias"></div>
                     </div>
                 </div>
 
-                <!-- ÍNDICE COMPORTAMENTAL -->
                 <div class="card" id="card-indice">
                     <div class="card-header">
                         <h3><i class="ph ph-chart-bar"></i> Índice Comportamental</h3>
@@ -631,7 +433,6 @@
 
             </div>
 
-            <!-- RESPOSTA STAKEHOLDER -->
             <div class="card" style="margin-top: 20px;" id="card-stakeholder">
                 <div class="card-header">
                     <h3><i class="ph ph-paper-plane-right"></i> Resposta ao Stakeholder</h3>
@@ -647,7 +448,6 @@
 
         </div>
 
-        <!-- ESTADO INICIAL -->
         <div id="estadoInicial">
             <div class="card">
                 <div class="card-body">
@@ -662,51 +462,34 @@
 
     </main>
 
-    <!-- SIDEBAR DIREITA -->
     <aside class="sidebar-right" id="sidebarRight">
         <h4 style="font-size: 10px; color: #94a3b8; margin-bottom: 20px; letter-spacing: 1.5px; font-weight: 800;">FERRAMENTAS</h4>
         <a href="comunicado.html" class="icon-link"><div><i class="ph ph-whatsapp-logo" style="color: #25D366;"></i><p>GERADOR ZAP</p></div></a>
         <a href="torre.html" class="icon-link"><div><i class="ph ph-broadcast" style="color: #6366f1;"></i><p>TORRE 360</p></div></a>
-        <!-- CORREÇÃO: target="_self" garante abertura na mesma aba -->
-        <a href="index_Unificado.html" class="icon-link" target="_self"><div><i class="ph ph-user-focus" style="color: #06b6d4;"></i><p>PERFIL MOTORISTA</p></div></a>
+        <a href="perfil_motorista.html" class="icon-link" target="_self"><div><i class="ph ph-user-focus" style="color: #06b6d4;"></i><p>PERFIL MOTORISTA</p></div></a>
     </aside>
 
 </div>
 
 <script>
-    // =========================
-    // CONFIG
-    // =========================
-    const API_URL = 'https://script.google.com/macros/s/AKfycbwKG-AhhoPNpysX9jOpMigTPsi8J9Jb1gU6kzkseD9M-CnUmbTJbkWBVwOyxnO_SkXLUw/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbzTecmfxPks_tJPE8NE9BnsND9VX9xnoJ7sqLK_aLk3oC8XuBwG2a1R3xSPxhWNNlgo/exec';
     let buscaTimeout = null;
 
-    // =========================
-    // SAUDAÇÃO
-    // =========================
     const hour = new Date().getHours();
     const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
     document.getElementById("greetingMessage").textContent = greeting;
 
-    // =========================
-    // TOGGLE SIDEBAR
-    // =========================
     function toggleSidebar(side) {
         const selector = side === 'left' ? '#sidebarLeft' : '#sidebarRight';
         const el = document.querySelector(selector);
         if (el) el.classList.toggle('hidden');
     }
 
-    // =========================
-    // DEBOUNCE
-    // =========================
     function debounceBusca() {
         clearTimeout(buscaTimeout);
         buscaTimeout = setTimeout(() => buscarMotorista(), 600);
     }
 
-    // =========================
-    // BUSCAR MOTORISTA
-    // =========================
     async function buscarMotorista() {
         const termo = document.getElementById('buscaMotorista').value.trim();
         if (!termo) return;
@@ -718,7 +501,6 @@
 
         try {
             const url = API_URL + '?action=buscarMotorista&termo=' + encodeURIComponent(termo);
-
             const response = await fetch(url);
             const data = await response.json();
 
@@ -735,9 +517,6 @@
         }
     }
 
-    // =========================
-    // LIMPAR BUSCA
-    // =========================
     function limparBusca() {
         document.getElementById('buscaMotorista').value = '';
         document.getElementById('perfilMotorista').classList.add('hidden');
@@ -746,9 +525,6 @@
         document.getElementById('status-com').textContent = 'SINCRO...';
     }
 
-    // =========================
-    // HELPERS
-    // =========================
     function getProp(obj, ...names) {
         for (const n of names) {
             if (obj && obj[n] !== undefined && obj[n] !== null && obj[n] !== '') return obj[n];
@@ -765,22 +541,50 @@
         return 'badge-neutral';
     }
 
-    // =========================
-    // RENDERIZAR PERFIL
-    // =========================
+    function badgeNivel(nivel) {
+        const n = String(nivel).toLowerCase();
+        if (n.includes('critico')) return 'badge-critico';
+        if (n.includes('alto')) return 'badge-alto';
+        if (n.includes('medio') || n.includes('médio')) return 'badge-medio';
+        if (n.includes('baixo')) return 'badge-baixo';
+        return 'badge-informativo';
+    }
+
+    function getScoreInfo(score) {
+        if (score >= 90) return { cor: '#22c55e', texto: '✅ EXCELENTE', bg: '#dcfce7', corTexto: '#166534' };
+        if (score >= 70) return { cor: '#f59e0b', texto: '⚠️ BOM — Atenção', bg: '#fef3c7', corTexto: '#92400e' };
+        if (score >= 50) return { cor: '#f97316', texto: '🔶 REGULAR — Monitorar', bg: '#ffedd5', corTexto: '#c2410c' };
+        return { cor: '#ef4444', texto: '🔴 CRÍTICO — Intervenção', bg: '#fee2e2', corTexto: '#991b1b' };
+    }
+
     function renderizarPerfil(d) {
 
         // ── Nome do Motorista no Topo ──
         document.getElementById('nomeMotoristaDisplay').textContent = d.motorista || '-';
         document.getElementById('metaMotoristaDisplay').textContent = 
-            (d.totalSM || 0) + ' SM registradas • Índice: ' + (d.indice || 0) + '%';
+            (d.totalSM || 0) + ' SM registradas • Score: ' + (d.indice || 0) + '%';
+
+        // ── Score Destacado ──
+        const score = parseInt(d.indice) || 0;
+        const info = getScoreInfo(score);
+        const scoreValue = document.getElementById('scoreValue');
+        const scoreBadge = document.getElementById('scoreBadge');
+        const scoreBarFill = document.getElementById('scoreBarFill');
+
+        scoreValue.textContent = score + '%';
+        scoreValue.style.color = info.cor;
+        scoreBadge.textContent = info.texto;
+        scoreBadge.style.background = info.bg;
+        scoreBadge.style.color = info.corTexto;
+        scoreBarFill.style.width = Math.min(score, 100) + '%';
+        scoreBarFill.style.background = info.cor;
 
         // ── Stats ──
-        const totalOcorrencias = Array.isArray(d.ocorrencias) ? d.ocorrencias.length : 0;
+        const totalOcorrencias = Array.isArray(d.listaOcorrencias) ? d.listaOcorrencias.length : 0;
         document.getElementById('statTotalSM').textContent = d.totalSM || 0;
         document.getElementById('statBriefings').textContent = d.briefingsOK || 0;
         document.getElementById('statOcorrencias').textContent = totalOcorrencias;
-        document.getElementById('statIndice').textContent = (d.indice || 0) + '%';
+        document.getElementById('statPeso').textContent = d.totalPesoOcorrencias || 0;
 
         // ── Rastreamento ──
         let htmlRast = '';
@@ -823,30 +627,58 @@
         }
         document.getElementById('listaBriefing').innerHTML = htmlBrief;
 
-        // ── Ocorrências ──
+        // ── Sumário de Ocorrências por Categoria ──
+        let htmlSumario = '';
+        const sumario = d.sumarioOcorrencias || {};
+        const categorias = Object.keys(sumario);
+        if (categorias.length > 0) {
+            categorias.forEach(cat => {
+                const s = sumario[cat];
+                htmlSumario += `<div class="sumario-item">
+                    <div class="sumario-cat">${cat}</div>
+                    <div class="sumario-count">${s.count}</div>
+                    <div class="sumario-peso">Peso: ${s.peso}</div>
+                </div>`;
+            });
+        } else {
+            htmlSumario = `<div class="sumario-item" style="grid-column: 1 / -1;">
+                <div class="sumario-cat">SEM OCORRÊNCIAS RELEVANTES</div>
+                <div class="sumario-count" style="color: #22c55e;">✓</div>
+            </div>`;
+        }
+        document.getElementById('sumarioOcorrencias').innerHTML = htmlSumario;
+
+        // ── Ocorrências Detalhadas ──
         let htmlOcorr = '';
-        const ocorr = d.listaOcorrencias || d.ocorrencias || [];
+        const ocorr = d.listaOcorrencias || [];
         if (ocorr.length > 0) {
             ocorr.forEach(o => {
                 const tipo = getProp(o, 'Tipo Ocorrência', 'tipo_ocorrencia', 'Tipo');
                 const data = getProp(o, 'Data Hora Ocorrência', 'data', 'Data');
                 const desc = getProp(o, 'Descrição Ocorrência', 'descricao', 'Descrição', 'Observação');
                 const local = getProp(o, 'Local', 'local');
+                const categoria = o.categoria || 'NÃO CATALOGADO';
+                const nivel = o.nivel || 'MEDIO';
+                const peso = o.peso || 1;
                 htmlOcorr += `<div class="list-item">
                     <div class="list-avatar"><i class="ph ph-warning"></i></div>
                     <div class="list-info">
                         <h4>${tipo || 'Ocorrência'} — ${data || '-'}</h4>
                         <p>${desc || 'Sem descrição'} ${local ? '(' + local + ')' : ''}</p>
+                        <p style="margin-top: 4px;">
+                            <span class="badge ${badgeNivel(nivel)}">${nivel}</span>
+                            <span class="badge badge-neutral">${categoria}</span>
+                            <span class="badge badge-info">Peso: ${peso}</span>
+                        </p>
                     </div>
-                    <span class="badge badge-warning">Registrada</span>
                 </div>`;
             });
         } else {
-            htmlOcorr = `<div class="empty-state" style="padding:24px;"><i class="ph ph-check-circle"></i><p>Nenhuma ocorrência registrada</p></div>`;
+            htmlOcorr = `<div class="empty-state" style="padding:24px;"><i class="ph ph-check-circle"></i><p>Nenhuma ocorrência relevante registrada</p><p style="font-size: 12px; margin-top: 8px;">Operações normais são excluídas automaticamente</p></div>`;
         }
         document.getElementById('listaOcorrencias').innerHTML = htmlOcorr;
 
-        // ── Índice Comportamental ──
+        // ── Índice Comportamental (lista de meses) ──
         let htmlIndice = '';
         const scoreCalc = parseInt(d.indice) || 0;
         const barColor = scoreCalc >= 90 ? '#22c55e' : scoreCalc >= 70 ? '#f59e0b' : '#ef4444';
@@ -874,7 +706,7 @@
                 <div class="list-avatar" style="color:${barColor}">${scoreCalc}</div>
                 <div class="list-info">
                     <h4>Score Calculado</h4>
-                    <p>${d.totalSM || 0} SM • ${d.briefingsOK || 0} briefings • ${totalOcorrencias} ocorrências</p>
+                    <p>${d.totalSM || 0} SM • ${d.briefingsOK || 0} briefings • ${totalOcorrencias} ocorrências relevantes</p>
                 </div>
                 <div class="list-bar">
                     <div class="list-bar-fill" style="width: ${Math.min(scoreCalc,100)}%; background: ${barColor};"></div>
@@ -888,10 +720,10 @@
 
 Segue consolidado do motorista **${d.motorista || '-'}**:
 
-📊 **Performance:** ${d.indice || 0}% de índice comportamental
+📊 **Performance:** ${d.indice || 0}% de índice comportamental (${info.texto.replace(/[✅⚠️🔶🔴]/g, '').trim()})
 🚛 **Total de Viagens:** ${d.totalSM || 0} SM registradas
 ✅ **Briefings:** ${d.briefingsOK || 0}/${d.totalSM || 0} realizados
-⚠️ **Ocorrências:** ${totalOcorrencias} evento(s) registrado(s)
+⚠️ **Ocorrências Relevantes:** ${totalOcorrencias} evento(s) (${d.totalPesoOcorrencias || 0} pts de penalização)
 
 Últimas viagens:
 ${(d.rastreamento || []).slice(0,3).map(r => `• ${r.sm || '-'} — ${r.rota || '-'} (${r.status || '-'})`).join('\n') || 'Nenhuma'}
@@ -902,46 +734,23 @@ PA Campinas — Gerenciamento de Riscos`;
         document.getElementById('respostaStakeholder').innerHTML = resposta.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
     }
 
-    // =========================
-    // EXPORTAR PDF
-    // =========================
     function exportarPDF(tipo) {
         let elemento;
         let nomeArquivo;
 
         switch(tipo) {
-            case 'rastreamento':
-                elemento = document.getElementById('card-rastreamento');
-                nomeArquivo = 'rastreamento_motorista.pdf';
-                break;
-            case 'briefing':
-                elemento = document.getElementById('card-briefing');
-                nomeArquivo = 'briefing_motorista.pdf';
-                break;
-            case 'ocorrencias':
-                elemento = document.getElementById('card-ocorrencias');
-                nomeArquivo = 'ocorrencias_motorista.pdf';
-                break;
-            case 'indice':
-                elemento = document.getElementById('card-indice');
-                nomeArquivo = 'indice_comportamental.pdf';
-                break;
-            case 'stakeholder':
-                elemento = document.getElementById('card-stakeholder');
-                nomeArquivo = 'resposta_stakeholder.pdf';
-                break;
-            default:
-                return;
+            case 'rastreamento': elemento = document.getElementById('card-rastreamento'); nomeArquivo = 'rastreamento_motorista.pdf'; break;
+            case 'briefing': elemento = document.getElementById('card-briefing'); nomeArquivo = 'briefing_motorista.pdf'; break;
+            case 'ocorrencias': elemento = document.getElementById('card-ocorrencias'); nomeArquivo = 'ocorrencias_motorista.pdf'; break;
+            case 'indice': elemento = document.getElementById('card-indice'); nomeArquivo = 'indice_comportamental.pdf'; break;
+            case 'stakeholder': elemento = document.getElementById('card-stakeholder'); nomeArquivo = 'resposta_stakeholder.pdf'; break;
+            default: return;
         }
 
-        // Clona para não alterar o DOM original
         const clone = elemento.cloneNode(true);
-
-        // Remove botões do clone
         const botoes = clone.querySelectorAll('.card-actions');
         botoes.forEach(b => b.remove());
 
-        // Adiciona título do motorista no topo do PDF
         const nomeMotorista = document.getElementById('nomeMotoristaDisplay').textContent;
         const headerDiv = document.createElement('div');
         headerDiv.innerHTML = `
@@ -969,9 +778,6 @@ PA Campinas — Gerenciamento de Riscos`;
         html2pdf().set(opt).from(wrapper).save();
     }
 
-    // =========================
-    // COPIAR RESPOSTA
-    // =========================
     function copiarResposta() {
         const texto = document.getElementById('respostaStakeholder').innerText;
         navigator.clipboard.writeText(texto).then(() => {
