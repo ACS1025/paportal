@@ -1,133 +1,877 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-<meta charset="utf-8">
-<title>Diagnóstico SM</title>
-<style>
-body { font-family: system-ui, sans-serif; padding: 20px; max-width: 700px; margin: 0 auto; background: #f8fafc; }
-.box { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin: 12px 0; }
-h3 { margin: 0 0 12px; }
-label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin-top: 12px; margin-bottom: 4px; }
-input { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; box-sizing: border-box; }
-button { padding: 10px 16px; font-size: 14px; cursor: pointer; border: none; border-radius: 8px; margin: 4px 4px 0 0; font-weight: 600; }
-.btn-fetch { background: #3b82f6; color: white; }
-.btn-jsonp { background: #22c55e; color: white; }
-.btn-direct { background: #f59e0b; color: white; }
-pre { background: #1e293b; color: #e2e8f0; padding: 12px; border-radius: 8px; overflow-x: auto; font-size: 12px; line-height: 1.5; }
-.ok { color: #22c55e; font-weight: 600; }
-.err { color: #ef4444; font-weight: 600; }
-.warn { color: #f59e0b; font-weight: 600; }
-.info { color: #64748b; }
-#resultado { min-height: 100px; }
-#resultado div { margin: 4px 0; font-size: 13px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Motorista | Portal PA - Campinas</title>
+    <link rel="icon" href="src/img/kmd-16x16.png" type="image/png">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        /* =========================
+           AJUSTES GLOBAIS
+        ========================== */
+        * { box-sizing: border-box; }
+        body { margin: 0; background: #f8fafc; font-family: Arial, Helvetica, sans-serif; }
+        .hidden { display: none !important; }
+        .container { display: flex; min-height: 100vh; }
+
+        /* =========================
+           SIDEBAR ESQUERDA
+        ========================== */
+        .sidebar {
+            width: 260px;
+            background: #111827;
+            color: white;
+            padding: 20px;
+            flex-shrink: 0;
+        }
+        .logo h2 { margin: 0 0 25px; font-size: 20px; }
+        .menu { display: flex; flex-direction: column; gap: 8px; }
+        .menu-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            margin-top: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .menu a {
+            color: #e2e8f0;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 10px;
+            transition: 0.2s;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .menu a:hover, .menu a.active { background: #1e293b; }
+
+        /* =========================
+           CONTEÚDO PRINCIPAL
+        ========================== */
+        .main-content {
+            flex: 1;
+            padding: 25px;
+            overflow-x: hidden;
+            min-width: 0;
+        }
+        .top-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        /* =========================
+           BOTÕES
+        ========================== */
+        .btn-toggle {
+            border: none;
+            background: #1e293b;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.2s;
+            font-family: inherit;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-toggle:hover { opacity: 0.9; }
+        .btn {
+            border: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.2s;
+            font-family: inherit;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary { background: #6366f1; color: white; }
+        .btn-primary:hover { background: #4f46e5; }
+        .btn-secondary { background: #e2e8f0; color: #475569; }
+        .btn-secondary:hover { background: #cbd5e1; }
+        .btn-success { background: #22c55e; color: white; }
+        .btn-success:hover { background: #16a34a; }
+        .btn-sm { padding: 8px 14px; font-size: 12px; }
+
+        /* =========================
+           STATUS INDICATOR
+        ========================== */
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: 1px solid #e2e8f0;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: #cbd5e0;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .dot.online {
+            background: #22c55e;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+            animation: pulse 2s infinite;
+        }
+        .dot.offline { background: #ef4444; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* =========================
+           BUSCA
+        ========================== */
+        .search-box {
+            display: flex;
+            gap: 10px;
+            background: white;
+            padding: 8px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            margin-bottom: 25px;
+            max-width: 700px;
+        }
+        .search-box input {
+            flex: 1;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: #1e293b;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+        }
+        .search-box input:focus { border-color: #6366f1; }
+        .search-box input::placeholder { color: #94a3b8; }
+
+        /* =========================
+           STATS CARDS
+        ========================== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        @media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .stats-grid { grid-template-columns: 1fr; } }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border-top: 4px solid #6366f1;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-2px); }
+        .stat-card p {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+        .stat-card h2 {
+            font-size: 32px;
+            color: #1e293b;
+            margin: 0;
+            font-weight: 800;
+        }
+        .stat-card .stat-label {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+        .stat-card.blue { border-top-color: #6366f1; }
+        .stat-card.green { border-top-color: #22c55e; }
+        .stat-card.orange { border-top-color: #f59e0b; }
+        .stat-card.red { border-top-color: #ef4444; }
+        .stat-card.cyan { border-top-color: #06b6d4; }
+
+        /* =========================
+           CONTENT GRID
+        ========================== */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 1100px) { .content-grid { grid-template-columns: 1fr; } }
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+        .card-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fafafa;
+        }
+        .card-header h3 {
+            font-size: 14px;
+            font-weight: 800;
+            color: #1e293b;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .card-actions { display: flex; gap: 8px; }
+        .card-body { padding: 0; }
+
+        /* =========================
+           TABELA DARK
+        ========================== */
+        .tabela-dark {
+            width: 100%;
+            border-collapse: collapse;
+            background: #1e293b;
+            color: white;
+            overflow: hidden;
+        }
+        .tabela-dark th {
+            background: #334155;
+            text-align: left;
+            padding: 12px 14px;
+            color: #94a3b8;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .tabela-dark td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #334155;
+            font-size: 13px;
+        }
+        .tabela-dark tr:hover td { background: #243447; }
+        .tabela-dark tr:last-child td { border-bottom: none; }
+
+        /* =========================
+           LISTA INTERNA
+        ========================== */
+        .list-container { padding: 16px 20px; }
+        .list-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .list-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .list-item:first-child { padding-top: 0; }
+        .list-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14px;
+            color: #6366f1;
+            flex-shrink: 0;
+        }
+        .list-info { flex: 1; min-width: 0; }
+        .list-info h4 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0 0 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .list-info p {
+            font-size: 12px;
+            color: #64748b;
+            margin: 0;
+        }
+        .list-count {
+            font-size: 14px;
+            font-weight: 800;
+            color: #6366f1;
+            flex-shrink: 0;
+        }
+        .list-bar {
+            width: 50px;
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .list-bar-fill {
+            height: 100%;
+            background: #6366f1;
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+
+        /* =========================
+           BADGES
+        ========================== */
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        .badge-success { background: #dcfce7; color: #166534; }
+        .badge-warning { background: #fef3c7; color: #92400e; }
+        .badge-danger { background: #fee2e2; color: #991b1b; }
+        .badge-info { background: #e0e7ff; color: #3730a3; }
+        .badge-neutral { background: #f1f5f9; color: #475569; }
+
+        /* =========================
+           RESPOSTA STAKEHOLDER
+        ========================== */
+        .stakeholder-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            font-size: 13px;
+            line-height: 1.8;
+            color: #475569;
+            white-space: pre-line;
+        }
+        .stakeholder-box strong { color: #1e293b; }
+
+        /* =========================
+           EMPTY STATE
+        ========================== */
+        .empty-state {
+            text-align: center;
+            padding: 48px 20px;
+            color: #94a3b8;
+        }
+        .empty-state i {
+            font-size: 40px;
+            margin-bottom: 12px;
+            display: block;
+            opacity: 0.4;
+        }
+        .empty-state p { margin: 0; font-size: 13px; }
+        .empty-state p:first-of-type { font-size: 15px; font-weight: 700; color: #64748b; margin-bottom: 6px; }
+
+        /* =========================
+           SIDEBAR DIREITA
+        ========================== */
+        .sidebar-right {
+            width: 220px;
+            background: #f1f5f9;
+            padding: 20px;
+            border-left: 1px solid #e2e8f0;
+            flex-shrink: 0;
+        }
+        .icon-link {
+            transition: 0.2s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .icon-link:hover { transform: translateY(-2px); }
+        .icon-link div {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .icon-link i { font-size: 24px; }
+        .icon-link p { font-size: 11px; font-weight: 700; margin-top: 5px; }
+        @media (max-width: 1200px) { .sidebar-right { display: none; } }
+
+        /* =========================
+           RESPONSIVO
+        ========================== */
+        @media (max-width: 768px) {
+            .sidebar { display: none; position: fixed; z-index: 100; height: 100vh; }
+            .sidebar.open { display: block; }
+            .main-content { padding: 15px; }
+            .search-box { flex-direction: column; }
+            .top-info { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
 <base target="_blank">
 </head>
+
 <body>
 
-<div class="box">
-  <h3>🔍 Diagnóstico — Busca por SM</h3>
-  <label>Endpoint do Apps Script</label>
-  <input id="endpoint" value="https://script.google.com/macros/s/AKfycbz-VPu2CEaxnrTtwItYcoeJaClpJhZsCscUfBvmY_s4oJ4fTQwykSyb0Uq7B2RMewY-/exec">
-  <label>Código SM</label>
-  <input id="sm" placeholder="1269564" value="1269564">
-  <div style="margin-top:12px;">
-    <button class="btn-fetch" onclick="testarFetch()">1️⃣ Testar FETCH</button>
-    <button class="btn-jsonp" onclick="testarJSONP()">2️⃣ Testar JSONP</button>
-    <button class="btn-direct" onclick="abrirDireto()">3️⃣ Abrir URL direto</button>
-  </div>
-</div>
+<div class="container">
 
-<div class="box">
-  <h4>📋 Resultado:</h4>
-  <div id="resultado">Clique em um botão acima para testar.</div>
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebarLeft">
+        <div class="logo"><h2>PA - Campinas</h2></div>
+        <nav class="menu">
+            <p class="menu-label">Monitoramento</p>
+            <a href="index.html"><i class="ph ph-gauge"></i> Dashboard Principal</a>
+            <a href="torre.html"><i class="ph ph-broadcast"></i> Torre de Controle</a>
+            <a href="posicao.html"><i class="ph ph-map-pin"></i> Posição Escolta</a>
+            <a href="solicitacao-escolta.html"><i class="ph ph-shield-plus"></i> Solicitação Escolta</a>
+
+            <p class="menu-label">Operação</p>
+            <a href="cftv.html"><i class="ph ph-video-camera"></i> Auditoria CFTV</a>
+            <a href="cftv-email.html"><i class="ph ph-envelope"></i> E-mail CFTV</a>
+            <a href="brief.html"><i class="ph ph-clipboard-text"></i> Briefing Digital</a>
+            <a href="registros-saidas.html"><i class="ph ph-sign-out"></i> Registro de Saídas</a>
+            <a href="comunicado.html"><i class="ph ph-whatsapp-logo"></i> Gerador de Comunicado</a>
+            <a href="conhecimento.html"><i class="ph ph-book-open"></i> Para Conhecimento</a>
+            <a href="espelhamento.html"><i class="ph ph-arrows-left-right"></i> Espelhamento</a>
+
+            <p class="menu-label">Material de Apoio</p>
+            <a href="apoio.html"><i class="ph ph-files"></i> Documentos</a>
+
+            <p class="menu-label">Capacitação</p>
+            <a href="https://pacampinas-avaliacao.streamlit.app/" target="_blank"><i class="ph ph-graduation-cap"></i> Histórico do Motorista</a>
+            <a href="Treinamento_Komando_Completo.html"><i class="ph ph-graduation-cap"></i> Avaliação do Treinamento</a>
+            <a href="perfil_motorista.html" class="active"><i class="ph ph-user-focus"></i> Perfil do Motorista</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+
+        <!-- BOTÕES -->
+        <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 10px; flex-wrap: wrap;">
+            <button onclick="toggleSidebar('left')" class="btn-toggle"><i class="ph ph-sidebar-simple"></i> Menu</button>
+            <button onclick="toggleSidebar('right')" class="btn-toggle"><i class="ph ph-wrench"></i> Ferramentas</button>
+        </div>
+
+        <!-- HEADER -->
+        <div class="top-info">
+            <div>
+                <h1 style="font-size: 24px; color: #1e293b; margin: 0; text-transform: uppercase; font-weight: 800;">Perfil do Motorista</h1>
+                <p style="color: #64748b; font-size: 14px;"><span id="greetingMessage"></span> — Consolidação de Rastreamento, Briefing, Treinamento e Índice Comportamental</p>
+            </div>
+            <div id="status-sincro" class="status-indicator">
+                <span id="status-dot" class="dot"></span>
+                <span id="status-com">SINCRO...</span>
+            </div>
+        </div>
+
+        <!-- BUSCA -->
+        <div class="search-box">
+            <input type="text" id="buscaMotorista" placeholder="Buscar por Código SM ou Nome do Motorista..." onkeyup="debounceBusca()">
+            <button class="btn btn-primary" onclick="buscarMotorista()"><i class="ph ph-magnifying-glass"></i> Buscar</button>
+            <button class="btn btn-secondary" onclick="limparBusca()"><i class="ph ph-x"></i> Limpar</button>
+        </div>
+
+        <!-- PERFIL -->
+        <div id="perfilMotorista" class="hidden">
+
+            <!-- STATS -->
+            <div class="stats-grid">
+                <div class="stat-card blue">
+                    <p>Total de SM</p>
+                    <h2 id="statTotalSM">0</h2>
+                    <div class="stat-label">Viagens registradas</div>
+                </div>
+                <div class="stat-card green">
+                    <p>Briefings OK</p>
+                    <h2 id="statBriefings">0</h2>
+                    <div class="stat-label">Realizados com sucesso</div>
+                </div>
+                <div class="stat-card orange">
+                    <p>Ocorrências</p>
+                    <h2 id="statOcorrencias">0</h2>
+                    <div class="stat-label">Eventos registrados</div>
+                </div>
+                <div class="stat-card cyan">
+                    <p>Índice Comp.</p>
+                    <h2 id="statIndice">0%</h2>
+                    <div class="stat-label">Score comportamental</div>
+                </div>
+            </div>
+
+            <!-- CONTENT GRID -->
+            <div class="content-grid">
+
+                <!-- RASTREAMENTO -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="ph ph-truck"></i> Rastreamento</h3>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-secondary" onclick="exportarPDF('rastreamento')"><i class="ph ph-file-pdf"></i> PDF</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="tabela-dark">
+                            <thead>
+                                <tr><th>SM</th><th>Data</th><th>Rota</th><th>Cliente</th><th>Status</th></tr>
+                            </thead>
+                            <tbody id="tbodyRastreamento"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- BRIEFING -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="ph ph-clipboard-text"></i> Briefing</h3>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-secondary" onclick="exportarPDF('briefing')"><i class="ph ph-file-pdf"></i> PDF</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-container" id="listaBriefing"></div>
+                    </div>
+                </div>
+
+                <!-- OCORRÊNCIAS -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="ph ph-warning"></i> Ocorrências</h3>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-secondary" onclick="exportarPDF('ocorrencias')"><i class="ph ph-file-pdf"></i> PDF</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-container" id="listaOcorrencias"></div>
+                    </div>
+                </div>
+
+                <!-- ÍNDICE COMPORTAMENTAL -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="ph ph-chart-bar"></i> Índice Comportamental</h3>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-secondary" onclick="exportarPDF('indice')"><i class="ph ph-file-pdf"></i> PDF</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-container" id="listaIndice"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RESPOSTA STAKEHOLDER -->
+            <div class="card" style="margin-top: 20px;">
+                <div class="card-header">
+                    <h3><i class="ph ph-paper-plane-right"></i> Resposta ao Stakeholder</h3>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-success" onclick="copiarResposta()"><i class="ph ph-copy"></i> Copiar</button>
+                    </div>
+                </div>
+                <div class="card-body" style="padding: 20px;">
+                    <div class="stakeholder-box" id="respostaStakeholder">Realize uma busca para gerar a resposta automática.</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ESTADO INICIAL -->
+        <div id="estadoInicial">
+            <div class="card">
+                <div class="card-body">
+                    <div class="empty-state">
+                        <i class="ph ph-magnifying-glass"></i>
+                        <p>Busque por um motorista</p>
+                        <p>Digite o Código SM ou o nome do motorista para visualizar o perfil completo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- SIDEBAR DIREITA -->
+    <aside class="sidebar-right" id="sidebarRight">
+        <h4 style="font-size: 10px; color: #94a3b8; margin-bottom: 20px; letter-spacing: 1.5px; font-weight: 800;">FERRAMENTAS</h4>
+        <a href="comunicado.html" class="icon-link"><div><i class="ph ph-whatsapp-logo" style="color: #25D366;"></i><p>GERADOR ZAP</p></div></a>
+        <a href="torre.html" class="icon-link"><div><i class="ph ph-broadcast" style="color: #6366f1;"></i><p>TORRE 360</p></div></a>
+        <a href="index_Unificado.html" class="icon-link"><div><i class="ph ph-user-focus" style="color: #06b6d4;"></i><p>PERFIL MOTORISTA</p></div></a>
+    </aside>
+
 </div>
 
 <script>
-function limpar() {
-  document.getElementById('resultado').innerHTML = '';
-}
-function log(tipo, msg) {
-  const r = document.getElementById('resultado');
-  const cor = tipo === 'ok' ? 'ok' : tipo === 'err' ? 'err' : tipo === 'warn' ? 'warn' : 'info';
-  r.innerHTML += '<div class="' + cor + '">' + msg + '</div>';
-  r.scrollTop = r.scrollHeight;
-}
+    // =========================
+    // CONFIG
+    // =========================
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxjO0ksn1o7vNZj6T2WmqMsc1IF_A9vi7_vHwZrutvN4atZJCBeGKnJCfD0K6eizDSS/exec';
+    let buscaTimeout = null;
 
-async function testarFetch() {
-  limpar();
-  const ep = document.getElementById('endpoint').value.trim();
-  const sm = document.getElementById('sm').value.trim();
-  log('info', '⏳ Testando FETCH...');
-  log('info', '🔗 URL: ' + ep + '?sm=' + encodeURIComponent(sm));
+    // =========================
+    // SAUDAÇÃO
+    // =========================
+    const hour = new Date().getHours();
+    const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
+    document.getElementById("greetingMessage").textContent = greeting;
 
-  try {
-    const resp = await fetch(ep + '?sm=' + encodeURIComponent(sm));
-    log('ok', '✅ HTTP Status: ' + resp.status + ' ' + resp.statusText);
-    const texto = await resp.text();
-    log('info', '📄 Corpo (300 primeiros chars):<pre>' + texto.substring(0, 300).replace(/</g,'&lt;') + '</pre>');
-    try {
-      const json = JSON.parse(texto);
-      log('ok', '📦 JSON parseado:<pre>' + JSON.stringify(json, null, 2).substring(0, 400).replace(/</g,'&lt;') + '</pre>');
-    } catch(e) {
-      log('err', '❌ Não é JSON válido: ' + e.message);
+    // =========================
+    // TOGGLE SIDEBAR
+    // =========================
+    function toggleSidebar(side) {
+        const selector = side === 'left' ? '#sidebarLeft' : '#sidebarRight';
+        const el = document.querySelector(selector);
+        if (el) el.classList.toggle('hidden');
     }
-  } catch(err) {
-    log('err', '❌ ERRO FETCH: ' + err.name + ': ' + err.message);
-    if (err.message.includes('Failed to fetch') || err.message.includes('CORS') || err.message.includes('NetworkError')) {
-      log('warn', '⚠️ Isso indica problema de CORS — o FETCH não funciona no GitHub Pages/Live Server');
-      log('warn', '💡 Solução: usar JSONP (botão verde)');
+
+    // =========================
+    // DEBOUNCE
+    // =========================
+    function debounceBusca() {
+        clearTimeout(buscaTimeout);
+        buscaTimeout = setTimeout(() => buscarMotorista(), 600);
     }
-  }
-}
 
-let cbId = 0;
-function testarJSONP() {
-  limpar();
-  const ep = document.getElementById('endpoint').value.trim();
-  const sm = document.getElementById('sm').value.trim();
-  log('info', '⏳ Testando JSONP...');
+    // =========================
+    // BUSCAR MOTORISTA
+    // =========================
+    async function buscarMotorista() {
+        const termo = document.getElementById('buscaMotorista').value.trim();
+        if (!termo) return;
 
-  const cbName = '_test_' + (++cbId) + '_' + Date.now();
-  const script = document.createElement('script');
-  const t = setTimeout(() => {
-    cleanup();
-    log('err', '❌ JSONP Timeout (8s) — o script não respondeu');
-  }, 8000);
+        document.getElementById('estadoInicial').classList.add('hidden');
+        document.getElementById('perfilMotorista').classList.remove('hidden');
+        document.getElementById('status-dot').className = 'dot online';
+        document.getElementById('status-com').textContent = 'Buscando...';
 
-  function cleanup() {
-    clearTimeout(t);
-    if (script.parentNode) script.parentNode.removeChild(script);
-    delete window[cbName];
-  }
+        try {
+            const url = API_URL + '?action=buscarMotorista&termo=' + encodeURIComponent(termo);
+            
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            if (!data.ok) {
+                throw new Error(data.error || 'Erro no servidor');
+            }
 
-  window[cbName] = function(dados) {
-    cleanup();
-    log('ok', '✅ JSONP funcionou!');
-    log('info', '📦 Dados recebidos:<pre>' + JSON.stringify(dados, null, 2).substring(0, 500).replace(/</g,'&lt;') + '</pre>');
-    if (dados.encontrado) {
-      log('ok', '🎯 SM encontrado! Motorista: ' + (dados.motorista || '(vazio)'));
-    } else {
-      log('warn', '⚠️ SM não encontrado na planilha');
+            renderizarPerfil(data);
+            document.getElementById('status-com').textContent = 'Online';
+        } catch (err) {
+            console.error('Erro:', err);
+            document.getElementById('status-dot').className = 'dot offline';
+            document.getElementById('status-com').textContent = 'Erro: ' + err.message;
+        }
     }
-  };
 
-  script.onerror = function(e) {
-    cleanup();
-    log('err', '❌ JSONP falhou ao carregar o script');
-    log('err', '💡 Verifique se a URL do endpoint está correta e se o Apps Script foi deployado');
-  };
+    // =========================
+    // LIMPAR BUSCA
+    // =========================
+    function limparBusca() {
+        document.getElementById('buscaMotorista').value = '';
+        document.getElementById('perfilMotorista').classList.add('hidden');
+        document.getElementById('estadoInicial').classList.remove('hidden');
+        document.getElementById('status-dot').className = 'dot';
+        document.getElementById('status-com').textContent = 'SINCRO...';
+    }
 
-  script.src = ep + '?sm=' + encodeURIComponent(sm) + '&callback=' + cbName;
-  log('info', '📡 Script: ' + script.src.substring(0, 120) + '...');
-  document.head.appendChild(script);
-}
+    // =========================
+    // HELPERS
+    // =========================
+    function getProp(obj, ...names) {
+        for (const n of names) {
+            if (obj && obj[n] !== undefined && obj[n] !== null && obj[n] !== '') return obj[n];
+        }
+        return '';
+    }
 
-function abrirDireto() {
-  const ep = document.getElementById('endpoint').value.trim();
-  const sm = document.getElementById('sm').value.trim();
-  window.open(ep + '?sm=' + encodeURIComponent(sm), '_blank');
-}
+    function badgeClass(status) {
+        const s = String(status).toLowerCase();
+        if (s.includes('conclu') || s.includes('ok') || s.includes('realizado')) return 'badge-success';
+        if (s.includes('and') || s.includes('prog')) return 'badge-warning';
+        if (s.includes('pend') || s.includes('aguard')) return 'badge-info';
+        if (s.includes('cancel') || s.includes('reprov')) return 'badge-danger';
+        return 'badge-neutral';
+    }
+
+    // =========================
+    // RENDERIZAR PERFIL
+    // =========================
+    function renderizarPerfil(d) {
+        
+        // ── Stats ──
+        const totalOcorrencias = Array.isArray(d.ocorrencias) ? d.ocorrencias.length : 0;
+        document.getElementById('statTotalSM').textContent = d.totalSM || 0;
+        document.getElementById('statBriefings').textContent = d.briefingsOK || 0;
+        document.getElementById('statOcorrencias').textContent = totalOcorrencias;
+        document.getElementById('statIndice').textContent = (d.indice || 0) + '%';
+
+        // ── Rastreamento ──
+        let htmlRast = '';
+        const rast = d.rastreamento || [];
+        if (rast.length > 0) {
+            rast.forEach(r => {
+                htmlRast += `<tr>
+                    <td><strong>${r.sm || '-'}</strong></td>
+                    <td>${r.data || '-'}</td>
+                    <td>${r.rota || '-'}</td>
+                    <td>${r.cliente || '-'}</td>
+                    <td><span class="badge ${badgeClass(r.status)}">${r.status || '-'}</span></td>
+                </tr>`;
+            });
+        } else {
+            htmlRast = `<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:24px;">Nenhum rastreamento encontrado</td></tr>`;
+        }
+        document.getElementById('tbodyRastreamento').innerHTML = htmlRast;
+
+        // ── Briefing ──
+        // Headers reais: data_envio, codigo_sm, motorista, placa_cavalo, placa_carreta, rota, texto_pronto
+        let htmlBrief = '';
+        const brief = d.briefing || [];
+        if (brief.length > 0) {
+            brief.forEach(b => {
+                const data = getProp(b, 'data_envio', 'Data', 'data');
+                const sm = getProp(b, 'codigo_sm', 'SM', 'Código Rastreamento');
+                const rota = getProp(b, 'rota', 'Rota');
+                const texto = getProp(b, 'texto_pronto', 'texto', 'Observação', 'Observacoes');
+                htmlBrief += `<div class="list-item">
+                    <div class="list-avatar"><i class="ph ph-clipboard-text"></i></div>
+                    <div class="list-info">
+                        <h4>SM: ${sm || '-'} — ${data || '-'}</h4>
+                        <p>${texto || 'Sem observações'}</p>
+                    </div>
+                    <span class="badge badge-success">OK</span>
+                </div>`;
+            });
+        } else {
+            htmlBrief = `<div class="empty-state" style="padding:24px;"><i class="ph ph-clipboard-text"></i><p>Nenhum briefing encontrado</p></div>`;
+        }
+        document.getElementById('listaBriefing').innerHTML = htmlBrief;
+
+        // ── Ocorrências ──
+        // Headers reais: Código Rastreamento, Cliente, Transportador, Motorista, CPF Motorista,
+        // Perfil Motorista, Placa Veículo, Chassi, Carreta 1/2/3, Previsão Início/Término,
+        // Valor Total Documento, Descrição Ocorrência, Tipo Ocorrência, Início/Fim Viagem,
+        // Data Hora Ocorrência, Local, Latitude, Longitude, Observação, Data Inserção,
+        // Usuário Inserção Rastreamento, Email Usuário Rastreamento, Usuário Inserção Ocorrência,
+        // Email Usuário Ocorrência, Equipamento Rastreamento
+        let htmlOcorr = '';
+        const ocorr = d.listaOcorrencias || d.ocorrencias || [];
+        if (ocorr.length > 0) {
+            ocorr.forEach(o => {
+                const tipo = getProp(o, 'Tipo Ocorrência', 'tipo_ocorrencia', 'Tipo');
+                const data = getProp(o, 'Data Hora Ocorrência', 'data', 'Data');
+                const desc = getProp(o, 'Descrição Ocorrência', 'descricao', 'Descrição', 'Observação');
+                const local = getProp(o, 'Local', 'local');
+                htmlOcorr += `<div class="list-item">
+                    <div class="list-avatar"><i class="ph ph-warning"></i></div>
+                    <div class="list-info">
+                        <h4>${tipo || 'Ocorrência'} — ${data || '-'}</h4>
+                        <p>${desc || 'Sem descrição'} ${local ? '(' + local + ')' : ''}</p>
+                    </div>
+                    <span class="badge badge-warning">Registrada</span>
+                </div>`;
+            });
+        } else {
+            htmlOcorr = `<div class="empty-state" style="padding:24px;"><i class="ph ph-check-circle"></i><p>Nenhuma ocorrência registrada</p></div>`;
+        }
+        document.getElementById('listaOcorrencias').innerHTML = htmlOcorr;
+
+        // ── Índice Comportamental ──
+        let htmlIndice = '';
+        const scoreCalc = parseInt(d.indice) || 0;
+        const barColor = scoreCalc >= 90 ? '#22c55e' : scoreCalc >= 70 ? '#f59e0b' : '#ef4444';
+
+        // Se vier array de meses (dados.indiceComp)
+        if (d.indiceComp && Array.isArray(d.indiceComp) && d.indiceComp.length > 0) {
+            d.indiceComp.forEach(i => {
+                const mes = getProp(i, 'Mes', 'mes', 'Mês', 'Periodo');
+                const score = parseFloat(getProp(i, 'Score', 'score', 'Indice')) || 0;
+                const desvios = parseInt(getProp(i, 'Desvios', 'desvios')) || 0;
+                const acoes = parseInt(getProp(i, 'Acoes', 'acoes', 'Ações')) || 0;
+                const cor = score >= 90 ? '#22c55e' : score >= 70 ? '#f59e0b' : '#ef4444';
+                htmlIndice += `<div class="list-item">
+                    <div class="list-avatar" style="color:${cor}">${score}</div>
+                    <div class="list-info">
+                        <h4>${mes || '-'}</h4>
+                        <p>${desvios} desvio(s) • ${acoes} ação(ões)</p>
+                    </div>
+                    <div class="list-bar">
+                        <div class="list-bar-fill" style="width: ${Math.min(score,100)}%; background: ${cor};"></div>
+                    </div>
+                </div>`;
+            });
+        } else {
+            // Mostra score calculado
+            htmlIndice = `<div class="list-item">
+                <div class="list-avatar" style="color:${barColor}">${scoreCalc}</div>
+                <div class="list-info">
+                    <h4>Score Calculado</h4>
+                    <p>${d.totalSM || 0} SM • ${d.briefingsOK || 0} briefings • ${totalOcorrencias} ocorrências</p>
+                </div>
+                <div class="list-bar">
+                    <div class="list-bar-fill" style="width: ${Math.min(scoreCalc,100)}%; background: ${barColor};"></div>
+                </div>
+            </div>`;
+        }
+        document.getElementById('listaIndice').innerHTML = htmlIndice;
+
+        // ── Resposta Stakeholder ──
+        const resposta = `Prezado(a),
+
+Segue consolidado do motorista **${d.motorista || '-'}**:
+
+📊 **Performance:** ${d.indice || 0}% de índice comportamental
+🚛 **Total de Viagens:** ${d.totalSM || 0} SM registradas
+✅ **Briefings:** ${d.briefingsOK || 0}/${d.totalSM || 0} realizados
+⚠️ **Ocorrências:** ${totalOcorrencias} evento(s) registrado(s)
+
+Últimas viagens:
+${(d.rastreamento || []).slice(0,3).map(r => `• ${r.sm || '-'} — ${r.rota || '-'} (${r.status || '-'})`).join('\n') || 'Nenhuma'}
+
+Atenciosamente,
+PA Campinas — Gerenciamento de Riscos`;
+
+        document.getElementById('respostaStakeholder').innerHTML = resposta.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+    }
+
+    // =========================
+    // EXPORTAR PDF / COPIAR
+    // =========================
+    function exportarPDF(tipo) { alert('Exportar PDF de ' + tipo); }
+    function copiarResposta() {
+        const texto = document.getElementById('respostaStakeholder').innerText;
+        navigator.clipboard.writeText(texto).then(() => {
+            const btn = document.querySelector('.btn-success');
+            const original = btn.innerHTML;
+            btn.innerHTML = '<i class="ph ph-check"></i> Copiado!';
+            setTimeout(() => btn.innerHTML = original, 2000);
+        });
+    }
 </script>
+
 </body>
 </html>
