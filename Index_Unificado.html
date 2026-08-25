@@ -629,7 +629,7 @@
     // =========================
     // CONFIG
     // =========================
-    const API_URL = 'https://script.google.com/macros/s/AKfycbwY-AiWveEARbqcFs8nQezClBMpePmX1GySLQGXC-VKXVlAGXs2kIQPz36xwOnFN0KGig/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxjO0ksn1o7vNZj6T2WmqMsc1IF_A9vi7_vHwZrutvN4atZJCBeGKnJCfD0K6eizDSS/exec';
     let buscaTimeout = null;
 
     // =========================
@@ -670,12 +670,10 @@
 
         try {
             const url = API_URL + '?action=buscarMotorista&termo=' + encodeURIComponent(termo);
-            console.log('Fetch:', url);
-
+            
             const response = await fetch(url);
             const data = await response.json();
-            console.log('Resposta:', data);
-
+            
             if (!data.ok) {
                 throw new Error(data.error || 'Erro no servidor');
             }
@@ -723,8 +721,7 @@
     // RENDERIZAR PERFIL
     // =========================
     function renderizarPerfil(d) {
-        console.log('Renderizando:', d);
-
+        
         // ── Stats ──
         const totalOcorrencias = Array.isArray(d.ocorrencias) ? d.ocorrencias.length : 0;
         document.getElementById('statTotalSM').textContent = d.totalSM || 0;
@@ -782,7 +779,7 @@
         // Usuário Inserção Rastreamento, Email Usuário Rastreamento, Usuário Inserção Ocorrência,
         // Email Usuário Ocorrência, Equipamento Rastreamento
         let htmlOcorr = '';
-        const ocorr = d.ocorrencias || [];
+        const ocorr = d.listaOcorrencias || d.ocorrencias || [];
         if (ocorr.length > 0) {
             ocorr.forEach(o => {
                 const tipo = getProp(o, 'Tipo Ocorrência', 'tipo_ocorrencia', 'Tipo');
