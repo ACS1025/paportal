@@ -11,7 +11,7 @@
         * { box-sizing: border-box; }
         body { margin: 0; background: #f8fafc; font-family: Arial, Helvetica, sans-serif; }
         .hidden { display: none !important; }
-        .container { display: flex; min-height: 100vh; }
+        .container { display: flex; min-height: 100vh; overflow-x: hidden; }
 
         .sidebar {
             width: 260px; background: #111827; color: white; padding: 20px; flex-shrink: 0;
@@ -132,6 +132,11 @@
             font-size: 12px; font-weight: 800; margin-top: 8px; text-transform: uppercase;
             letter-spacing: 0.5px;
         }
+        .score-card .serasa-badge {
+            display: inline-block; padding: 5px 14px; border-radius: 20px;
+            font-size: 12px; font-weight: 800; margin-top: 8px;
+            background: #f8fafc; border: 1px solid #cbd5e1; color: #475569;
+        }
         .score-card .score-bar {
             width: 100%; height: 8px; background: #e2e8f0; border-radius: 4px;
             overflow: hidden; margin-top: 12px;
@@ -221,6 +226,13 @@
             padding: 20px; font-size: 13px; line-height: 1.8; color: #475569; white-space: pre-line;
         }
         .stakeholder-box strong { color: #1e293b; }
+        .stakeholder-editor {
+            width: 100%; min-height: 220px; resize: vertical; display: block;
+            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px;
+            padding: 20px; font: inherit; font-size: 13px; line-height: 1.8;
+            color: #475569; outline: none;
+        }
+        .stakeholder-editor:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,0.12); }
 
         .empty-state { text-align: center; padding: 48px 20px; color: #94a3b8; }
         .empty-state i { font-size: 40px; margin-bottom: 12px; display: block; opacity: 0.4; }
@@ -229,7 +241,8 @@
 
         .sidebar-right {
             width: 220px; background: #f1f5f9; padding: 20px;
-            border-left: 1px solid #e2e8f0; flex-shrink: 0;
+            border-left: 1px solid #e2e8f0;
+            flex-shrink: 0;
         }
         .icon-link { transition: 0.2s; text-decoration: none; color: inherit; display: block; }
         .icon-link:hover { transform: translateY(-2px); }
@@ -239,12 +252,14 @@
         }
         .icon-link i { font-size: 24px; }
         .icon-link p { font-size: 11px; font-weight: 700; margin-top: 5px; }
-        @media (max-width: 1200px) { .sidebar-right { display: none; } }
+        @media (max-width: 768px) { .sidebar-right { display: none !important; } }
 
         @media (max-width: 768px) {
-            .sidebar { display: none; position: fixed; z-index: 100; height: 100vh; }
+            .container { flex-direction: column; }
+            .sidebar { display: none; position: fixed; z-index: 100; height: 100vh; width: 260px; }
             .sidebar.open { display: block; }
-            .main-content { padding: 15px; }
+            .sidebar-right { display: none !important; }
+            .main-content { padding: 15px; max-width: 100%; }
             .search-box { flex-direction: column; }
             .top-info { flex-direction: column; align-items: flex-start; }
         }
@@ -268,7 +283,52 @@
         .sumario-item .sumario-cat { font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; }
         .sumario-item .sumario-count { font-size: 20px; font-weight: 800; color: #1e293b; margin: 4px 0; }
         .sumario-item .sumario-peso { font-size: 11px; color: #94a3b8; font-weight: 600; }
+
+        /* ====== PRINT / PDF CONSOLIDADO ====== */
+        @media print {
+            @page { size: A4 portrait; margin: 12mm; }
+            body { background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .sidebar, .sidebar-right, .search-box, .btn-toggle,
+            .card-actions, .motorista-topo, #estadoInicial,
+            .icon-link, .menu, .menu-label, .logo,
+            #botoesAcao { display: none !important; }
+            .main-content { padding: 0 !important; width: 100% !important; }
+            .container { display: block !important; grid-template-columns: 1fr; }
+            #perfilMotorista { display: block !important; }
+            .card { break-inside: avoid; page-break-inside: avoid; box-shadow: none !important; border: 1px solid #ddd !important; margin-bottom: 15px !important; }
+            .stats-grid { grid-template-columns: repeat(4, 1fr) !important; gap: 10px !important; }
+            .stat-card { border: 1px solid #ddd !important; box-shadow: none !important; break-inside: avoid; }
+            .score-card { border: 1px solid #ddd !important; box-shadow: none !important; break-inside: avoid; }
+            .content-grid { grid-template-columns: 1fr !important; gap: 15px !important; }
+            .main-content { font-size: 11px !important; }
+            .card { margin-bottom: 10px !important; }
+            .card-header { padding: 10px 12px !important; }
+            .card-body { overflow: hidden !important; }
+            .tabela-dark { table-layout: fixed !important; font-size: 10px !important; }
+            .tabela-dark th, .tabela-dark td { padding: 7px 6px !important; overflow-wrap: anywhere; }
+            .list-container { padding: 10px 12px !important; }
+            .list-item { padding: 9px 0 !important; gap: 8px !important; }
+            .stakeholder-editor { min-height: 150px !important; padding: 12px !important; font-size: 11px !important; }
+            .tabela-dark { background: white !important; color: #1e293b !important; }
+            .tabela-dark th { background: #f1f5f9 !important; color: #475569 !important; border-bottom: 1px solid #cbd5e1 !important; }
+            .tabela-dark td { border-bottom: 1px solid #e2e8f0 !important; color: #1e293b !important; }
+            .list-item { border-bottom: 1px solid #e2e8f0 !important; }
+            .badge { border: 1px solid #cbd5e1 !important; }
+            .stakeholder-box { background: white !important; border: 1px solid #ddd !important; }
+            #print-header { display: block !important; }
+        }
+        #print-header { display: none; text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #6366f1; }
+        #print-header h1 { margin: 0; font-size: 22px; color: #1e293b; }
+        #print-header .print-meta { font-size: 12px; color: #64748b; margin-top: 6px; }
+        #print-header .print-dados-motorista { display: flex; justify-content: center; gap: 30px; margin-top: 12px; font-size: 13px; color: #475569; }
+        #print-header .print-dados-motorista strong { color: #1e293b; }
+        .acao-topo { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .sidebar-right .icon-link { cursor: pointer; }
+        .sidebar-right .icon-link:hover div { background: #f8fafc; border-color: #cbd5e1; }
+        .motorista-topo .motorista-placa-carreta { font-size: 13px; opacity: 0.85; margin-top: 4px; font-weight: 600; letter-spacing: 0.5px; }
+        .motorista-topo .motorista-placa-carreta span { background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 6px; margin-right: 8px; }
     </style>
+<base target="_blank">
 <base target="_blank">
 </head>
 
@@ -328,12 +388,28 @@
             <button class="btn btn-secondary" onclick="limparBusca()"><i class="ph ph-x"></i> Limpar</button>
         </div>
 
+        <!-- HEADER DE IMPRESSAO (so aparece no print/PDF) -->
+        <div id="print-header">
+            <h1>Perfil do Motorista - PA Campinas</h1>
+            <div class="print-meta">Relatorio gerado em <span id="print-data"></span></div>
+            <div class="print-dados-motorista">
+                <div><strong>Motorista:</strong> <span id="print-nome">-</span></div>
+                <div><strong>Placa:</strong> <span id="print-placa">-</span></div>
+                <div><strong>Carreta:</strong> <span id="print-carreta">-</span></div>
+                <div><strong>Score:</strong> <span id="print-score">-</span></div>
+            </div>
+        </div>
+
         <div id="perfilMotorista" class="hidden">
 
             <div class="motorista-topo" id="motoristaTopo">
                 <i class="ph ph-user-circle"></i>
                 <div>
                     <div class="motorista-nome" id="nomeMotoristaDisplay">-</div>
+                    <div class="motorista-placa-carreta" id="placaCarretaDisplay">
+                        <span id="placaMotorista">PLACA: -</span>
+                        <span id="carretaMotorista">CARRETA: -</span>
+                    </div>
                     <div class="motorista-meta" id="metaMotoristaDisplay">Perfil consolidado • PA Campinas</div>
                 </div>
             </div>
@@ -343,6 +419,7 @@
                 <p style="font-size: 10px; text-transform: uppercase; color: #94a3b8; margin: 0 0 8px; font-weight: 800; letter-spacing: 0.5px;">Índice Comportamental</p>
                 <div class="score-value" id="scoreValue">0</div>
                 <div class="score-badge" id="scoreBadge">-</div>
+                <div class="serasa-badge" id="serasaBadge">-</div>
                 <div class="score-bar">
                     <div class="score-bar-fill" id="scoreBarFill" style="width: 0%;"></div>
                 </div>
@@ -379,14 +456,11 @@
                 <div class="card" id="card-rastreamento">
                     <div class="card-header">
                         <h3><i class="ph ph-truck"></i> Rastreamento</h3>
-                        <div class="card-actions">
-                            <button class="btn btn-sm btn-secondary" onclick="exportarPDF('rastreamento')"><i class="ph ph-file-pdf"></i> PDF</button>
-                        </div>
                     </div>
                     <div class="card-body">
                         <table class="tabela-dark">
                             <thead>
-                                <tr><th>SM</th><th>Data</th><th>Rota</th><th>Cliente</th><th>Status</th></tr>
+                                <tr><th>SM</th><th>Data</th><th>Rota</th><th>Cliente</th></tr>
                             </thead>
                             <tbody id="tbodyRastreamento"></tbody>
                         </table>
@@ -396,9 +470,6 @@
                 <div class="card" id="card-briefing">
                     <div class="card-header">
                         <h3><i class="ph ph-clipboard-text"></i> Briefing</h3>
-                        <div class="card-actions">
-                            <button class="btn btn-sm btn-secondary" onclick="exportarPDF('briefing')"><i class="ph ph-file-pdf"></i> PDF</button>
-                        </div>
                     </div>
                     <div class="card-body">
                         <div class="list-container" id="listaBriefing"></div>
@@ -408,9 +479,6 @@
                 <div class="card" id="card-ocorrencias">
                     <div class="card-header">
                         <h3><i class="ph ph-warning"></i> Ocorrências</h3>
-                        <div class="card-actions">
-                            <button class="btn btn-sm btn-secondary" onclick="exportarPDF('ocorrencias')"><i class="ph ph-file-pdf"></i> PDF</button>
-                        </div>
                     </div>
                     <div class="card-body">
                         <!-- SUMÁRIO POR CATEGORIA -->
@@ -422,9 +490,6 @@
                 <div class="card" id="card-indice">
                     <div class="card-header">
                         <h3><i class="ph ph-chart-bar"></i> Índice Comportamental</h3>
-                        <div class="card-actions">
-                            <button class="btn btn-sm btn-secondary" onclick="exportarPDF('indice')"><i class="ph ph-file-pdf"></i> PDF</button>
-                        </div>
                     </div>
                     <div class="card-body">
                         <div class="list-container" id="listaIndice"></div>
@@ -435,14 +500,14 @@
 
             <div class="card" style="margin-top: 20px;" id="card-stakeholder">
                 <div class="card-header">
-                    <h3><i class="ph ph-paper-plane-right"></i> Resposta ao Stakeholder</h3>
+                    <h3><i class="ph ph-paper-plane-right"></i> Considerações da Gestão</h3>
                     <div class="card-actions">
                         <button class="btn btn-sm btn-success" onclick="copiarResposta()"><i class="ph ph-copy"></i> Copiar</button>
-                        <button class="btn btn-sm btn-secondary" onclick="exportarPDF('stakeholder')"><i class="ph ph-file-pdf"></i> PDF</button>
+                        <button class="btn btn-sm btn-secondary" onclick="restaurarResposta()"><i class="ph ph-arrow-counter-clockwise"></i> Restaurar Padrão</button>
                     </div>
                 </div>
                 <div class="card-body" style="padding: 20px;">
-                    <div class="stakeholder-box" id="respostaStakeholder">Realize uma busca para gerar a resposta automática.</div>
+                    <textarea class="stakeholder-editor" id="respostaStakeholder" spellcheck="false">Realize uma busca para gerar a resposta automática.</textarea>
                 </div>
             </div>
 
@@ -467,13 +532,18 @@
         <a href="comunicado.html" class="icon-link"><div><i class="ph ph-whatsapp-logo" style="color: #25D366;"></i><p>GERADOR ZAP</p></div></a>
         <a href="torre.html" class="icon-link"><div><i class="ph ph-broadcast" style="color: #6366f1;"></i><p>TORRE 360</p></div></a>
         <a href="index_Unificado.html" class="icon-link" target="_self"><div><i class="ph ph-user-focus" style="color: #06b6d4;"></i><p>PERFIL MOTORISTA</p></div></a>
+
+        <h4 style="font-size: 10px; color: #94a3b8; margin: 25px 0 15px; letter-spacing: 1.5px; font-weight: 800;">EXPORTAR</h4>
+        <div class="icon-link" style="cursor: pointer;" onclick="gerarPDFConsolidado()"><div><i class="ph ph-file-pdf" style="color: #ef4444;"></i><p>PDF CONSOLIDADO</p></div></div>
+        <div class="icon-link" style="cursor: pointer;" onclick="window.print()"><div><i class="ph ph-printer" style="color: #475569;"></i><p>IMPRIMIR</p></div></div>
     </aside>
 
 </div>
 
 <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbziGM0qhpvyNdVKlPnnu2OUiFodAHGhDqMf1ud_PUFc9NzwODSEiyhgotN2_XlT0P0V3A/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbw-iKjnlcuKZvxNWw1-0qMkL48W0vei0rv5VCzn37VFGn_LJ6hC3RnLu2SH-7yVf7MheQ/exec';
     let buscaTimeout = null;
+    let dadosAtuais = null;
 
     const hour = new Date().getHours();
     const greeting = hour < 12 ? "Bom dia!" : hour < 18 ? "Boa tarde!" : "Boa noite!";
@@ -488,6 +558,18 @@
     function debounceBusca() {
         clearTimeout(buscaTimeout);
         buscaTimeout = setTimeout(() => buscarMotorista(), 600);
+    }
+
+    // ===== DEDUPLICACAO INTELIGENTE =====
+    function dedupArray(arr, keyFn) {
+        if (!Array.isArray(arr)) return [];
+        const seen = new Set();
+        return arr.filter(item => {
+            const key = keyFn(item);
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
     }
 
     async function buscarMotorista() {
@@ -508,6 +590,27 @@
                 throw new Error(data.error || 'Erro no servidor');
             }
 
+            // DEDUPLICACAO INTELIGENTE nos dados brutos
+            if (data.rastreamento) {
+                data.rastreamento = dedupArray(data.rastreamento, r => (r.sm || '') + '|' + (r.data || ''));
+            }
+            if (data.briefing) {
+                data.briefing = dedupArray(data.briefing, b => {
+                    const sm = getProp(b, 'codigo_sm', 'SM', 'Codigo Rastreamento');
+                    const dt = getProp(b, 'data_envio', 'Data', 'data');
+                    return (sm || '') + '|' + (dt || '');
+                });
+            }
+            if (data.listaOcorrencias) {
+                data.listaOcorrencias = dedupArray(data.listaOcorrencias, o => {
+                    const tipo = getProp(o, 'Tipo Ocorrencia', 'tipo_ocorrencia', 'Tipo');
+                    const dataO = getProp(o, 'Data Hora Ocorrencia', 'data', 'Data');
+                    const desc = getProp(o, 'Descricao Ocorrencia', 'descricao', 'Descricao', 'Observacao');
+                    return (tipo || '') + '|' + (dataO || '') + '|' + (desc || '').substring(0, 50);
+                });
+            }
+
+            dadosAtuais = data;
             renderizarPerfil(data);
             document.getElementById('status-com').textContent = 'Online';
         } catch (err) {
@@ -523,6 +626,7 @@
         document.getElementById('estadoInicial').classList.remove('hidden');
         document.getElementById('status-dot').className = 'dot';
         document.getElementById('status-com').textContent = 'SINCRO...';
+        dadosAtuais = null;
     }
 
     function getProp(obj, ...names) {
@@ -530,6 +634,35 @@
             if (obj && obj[n] !== undefined && obj[n] !== null && obj[n] !== '') return obj[n];
         }
         return '';
+    }
+
+    function dataTimestamp(value) {
+        if (!value) return 0;
+        const texto = String(value).trim();
+        const brasileira = texto.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})(?:\s+(\d{1,2}):?(\d{2})?(?::(\d{2}))?)?/);
+        if (brasileira) {
+            const ano = brasileira[3].length === 2 ? '20' + brasileira[3] : brasileira[3];
+            return new Date(ano, brasileira[2] - 1, brasileira[1], brasileira[4] || 0, brasileira[5] || 0, brasileira[6] || 0).getTime();
+        }
+        const timestamp = Date.parse(texto);
+        return Number.isNaN(timestamp) ? 0 : timestamp;
+    }
+
+    function maisRecentes(registros, limite) {
+        return [...(Array.isArray(registros) ? registros : [])]
+            .sort((a, b) => dataTimestamp(getProp(b, 'data', 'Data', 'data_envio', 'Data Hora Ocorrencia')) - dataTimestamp(getProp(a, 'data', 'Data', 'data_envio', 'Data Hora Ocorrencia')))
+            .slice(0, limite);
+    }
+
+    function ocorrenciasParaExibicao(registros) {
+        const unicas = new Map();
+        maisRecentes(registros, Number.MAX_SAFE_INTEGER).forEach(ocorrencia => {
+            const tipo = getProp(ocorrencia, 'Tipo Ocorrência', 'Tipo Ocorrencia', 'tipo_ocorrencia', 'Tipo') || 'NÃO CATALOGADO';
+            const categoria = ocorrencia.categoria || getProp(ocorrencia, 'Categoria', 'categoria') || 'NÃO CATALOGADO';
+            const chave = String(tipo).trim().toUpperCase() + '|' + String(categoria).trim().toUpperCase();
+            if (!unicas.has(chave)) unicas.set(chave, ocorrencia);
+        });
+        return [...unicas.values()];
     }
 
     function badgeClass(status) {
@@ -557,16 +690,56 @@
         return { cor: '#ef4444', texto: '🔴 CRÍTICO — Intervenção', bg: '#fee2e2', corTexto: '#991b1b' };
     }
 
+    function getSeloInfo(score) {
+        if (score >= 95) return { texto: '💎 Diamante', cor: '#0891b2' };
+        if (score >= 85) return { texto: '⭐ Platina', cor: '#64748b' };
+        if (score >= 75) return { texto: '🥇 Ouro', cor: '#ca8a04' };
+        if (score >= 60) return { texto: '🥈 Prata', cor: '#64748b' };
+        return { texto: '🥉 Bronze', cor: '#b45309' };
+    }
+
+    function gerarRespostaPadrao(d, info, totalOcorrencias) {
+        return `Prezado(a),
+
+Segue consolidado do motorista **${d.motorista || '-'}**:
+
+📊 **Performance:** ${d.score || d.indice || 0}% de índice comportamental (${info.texto.replace(/[✅⚠️🔶🔴]/g, '').trim()})
+🚛 **Total de Viagens:** ${d.totalSM || 0} SM registradas
+✅ **Briefings:** ${d.briefingsOK || 0}/${d.totalSM || 0} realizados
+⚠️ **Ocorrências Relevantes:** ${totalOcorrencias} evento(s) (${d.totalPesoOcorrencias || 0} pts de penalização)
+
+Últimas viagens:
+${maisRecentes(d.rastreamento, 3).map(r => `• ${r.sm || '-'} — ${r.rota || '-'} (${r.status || '-'})`).join('\n') || 'Nenhuma'}
+
+Atenciosamente,
+PA Campinas — Gerenciamento de Riscos`;
+    }
+
     function renderizarPerfil(d) {
 
-        // ── Nome do Motorista no Topo ──
+        // ── Nome, Placa e Carreta no Topo ──
         document.getElementById('nomeMotoristaDisplay').textContent = d.motorista || '-';
+
+        // Placa e carreta: do objeto raiz ou do primeiro registro de rastreamento
+        const placaVal = d.placa || (d.rastreamento && d.rastreamento[0] && d.rastreamento[0].placa) || '-';
+        const carretaVal = d.carreta || (d.rastreamento && d.rastreamento[0] && (d.rastreamento[0].carreta1 || d.rastreamento[0].carreta2 || d.rastreamento[0].carreta3)) || '-';
+
+        document.getElementById('placaMotorista').textContent = 'PLACA: ' + placaVal;
+        document.getElementById('carretaMotorista').textContent = 'CARRETA: ' + carretaVal;
         document.getElementById('metaMotoristaDisplay').textContent = 
-            (d.totalSM || 0) + ' SM registradas • Score: ' + (d.indice || 0) + '%';
+            (d.totalSM || 0) + ' SM registradas • Score: ' + (d.score || d.indice || 0) + '%';
+
+        // ── Preenche header de impressao ──
+        document.getElementById('print-nome').textContent = d.motorista || '-';
+        document.getElementById('print-placa').textContent = placaVal;
+        document.getElementById('print-carreta').textContent = carretaVal;
+        document.getElementById('print-score').textContent = (d.score || d.indice || 0) + '%';
+        document.getElementById('print-data').textContent = new Date().toLocaleString('pt-BR');
 
         // ── Score Destacado ──
-        const score = parseInt(d.indice) || 0;
+        const score = parseInt(d.score) || parseInt(d.indice) || 0;
         const info = getScoreInfo(score);
+        const selo = getSeloInfo(score);
         const scoreValue = document.getElementById('scoreValue');
         const scoreBadge = document.getElementById('scoreBadge');
         const scoreBarFill = document.getElementById('scoreBarFill');
@@ -576,6 +749,10 @@
         scoreBadge.textContent = info.texto;
         scoreBadge.style.background = info.bg;
         scoreBadge.style.color = info.corTexto;
+        const serasaBadge = document.getElementById('serasaBadge');
+        serasaBadge.textContent = selo.texto;
+        serasaBadge.style.color = selo.cor;
+        serasaBadge.style.borderColor = selo.cor;
         scoreBarFill.style.width = Math.min(score, 100) + '%';
         scoreBarFill.style.background = info.cor;
 
@@ -588,7 +765,7 @@
 
         // ── Rastreamento ──
         let htmlRast = '';
-        const rast = d.rastreamento || [];
+        const rast = maisRecentes(d.rastreamento, 3);
         if (rast.length > 0) {
             rast.forEach(r => {
                 htmlRast += `<tr>
@@ -596,17 +773,16 @@
                     <td>${r.data || '-'}</td>
                     <td>${r.rota || '-'}</td>
                     <td>${r.cliente || '-'}</td>
-                    <td><span class="badge ${badgeClass(r.status)}">${r.status || '-'}</span></td>
                 </tr>`;
             });
         } else {
-            htmlRast = `<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:24px;">Nenhum rastreamento encontrado</td></tr>`;
+            htmlRast = `<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:24px;">Nenhum rastreamento encontrado</td></tr>`;
         }
         document.getElementById('tbodyRastreamento').innerHTML = htmlRast;
 
         // ── Briefing ──
         let htmlBrief = '';
-        const brief = d.briefing || [];
+        const brief = maisRecentes(d.briefing, 1);
         if (brief.length > 0) {
             brief.forEach(b => {
                 const data = getProp(b, 'data_envio', 'Data', 'data');
@@ -650,7 +826,7 @@
 
         // ── Ocorrências Detalhadas ──
         let htmlOcorr = '';
-        const ocorr = d.listaOcorrencias || [];
+        const ocorr = ocorrenciasParaExibicao(d.listaOcorrencias);
         if (ocorr.length > 0) {
             ocorr.forEach(o => {
                 const tipo = getProp(o, 'Tipo Ocorrência', 'tipo_ocorrencia', 'Tipo');
@@ -715,71 +891,169 @@
         }
         document.getElementById('listaIndice').innerHTML = htmlIndice;
 
-        // ── Resposta Stakeholder ──
-        const resposta = `Prezado(a),
-
-Segue consolidado do motorista **${d.motorista || '-'}**:
-
-📊 **Performance:** ${d.indice || 0}% de índice comportamental (${info.texto.replace(/[✅⚠️🔶🔴]/g, '').trim()})
-🚛 **Total de Viagens:** ${d.totalSM || 0} SM registradas
-✅ **Briefings:** ${d.briefingsOK || 0}/${d.totalSM || 0} realizados
-⚠️ **Ocorrências Relevantes:** ${totalOcorrencias} evento(s) (${d.totalPesoOcorrencias || 0} pts de penalização)
-
-Últimas viagens:
-${(d.rastreamento || []).slice(0,3).map(r => `• ${r.sm || '-'} — ${r.rota || '-'} (${r.status || '-'})`).join('\n') || 'Nenhuma'}
-
-Atenciosamente,
-PA Campinas — Gerenciamento de Riscos`;
-
-        document.getElementById('respostaStakeholder').innerHTML = resposta.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+        // ── Considerações da Gestão ──
+        document.getElementById('respostaStakeholder').value = gerarRespostaPadrao(d, info, totalOcorrencias);
     }
 
-    function exportarPDF(tipo) {
-        let elemento;
-        let nomeArquivo;
+    function restaurarResposta() {
+        if (!dadosAtuais) return;
+        const score = parseInt(dadosAtuais.score) || parseInt(dadosAtuais.indice) || 0;
+        const totalOcorrencias = Array.isArray(dadosAtuais.listaOcorrencias) ? dadosAtuais.listaOcorrencias.length : 0;
+        document.getElementById('respostaStakeholder').value = gerarRespostaPadrao(dadosAtuais, getScoreInfo(score), totalOcorrencias);
+    }
 
-        switch(tipo) {
-            case 'rastreamento': elemento = document.getElementById('card-rastreamento'); nomeArquivo = 'rastreamento_motorista.pdf'; break;
-            case 'briefing': elemento = document.getElementById('card-briefing'); nomeArquivo = 'briefing_motorista.pdf'; break;
-            case 'ocorrencias': elemento = document.getElementById('card-ocorrencias'); nomeArquivo = 'ocorrencias_motorista.pdf'; break;
-            case 'indice': elemento = document.getElementById('card-indice'); nomeArquivo = 'indice_comportamental.pdf'; break;
-            case 'stakeholder': elemento = document.getElementById('card-stakeholder'); nomeArquivo = 'resposta_stakeholder.pdf'; break;
-            default: return;
+    // ===== PDF CONSOLIDADO DA SESSAO =====
+    function gerarPDFConsolidado() {
+        if (!dadosAtuais) {
+            alert('Realize uma busca primeiro para gerar o PDF.');
+            return;
+        }
+        const d = dadosAtuais;
+        const score = parseInt(d.score) || parseInt(d.indice) || 0;
+        const info = getScoreInfo(score);
+        const selo = getSeloInfo(score);
+        const placaVal = d.placa || (d.rastreamento && d.rastreamento[0] && d.rastreamento[0].placa) || '-';
+        const carretaVal = d.carreta || (d.rastreamento && d.rastreamento[0] && (d.rastreamento[0].carreta1 || d.rastreamento[0].carreta2 || d.rastreamento[0].carreta3)) || '-';
+        const nomeArquivo = 'Perfil_Motorista_' + (d.motorista || 'sem_nome').replace(/\s+/g, '_') + '_' + new Date().toISOString().slice(0,10) + '.pdf';
+
+        let htmlRast = '';
+        const rast = maisRecentes(d.rastreamento, 3);
+        if (rast.length > 0) {
+            htmlRast = `<table style="width:100%;border-collapse:collapse;font-size:12px;margin-top:8px;">
+                <thead><tr style="background:#f1f5f9;">
+                    <th style="padding:8px;border:1px solid #cbd5e1;text-align:left;">SM</th>
+                    <th style="padding:8px;border:1px solid #cbd5e1;text-align:left;">Data</th>
+                    <th style="padding:8px;border:1px solid #cbd5e1;text-align:left;">Rota</th>
+                    <th style="padding:8px;border:1px solid #cbd5e1;text-align:left;">Cliente</th>
+                </tr></thead><tbody>`;
+            rast.forEach(r => {
+                htmlRast += `<tr>
+                    <td style="padding:8px;border:1px solid #e2e8f0;"><strong>${r.sm || '-'}</strong></td>
+                    <td style="padding:8px;border:1px solid #e2e8f0;">${r.data || '-'}</td>
+                    <td style="padding:8px;border:1px solid #e2e8f0;">${r.rota || '-'}</td>
+                    <td style="padding:8px;border:1px solid #e2e8f0;">${r.cliente || '-'}</td>
+                </tr>`;
+            });
+            htmlRast += '</tbody></table>';
+        } else {
+            htmlRast = '<p style="color:#94a3b8;font-size:12px;">Nenhum rastreamento encontrado.</p>';
         }
 
-        const clone = elemento.cloneNode(true);
-        const botoes = clone.querySelectorAll('.card-actions');
-        botoes.forEach(b => b.remove());
+        let htmlBrief = '';
+        const brief = maisRecentes(d.briefing, 1);
+        if (brief.length > 0) {
+            htmlBrief = '<div style="margin-top:8px;">';
+            brief.forEach(b => {
+                const data = getProp(b, 'data_envio', 'Data', 'data');
+                const sm = getProp(b, 'codigo_sm', 'SM', 'Codigo Rastreamento');
+                const texto = getProp(b, 'texto_pronto', 'texto', 'Observacao', 'Observacoes');
+                htmlBrief += `<div style="padding:10px;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:8px;background:#fafafa;">
+                    <strong>SM: ${sm || '-'} - ${data || '-'}</strong><br>
+                    <span style="color:#64748b;font-size:12px;">${texto || 'Sem observacoes'}</span>
+                </div>`;
+            });
+            htmlBrief += '</div>';
+        } else {
+            htmlBrief = '<p style="color:#94a3b8;font-size:12px;">Nenhum briefing encontrado.</p>';
+        }
 
-        const nomeMotorista = document.getElementById('nomeMotoristaDisplay').textContent;
-        const headerDiv = document.createElement('div');
-        headerDiv.innerHTML = `
-            <div style="padding: 20px; background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; border-radius: 12px 12px 0 0; margin-bottom: 15px;">
-                <h2 style="margin: 0; font-size: 20px;">Perfil do Motorista: ${nomeMotorista}</h2>
-                <p style="margin: 5px 0 0; opacity: 0.9; font-size: 12px;">Gerado em ${new Date().toLocaleString('pt-BR')}</p>
+        let htmlOcorr = '';
+        const ocorr = ocorrenciasParaExibicao(d.listaOcorrencias);
+        if (ocorr.length > 0) {
+            htmlOcorr = '<div style="margin-top:8px;">';
+            ocorr.forEach(o => {
+                const tipo = getProp(o, 'Tipo Ocorrencia', 'tipo_ocorrencia', 'Tipo');
+                const dataO = getProp(o, 'Data Hora Ocorrencia', 'data', 'Data');
+                const desc = getProp(o, 'Descricao Ocorrencia', 'descricao', 'Descricao', 'Observacao');
+                const local = getProp(o, 'Local', 'local');
+                const categoria = o.categoria || 'NAO CATALOGADO';
+                const nivel = o.nivel || 'MEDIO';
+                htmlOcorr += `<div style="padding:10px;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:8px;background:#fafafa;">
+                    <strong>${tipo || 'Ocorrencia'} - ${dataO || '-'}</strong><br>
+                    <span style="color:#64748b;font-size:12px;">${desc || 'Sem descricao'} ${local ? '(' + local + ')' : ''}</span><br>
+                    <span style="font-size:11px;color:#475569;">Categoria: ${categoria} | Nivel: ${nivel}</span>
+                </div>`;
+            });
+            htmlOcorr += '</div>';
+        } else {
+            htmlOcorr = '<p style="color:#94a3b8;font-size:12px;">Nenhuma ocorrencia relevante registrada.</p>';
+        }
+
+        const respostaPDF = document.getElementById('respostaStakeholder').value
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/\n/g, '<br>');
+
+        const htmlContent = `
+            <div style="font-family:Arial,Helvetica,sans-serif;color:#1e293b;padding:4px;background:white;width:100%;">
+                <div style="text-align:center;border-bottom:2px solid #6366f1;padding-bottom:8px;margin-bottom:10px;">
+                    <h1 style="margin:0;font-size:20px;color:#1e293b;">Perfil do Motorista</h1>
+                    <p style="margin:3px 0 0;color:#64748b;font-size:10px;">PA Campinas - Gerenciamento de Riscos - ${new Date().toLocaleString('pt-BR')}</p>
+                </div>
+                <div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
+                    <div style="flex:1;min-width:180px;background:linear-gradient(135deg,#6366f1,#4f46e5);color:white;padding:10px;border-radius:7px;">
+                        <h2 style="margin:0;font-size:16px;">${d.motorista || '-'}</h2>
+                        <p style="margin:3px 0 0;font-size:11px;opacity:0.9;">Placa: ${placaVal} | Carreta: ${carretaVal}</p>
+                    </div>
+                    <div style="flex:1;min-width:180px;background:#f8fafc;border:1px solid #e2e8f0;padding:10px;border-radius:7px;text-align:center;">
+                        <p style="margin:0;font-size:10px;color:#94a3b8;font-weight:800;letter-spacing:0.5px;">INDICE COMPORTAMENTAL</p>
+                        <h2 style="margin:3px 0;font-size:30px;color:${info.cor};">${score}%</h2>
+                        <span style="display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:800;background:${info.bg};color:${info.corTexto};">${info.texto}</span>
+                        <span style="display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:800;margin-left:4px;border:1px solid ${selo.cor};color:${selo.cor};">${selo.texto}</span>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;">
+                    <div style="background:white;border:1px solid #e2e8f0;border-radius:6px;padding:7px;text-align:center;">
+                        <p style="font-size:10px;color:#94a3b8;font-weight:800;margin:0;">TOTAL SM</p>
+                        <h3 style="margin:3px 0 0;font-size:20px;color:#1e293b;">${d.totalSM || 0}</h3>
+                    </div>
+                    <div style="background:white;border:1px solid #e2e8f0;border-radius:6px;padding:7px;text-align:center;">
+                        <p style="font-size:10px;color:#94a3b8;font-weight:800;margin:0;">BRIEFINGS OK</p>
+                        <h3 style="margin:3px 0 0;font-size:20px;color:#1e293b;">${d.briefingsOK || 0}</h3>
+                    </div>
+                    <div style="background:white;border:1px solid #e2e8f0;border-radius:6px;padding:7px;text-align:center;">
+                        <p style="font-size:10px;color:#94a3b8;font-weight:800;margin:0;">OCORRENCIAS</p>
+                        <h3 style="margin:3px 0 0;font-size:20px;color:#1e293b;">${ocorr.length}</h3>
+                    </div>
+                    <div style="background:white;border:1px solid #e2e8f0;border-radius:6px;padding:7px;text-align:center;">
+                        <p style="font-size:10px;color:#94a3b8;font-weight:800;margin:0;">PESO TOTAL</p>
+                        <h3 style="margin:3px 0 0;font-size:20px;color:#1e293b;">${d.totalPesoOcorrencias || 0}</h3>
+                    </div>
+                </div>
+                <div style="margin-bottom:10px;">
+                    <h3 style="font-size:13px;color:#1e293b;border-bottom:1px solid #e2e8f0;padding-bottom:4px;margin:0;">Rastreamento</h3>
+                    ${htmlRast}
+                </div>
+                <div style="margin-bottom:10px;">
+                    <h3 style="font-size:13px;color:#1e293b;border-bottom:1px solid #e2e8f0;padding-bottom:4px;margin:0;">Briefing</h3>
+                    ${htmlBrief}
+                </div>
+                <div style="margin-bottom:10px;">
+                    <h3 style="font-size:13px;color:#1e293b;border-bottom:1px solid #e2e8f0;padding-bottom:4px;margin:0;">Ocorrencias</h3>
+                    ${htmlOcorr}
+                </div>
+                <div style="margin-bottom:10px;">
+                    <h3 style="font-size:13px;color:#1e293b;border-bottom:1px solid #e2e8f0;padding-bottom:4px;margin:0;">Considerações da Gestão</h3>
+                    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px;font-size:11px;line-height:1.5;color:#475569;overflow-wrap:anywhere;">
+${respostaPDF}
+                    </div>
+                </div>
+                <div style="text-align:center;margin-top:12px;font-size:9px;color:#94a3b8;border-top:1px solid #e2e8f0;padding-top:5px;">
+                    Documento gerado automaticamente pelo Portal PA Campinas - Komando Gerenciamento de Riscos
+                </div>
             </div>
         `;
 
         const wrapper = document.createElement('div');
-        wrapper.appendChild(headerDiv);
-        wrapper.appendChild(clone);
-        wrapper.style.width = '800px';
-        wrapper.style.padding = '20px';
+        wrapper.innerHTML = htmlContent;
+        wrapper.style.width = '194mm';
+        wrapper.style.padding = '0';
         wrapper.style.background = 'white';
-
-        const opt = {
-            margin: [10, 10, 10, 10],
-            filename: nomeArquivo,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true, logging: false },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-
+        const opt = { margin: [4, 4, 4, 4], filename: nomeArquivo, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true, logging: false, letterRendering: true }, pagebreak: { mode: ['css', 'legacy'] }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
         html2pdf().set(opt).from(wrapper).save();
     }
 
     function copiarResposta() {
-        const texto = document.getElementById('respostaStakeholder').innerText;
+        const texto = document.getElementById('respostaStakeholder').value;
         navigator.clipboard.writeText(texto).then(() => {
             const btn = document.querySelector('#card-stakeholder .btn-success');
             const original = btn.innerHTML;
