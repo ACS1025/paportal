@@ -45,6 +45,9 @@
             background: #111827;
             color: white;
             padding: 20px;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
         .logo h2{
@@ -68,12 +71,17 @@
         }
 
         .menu a{
+            display: flex;
+            align-items: center;
+            gap: 8px;
             color: #e2e8f0;
             text-decoration: none;
             padding: 12px;
             border-radius: 10px;
             transition: 0.2s;
             font-size: 14px;
+            line-height: 1.4;
+            white-space: normal;
         }
 
         .menu a:hover,
@@ -396,6 +404,11 @@
 
             <a href="perfil_motorista.html" class="icon-link" target="_self"><div><i class="ph ph-user-focus" style="color: #06b6d4;"></i><p>PERFIL MOTORISTA</p></div></a>
 
+            <a href="https://acs1025.github.io/certificado/" target="_blank">
+                <i class="ph ph-graduation-cap"></i>
+                 Central Komando | Emissor de Certificados</a>
+
+
         </nav>
 
     </aside>
@@ -518,30 +531,44 @@
         {
             titulo: "Manual Auditoria CFTV",
             versao: "1.0",
-            arquivo: "src/pdf/Manual_Auditoria_CFTV.pdf"
+            arquivo: "src/pdf/Manual_Auditoria_CFTV.pdf",
+            externo: false
         },
         {
             titulo: "Guia Operacional CFTV",
             versao: "1.1",
-            arquivo: "src/pdf/Guia_Operacional_Auditoria_CFTV.pdf"
+            arquivo: "src/pdf/Guia_Operacional_Auditoria_CFTV.pdf",
+            externo: false
         },
         {
             titulo: "Checklist Presencial",
             versao: "1.0",
-            arquivo: "src/pdf/Checklist Presencial - Modelo.pdf"
+            arquivo: "src/pdf/Checklist Presencial - Modelo.pdf",
+            externo: false
         },
         {
             titulo: "Procedimentos",
             versao: "1.0",
-            arquivo: "src/pdf/panfleto_procedimentos.pdf"
+            arquivo: "src/pdf/panfleto_procedimentos.pdf",
+            externo: false
+        },
+        {
+            titulo: "Central Komando | Emissor de Certificados",
+            versao: "Online",
+            arquivo: "https://acs1025.github.io/certificado/",
+            externo: true
         }
-        
     ];
 
     const container = document.getElementById("docContainer");
     const search = document.getElementById("search");
 
+    function safeUrl(url) {
+        return encodeURI(url);
+    }
+
     function render(lista) {
+        if (!container) return;
         container.innerHTML = "";
 
         if (lista.length === 0) {
@@ -557,6 +584,10 @@
         lista.forEach(doc => {
             const el = document.createElement("div");
             el.className = "doc-card";
+            const fileUrl = safeUrl(doc.arquivo);
+            const downloadHtml = doc.externo
+                ? `<a href="${fileUrl}" target="_blank" rel="noopener noreferrer" class="doc-btn doc-btn-download"><i class="ph ph-arrow-square-out"></i> Abrir</a>`
+                : `<a href="${fileUrl}" download class="doc-btn doc-btn-download"><i class="ph ph-download-simple"></i> Baixar</a>`;
 
             el.innerHTML = `
                 <div class="doc-icon">📄</div>
@@ -564,17 +595,15 @@
                 <p class="doc-version">Versão ${doc.versao}</p>
 
                 <div class="doc-actions">
-                    <button onclick="visualizar('${doc.arquivo}')" class="doc-btn doc-btn-view">
+                    <button onclick="visualizar('${fileUrl}')" class="doc-btn doc-btn-view">
                         <i class="ph ph-eye"></i> Ver
                     </button>
 
-                    <button onclick="imprimir('${doc.arquivo}')" class="doc-btn doc-btn-print">
+                    <button onclick="imprimir('${fileUrl}')" class="doc-btn doc-btn-print">
                         <i class="ph ph-printer"></i> Imprimir
                     </button>
 
-                    <a href="${doc.arquivo}" download class="doc-btn doc-btn-download">
-                        <i class="ph ph-download-simple"></i> Baixar
-                    </a>
+                    ${downloadHtml}
                 </div>
             `;
 
@@ -583,27 +612,32 @@
     }
 
     function visualizar(url) {
-        window.open(url, "_blank");
+        window.open(safeUrl(url), "_blank");
     }
 
     function imprimir(url) {
-        const w = window.open(url);
+        const safe = safeUrl(url);
+        const w = window.open(safe, "_blank");
         if (w) {
-            w.addEventListener('load', () => w.print(), { once: true });
+            w.addEventListener('load', () => {
+                try { w.print(); } catch (e) {}
+            }, { once: true });
             setTimeout(() => {
-                try { w.print(); } catch(e) {}
+                try { w.print(); } catch (e) {}
             }, 2000);
         }
     }
 
     // SEARCH
-    search.addEventListener("input", e => {
-        const value = e.target.value.toLowerCase();
-        const filtered = documentos.filter(d =>
-            d.titulo.toLowerCase().includes(value)
-        );
-        render(filtered);
-    });
+    if (search) {
+        search.addEventListener("input", e => {
+            const value = e.target.value.toLowerCase();
+            const filtered = documentos.filter(d =>
+                d.titulo.toLowerCase().includes(value)
+            );
+            render(filtered);
+        });
+    }
 
     render(documentos);
 
