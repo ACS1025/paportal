@@ -223,6 +223,93 @@
 
         .full-width { grid-column: span 4; }
 
+        .autocomplete-list {
+            position: absolute;
+            z-index: 1000;
+            left: 0;
+            right: 0;
+            max-height: 180px;
+            overflow-y: auto;
+            background: white;
+            border-radius: 8px;
+            margin-top: 2px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            list-style: none;
+            border: 1px solid #e2e8f0;
+        }
+
+        .autocomplete-list li {
+            padding: 10px 15px;
+            color: #334155;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .autocomplete-list li:hover {
+            background: #f1f5f9;
+            color: #6366f1;
+        }
+
+        .autocomplete-list li:last-child {
+            border-bottom: none;
+        }
+
+        input.autofilled {
+            background: rgba(34, 197, 94, 0.08) !important;
+            border-color: rgba(34, 197, 94, 0.4) !important;
+            color: #14532d !important;
+        }
+
+        input.searching {
+            animation: pulse-border 1s infinite;
+        }
+
+        @keyframes pulse-border {
+            0%, 100% { border-color: #cbd5e1; }
+            50% { border-color: #6366f1; }
+        }
+
+        .rota-alert {
+            margin-top: 10px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            line-height: 1.4;
+        }
+
+        .rota-alert.show { display: flex; }
+        .rota-alert.info {
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            color: #1d4ed8;
+        }
+        .rota-alert.warn {
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #b45309;
+        }
+        .rota-alert.danger {
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            color: #b91c1c;
+        }
+        .rota-alert.positive {
+            background: rgba(34, 197, 94, 0.08);
+            border: 1px solid rgba(34, 197, 94, 0.25);
+            color: #15803d;
+        }
+
+        .hint-sm {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
         /* BOTÕES */
         button {
             padding: 15px;
@@ -387,12 +474,43 @@
                             <option value="PARADA POSTO FISCAL">PARADA POSTO FISCAL</option>
                         </select>
                     </div>
-                    <div class="form-group"><label for="sm">SM</label><input type="text" id="sm"></div>
-                    <div class="form-group"><label for="veiculo">Veículo</label><input type="text" id="veiculo"></div>
-                    <div class="form-group"><label for="motorista">Motorista</label><input type="text" id="motorista"></div>
-                    <div class="form-group"><label for="embarcador">Embarcador</label><input type="text" id="embarcador"></div>
-                    <div class="form-group"><label for="valor">Valor</label><input type="text" id="valor"></div>
-                    <div class="form-group"><label for="rota">Rota</label><input type="text" id="rota"></div>
+                    <div class="form-group">
+                        <label for="sm">SM</label>
+                        <input type="text" id="sm" autocomplete="off" placeholder="Ex: 1175983">
+                        <div class="hint-sm">Digite o código SM completo para buscar dados na planilha</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="veiculo">Veículo</label>
+                        <input type="text" id="veiculo" placeholder="Use = para copiar da placa" autocomplete="off">
+                    </div>
+                    <div class="form-group" style="position: relative;">
+                        <label for="motorista">Motorista</label>
+                        <input type="text" id="motorista" autocomplete="off" placeholder="Autocomplete...">
+                        <ul id="lista-motorista" class="autocomplete-list" style="display:none"></ul>
+                    </div>
+                    <div class="form-group" style="position: relative;">
+                        <label for="placa_cavalo">Placa Cavalo</label>
+                        <input type="text" id="placa_cavalo" autocomplete="off" placeholder="ABC-1234">
+                        <ul id="lista-placa" class="autocomplete-list" style="display:none"></ul>
+                    </div>
+                    <div class="form-group" style="position: relative;">
+                        <label for="placa_carreta">Placa Carreta</label>
+                        <input type="text" id="placa_carreta" autocomplete="off" placeholder="XYZ-5678">
+                        <ul id="lista-carreta" class="autocomplete-list" style="display:none"></ul>
+                    </div>
+                    <div class="form-group" style="position: relative;">
+                        <label for="embarcador">Embarcador</label>
+                        <input type="text" id="embarcador" readonly placeholder="Preenchido pela SM">
+                    </div>
+                    <div class="form-group" style="position: relative;">
+                        <label for="valor">Valor</label>
+                        <input type="text" id="valor" readonly placeholder="Preenchido pela SM">
+                    </div>
+                    <div class="form-group">
+                        <label for="rota">Rota</label>
+                        <input type="text" id="rota" placeholder="Campinas/SP X Rio de Janeiro/RJ">
+                        <div id="rotaAlert" class="rota-alert"></div>
+                    </div>
                     <div class="form-group"><label for="ultimaPosicao">Última Posição</label><input type="text" id="ultimaPosicao"></div>
                     <div class="form-group"><label for="latLong">Lat/Long</label><input type="text" id="latLong"></div>
                     <div class="form-group full-width">
@@ -445,6 +563,217 @@
         const agora = new Date();
         agora.setMinutes(agora.getMinutes() - agora.getTimezoneOffset());
         document.getElementById("dataHora").value = agora.toISOString().slice(0, 16);
+
+        const endpointBase = "https://script.google.com/macros/s/AKfycbw9bQvLLFdfjEZUKbMRuITftW75yAqFesXAzTcZILfInLIQATMP0n0JjACuzyEjTeYr/exec";
+        let listaNomes = [];
+        let listaPlacas = [];
+        let listaCarretas = [];
+        let buscaTimeout;
+
+        async function loadList(tipo) {
+            try {
+                const resp = await fetch(`${endpointBase}?list=${tipo}`);
+                const json = await resp.json();
+                return Array.isArray(json) ? json : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function setupAutocomplete(inputId, listId, getDataSrc) {
+            const input = document.getElementById(inputId);
+            const list = document.getElementById(listId);
+
+            if (!input || !list) return;
+
+            input.addEventListener('input', () => {
+                const val = input.value.trim();
+                const dataSrc = getDataSrc();
+                list.innerHTML = '';
+
+                if (!val) {
+                    list.style.display = 'none';
+                    return;
+                }
+
+                const busca = val.toLowerCase();
+                const normalize = (str) => str.toLowerCase()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .replace(/[^a-z0-9]/g, '');
+
+                const matches = dataSrc.filter(item => {
+                    const itemValue = String(item).toLowerCase();
+                    return itemValue.startsWith(busca) || normalize(itemValue).startsWith(normalize(busca));
+                }).slice(0, 10);
+
+                matches.forEach(m => {
+                    const li = document.createElement('li');
+                    li.textContent = m;
+                    li.onclick = () => {
+                        input.value = m;
+                        list.style.display = 'none';
+                    };
+                    list.appendChild(li);
+                });
+
+                list.style.display = matches.length ? 'block' : 'none';
+            });
+        }
+
+        setupAutocomplete('motorista', 'lista-motorista', () => listaNomes);
+        setupAutocomplete('placa_cavalo', 'lista-placa', () => listaPlacas);
+        setupAutocomplete('placa_carreta', 'lista-carreta', () => listaCarretas);
+        const campoSM = document.getElementById('sm');
+        const campoMotorista = document.getElementById('motorista');
+        const campoEmbarcador = document.getElementById('embarcador');
+        const campoValor = document.getElementById('valor');
+        const campoVeiculo = document.getElementById('veiculo');
+        const campoPlacaCavalo = document.getElementById('placa_cavalo');
+        const campoPlacaCarreta = document.getElementById('placa_carreta');
+        const campoRota = document.getElementById('rota');
+        const alertaRota = document.getElementById('rotaAlert');
+
+        function sincronizarVeiculoComPlaca() {
+            const placa = campoPlacaCavalo.value.trim();
+            const veiculoAtual = campoVeiculo.value.trim();
+
+            if (!placa) return;
+            if (!veiculoAtual || veiculoAtual === '=' || veiculoAtual === placa) {
+                campoVeiculo.value = placa;
+            }
+        }
+
+        function limparCamposSM() {
+            campoMotorista.value = '';
+            campoEmbarcador.value = '';
+            campoValor.value = '';
+            campoPlacaCavalo.value = '';
+            campoPlacaCarreta.value = '';
+            campoRota.value = '';
+            [campoMotorista, campoEmbarcador, campoPlacaCavalo, campoPlacaCarreta, campoRota].forEach(el => {
+                el.classList.remove('autofilled');
+            });
+            if (!campoVeiculo.value.trim() || campoVeiculo.value.trim() === '=') {
+                campoVeiculo.value = '';
+            }
+            alertaRota.className = 'rota-alert';
+            alertaRota.innerHTML = '';
+        }
+
+        function preencherCampo(el, valor) {
+            el.value = valor || '';
+            if (valor) el.classList.add('autofilled');
+        }
+
+        function avaliarRotaCondicional(rotaValor) {
+            alertaRota.className = 'rota-alert';
+            alertaRota.innerHTML = '';
+            if (!rotaValor) return;
+
+            const r = rotaValor.toLowerCase();
+            if (r.includes('rio de janeiro') || r.includes('/rj')) {
+                alertaRota.classList.add('danger', 'show');
+                alertaRota.innerHTML = '⚠️ <b>Atenção — Rota RJ:</b> Escolta obrigatória. Check-in a cada 2h.';
+            } else if (r.includes('são paulo') || r.includes('/sp') || r.includes('santos') || r.includes('campinas')) {
+                alertaRota.classList.add('info', 'show');
+                alertaRota.innerHTML = 'ℹ️ <b>Rota SP:</b> Monitoramento padrão. Verificar congestionamento.';
+            } else if (r.includes('minas gerais') || r.includes('/mg') || r.includes('belo horizonte') || r.includes('bh')) {
+                alertaRota.classList.add('warn', 'show');
+                alertaRota.innerHTML = '⚡ <b>Rota MG:</b> Atenção às serras. Verificar condições climáticas.';
+            } else if (r.includes('paraná') || r.includes('/pr') || r.includes('curitiba') || r.includes('londrina')) {
+                alertaRota.classList.add('info', 'show');
+                alertaRota.innerHTML = '🛣️ <b>Rota PR:</b> Pistas em boas condições. Monitorar pedágios.';
+            } else if (r.includes('rio grande do sul') || r.includes('/rs') || r.includes('porto alegre') || r.includes('caxias')) {
+                alertaRota.classList.add('warn', 'show');
+                alertaRota.innerHTML = '🌧️ <b>Rota RS:</b> Verificar previsão de chuva e estado das rodovias.';
+            } else if (r.includes('santa catarina') || r.includes('/sc') || r.includes('florianópolis') || r.includes('joinville')) {
+                alertaRota.classList.add('warn', 'show');
+                alertaRota.innerHTML = '⛰️ <b>Rota SC:</b> Atenção às serras do Planalto. Neblina frequente nas manhãs.';
+            } else if (r.includes('bahia') || r.includes('/ba') || r.includes('salvador') || r.includes('feira de santana')) {
+                alertaRota.classList.add('info', 'show');
+                alertaRota.innerHTML = '🛣️ <b>Rota BA:</b> Rodovias com fluxo intenso de caminhões. Monitorar pontos de parada segura.';
+            } else if (r.includes('goiás') || r.includes('/go') || r.includes('brasília') || r.includes('/df')) {
+                alertaRota.classList.add('info', 'show');
+                alertaRota.innerHTML = '🛣️ <b>Rota GO/DF:</b> BR-060 com boas condições. Atenção ao tráfego intenso próximo ao DF.';
+            } else if (r.includes('espírito santo') || r.includes('/es') || r.includes('vitória') || r.includes('vila velha')) {
+                alertaRota.classList.add('warn', 'show');
+                alertaRota.innerHTML = '⚡ <b>Rota ES:</b> Serra das Araras — atenção às curvas fechadas e neblina.';
+            } else if (r.includes('mato grosso') || r.includes('/mt') || r.includes('/ms') || r.includes('cuiabá') || r.includes('campo grande')) {
+                alertaRota.classList.add('positive', 'show');
+                alertaRota.innerHTML = '✅ <b>Rota Centro-Oeste:</b> Rodovias amplas. Atenção ao cansaço em trechos longos.';
+            } else {
+                alertaRota.classList.add('info', 'show');
+                alertaRota.innerHTML = '✅ Rota cadastrada. Monitoramento ativo 24h. Fique atento às atualizações da equipe.';
+            }
+        }
+
+        (async function init() {
+            listaNomes = await loadList('motoristas');
+            listaPlacas = await loadList('placas');
+            listaCarretas = await loadList('carretas');
+        })();
+
+        campoPlacaCavalo.addEventListener('input', function () {
+            if (!campoVeiculo.value.trim() || campoVeiculo.value.trim() === '=' || campoVeiculo.value.trim() === campoPlacaCavalo.value.trim()) {
+                sincronizarVeiculoComPlaca();
+            }
+        });
+
+        campoVeiculo.addEventListener('keydown', function (event) {
+            if (event.key === '=' && !this.value.trim()) {
+                event.preventDefault();
+                sincronizarVeiculoComPlaca();
+                this.value = campoPlacaCavalo.value.trim() || '=';
+            }
+        });
+
+        campoVeiculo.addEventListener('input', function () {
+            if (this.value.trim() === '=') {
+                sincronizarVeiculoComPlaca();
+                this.value = campoPlacaCavalo.value.trim() || '=';
+            }
+        });
+
+        campoSM.addEventListener('input', function () {
+            const val = this.value.trim();
+            limparCamposSM();
+            clearTimeout(buscaTimeout);
+
+            if (val.length >= 6) {
+                this.classList.add('searching');
+                buscaTimeout = setTimeout(async () => {
+                    try {
+                        const resp = await fetch(`${endpointBase}?sm=${encodeURIComponent(val)}`);
+                        const dados = await resp.json();
+                        if (campoSM.value.trim() !== val) return;
+                        this.classList.remove('searching');
+
+                        if (dados && dados.encontrado === true) {
+                            preencherCampo(campoMotorista, dados.motorista);
+                            const embarcador = dados['Cliente'] ?? dados.cliente ?? dados.embarcador ?? dados.embarcador_nome ?? dados.embarcadorNome ?? dados.nomeCliente ?? '';
+                            preencherCampo(campoEmbarcador, embarcador);
+                            const valor = dados['Valor Total NF'] ?? dados.valorTotalNF ?? dados.valor ?? dados.valor_carga ?? dados.valorCarga ?? dados.valor_mercadoria ?? dados.valorMercadoria ?? '';
+                            preencherCampo(campoValor, valor);
+                            preencherCampo(campoPlacaCavalo, dados.placaCavalo);
+                            if (dados.placaCavalo) {
+                                sincronizarVeiculoComPlaca();
+                            }
+                            preencherCampo(campoPlacaCarreta, dados.placaCarreta);
+                            preencherCampo(campoRota, dados.rota);
+                            avaliarRotaCondicional(dados.rota);
+                        }
+                    } catch (err) {
+                        this.classList.remove('searching');
+                        console.error('Erro busca SM:', err);
+                    }
+                }, 500);
+            }
+        });
+
+        campoRota.addEventListener('input', function () {
+            avaliarRotaCondicional(this.value);
+        });
 
         function enviarTudo() {
             const btn = document.getElementById("btnEnviar");
