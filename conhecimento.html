@@ -504,7 +504,8 @@
                     </div>
                     <div class="form-group" style="position: relative;">
                         <label for="valor">Valor</label>
-                        <input type="text" id="valor" readonly placeholder="Preenchido pela SM">
+                        <input type="text" id="valor" autocomplete="off" placeholder="Ex: R$ 10.000,00">
+                        <ul id="lista-valor" class="autocomplete-list" style="display:none"></ul>
                     </div>
                     <div class="form-group">
                         <label for="rota">Rota</label>
@@ -565,9 +566,16 @@
         document.getElementById("dataHora").value = agora.toISOString().slice(0, 16);
 
         const endpointBase = "https://script.google.com/macros/s/AKfycbw9bQvLLFdfjEZUKbMRuITftW75yAqFesXAzTcZILfInLIQATMP0n0JjACuzyEjTeYr/exec";
+        const listaValoresPadrao = [
+            'R$ 500,00', 'R$ 1.000,00', 'R$ 2.000,00', 'R$ 3.000,00', 'R$ 4.000,00',
+            'R$ 5.000,00', 'R$ 7.500,00', 'R$ 10.000,00', 'R$ 12.500,00', 'R$ 15.000,00',
+            'R$ 20.000,00', 'R$ 25.000,00', 'R$ 30.000,00', 'R$ 35.000,00', 'R$ 40.000,00',
+            'R$ 50.000,00', 'R$ 75.000,00', 'R$ 100.000,00', 'R$ 125.000,00', 'R$ 150.000,00'
+        ];
         let listaNomes = [];
         let listaPlacas = [];
         let listaCarretas = [];
+        let listaValores = [];
         let buscaTimeout;
 
         async function loadList(tipo) {
@@ -624,10 +632,11 @@
         setupAutocomplete('motorista', 'lista-motorista', () => listaNomes);
         setupAutocomplete('placa_cavalo', 'lista-placa', () => listaPlacas);
         setupAutocomplete('placa_carreta', 'lista-carreta', () => listaCarretas);
+        setupAutocomplete('valor', 'lista-valor', () => listaValores);
+
         const campoSM = document.getElementById('sm');
         const campoMotorista = document.getElementById('motorista');
         const campoEmbarcador = document.getElementById('embarcador');
-        const campoValor = document.getElementById('valor');
         const campoVeiculo = document.getElementById('veiculo');
         const campoPlacaCavalo = document.getElementById('placa_cavalo');
         const campoPlacaCarreta = document.getElementById('placa_carreta');
@@ -646,12 +655,10 @@
 
         function limparCamposSM() {
             campoMotorista.value = '';
-            campoEmbarcador.value = '';
-            campoValor.value = '';
             campoPlacaCavalo.value = '';
             campoPlacaCarreta.value = '';
             campoRota.value = '';
-            [campoMotorista, campoEmbarcador, campoPlacaCavalo, campoPlacaCarreta, campoRota].forEach(el => {
+            [campoMotorista, campoPlacaCavalo, campoPlacaCarreta, campoRota].forEach(el => {
                 el.classList.remove('autofilled');
             });
             if (!campoVeiculo.value.trim() || campoVeiculo.value.trim() === '=') {
@@ -664,66 +671,6 @@
         function preencherCampo(el, valor) {
             el.value = valor || '';
             if (valor) el.classList.add('autofilled');
-        }
-
-        function normalizarChave(chave) {
-            return String(chave ?? '')
-                .toLowerCase()
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '')
-                .replace(/[^a-z0-9]/g, '');
-        }
-
-        function formatarValorSM(valor) {
-            if (valor === null || valor === undefined || valor === '') return '';
-
-            if (typeof valor === 'number') {
-                return new Intl.NumberFormat('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL'
-                }).format(valor);
-            }
-
-            const texto = String(valor).trim();
-            if (!texto) return '';
-
-            const numeroBruto = texto.replace(/^r\$\s*/i, '').replace(/\./g, '').replace(',', '.').trim();
-            if (!isNaN(Number(numeroBruto)) && numeroBruto !== '') {
-                return new Intl.NumberFormat('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL'
-                }).format(Number(numeroBruto));
-            }
-
-            return texto;
-        }
-
-        function extrairValorDeObjeto(obj, chaves) {
-            if (!obj || typeof obj !== 'object') return '';
-
-            const mapa = {};
-            Object.keys(obj).forEach(chave => {
-                mapa[normalizarChave(chave)] = obj[chave];
-            });
-
-            for (const chave of chaves) {
-                const chaveNormalizada = normalizarChave(chave);
-                if (mapa[chaveNormalizada] !== undefined && mapa[chaveNormalizada] !== null && String(mapa[chaveNormalizada]).trim() !== '') {
-                    return mapa[chaveNormalizada];
-                }
-            }
-
-            const chavesNormalizadas = chaves.map(normalizarChave);
-            for (const key of Object.keys(mapa)) {
-                if (chavesNormalizadas.some(chave => key.includes(chave) || chave.includes(key))) {
-                    const valor = mapa[key];
-                    if (valor !== undefined && valor !== null && String(valor).trim() !== '') {
-                        return valor;
-                    }
-                }
-            }
-
-            return '';
         }
 
         function avaliarRotaCondicional(rotaValor) {
@@ -768,10 +715,28 @@
             }
         }
 
+        async function carregarEmbarcadores() {
+            try {
+                const resp = await fetch('src/json/clientes.json');
+                const json = await resp.json();
+                if (Array.isArray(json) && json.length) {
+                    listaEmbarcadores = json;
+                }
+            } catch (e) {
+                // Mantém a lista local pronta para uso sem quebrar o autocomplete.
+            }
+        }
+
         (async function init() {
             listaNomes = await loadList('motoristas');
             listaPlacas = await loadList('placas');
             listaCarretas = await loadList('carretas');
+            listaValores = await loadList('valores');
+            await carregarEmbarcadores();
+
+            if (!listaValores.length) {
+                listaValores = listaValoresPadrao;
+            }
         })();
 
         campoPlacaCavalo.addEventListener('input', function () {
@@ -805,49 +770,19 @@
                 buscaTimeout = setTimeout(async () => {
                     try {
                         const resp = await fetch(`${endpointBase}?sm=${encodeURIComponent(val)}`);
-                        const textoResposta = await resp.text();
-                        let dados = null;
-
-                        try {
-                            dados = JSON.parse(textoResposta);
-                        } catch (e) {
-                            const match = textoResposta.match(/\{[\s\S]*\}/);
-                            if (match) {
-                                try {
-                                    dados = JSON.parse(match[0]);
-                                } catch (err) {
-                                    dados = null;
-                                }
-                            }
-                        }
-
-                        if (campoSM.value.trim() !== val) return;
+                        const dados = await resp.json();
                         this.classList.remove('searching');
 
-                        const payload = Array.isArray(dados)
-                            ? dados[0]
-                            : (dados && (dados.dados || dados.result || dados.resultado || dados.data || dados.item || dados));
-
-                        const encontrado = payload && (
-                            payload.encontrado === true ||
-                            payload.encontrado === 'true' ||
-                            payload.encontrado === 1 ||
-                            payload.encontrado === '1'
-                        );
-
-                        if (payload && (encontrado || Object.keys(payload).length)) {
-                            preencherCampo(campoMotorista, payload.motorista || payload.motoristaNome || payload.nomeMotorista || payload.nomeMotoristaSm || payload.motora || '');
-                            const embarcador = extrairValorDeObjeto(payload, ['embarcador', 'nomeEmbarcador', 'nome_embarcador', 'cliente', 'nomeCliente', 'nome_cliente', 'embarque', 'empresa']);
-                            preencherCampo(campoEmbarcador, String(embarcador || '').trim());
-                            const valor = extrairValorDeObjeto(payload, ['valorTotalNF', 'valor_total_nf', 'valor_total', 'valorTotal', 'valor', 'valorCarga', 'valor_carga', 'valorMercadoria', 'valor_mercadoria', 'valor_nf']);
-                            preencherCampo(campoValor, formatarValorSM(valor));
-                            preencherCampo(campoPlacaCavalo, payload.placaCavalo || payload.placa_cavalo || payload.placa || '');
-                            if (payload.placaCavalo || payload.placa_cavalo || payload.placa) {
+                        if (dados && dados.encontrado === true) {
+                            preencherCampo(campoMotorista, dados.motorista);
+                            preencherCampo(campoEmbarcador, dados.embarcador || dados.embarcador_nome || dados.cliente);
+                            preencherCampo(campoPlacaCavalo, dados.placaCavalo);
+                            if (dados.placaCavalo) {
                                 sincronizarVeiculoComPlaca();
                             }
-                            preencherCampo(campoPlacaCarreta, payload.placaCarreta || payload.placa_carreta || payload.carreta || '');
-                            preencherCampo(campoRota, payload.rota || payload.rotaViagem || payload.destino || '');
-                            avaliarRotaCondicional(payload.rota || payload.rotaViagem || payload.destino || '');
+                            preencherCampo(campoPlacaCarreta, dados.placaCarreta);
+                            preencherCampo(campoRota, dados.rota);
+                            avaliarRotaCondicional(dados.rota);
                         }
                     } catch (err) {
                         this.classList.remove('searching');
@@ -890,7 +825,7 @@
                 descricaoSituacao: document.getElementById("descricaoSituacao").value
             };
 
-            const urlScript = "https://script.google.com/macros/s/AKfycbw5qCsq-thqXCCkp2nRA9KsIcVvjdWnjxeiqW2LiSlCcPn7ombOS1xPFsOuoJiClDpJzQ/exec";
+            const urlScript = "https://script.google.com/macros/s/AKfycbx24GIW-KeYck6yh1cQpofKpoXzWUfPdKFhZz7KOPakS80VNRTIlp7dGabTcrfp5Bbf/exec";
 
             fetch(urlScript, {
                 method: "POST",
