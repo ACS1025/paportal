@@ -500,7 +500,7 @@
                     </div>
                     <div class="form-group" style="position: relative;">
                         <label for="embarcador">Embarcador</label>
-                        <input type="text" id="embarcador" readonly placeholder="Preenchido pela SM">
+                        <input type="text" id="embarcador" placeholder="Preenchido pela SM">
                     </div>
                     <div class="form-group" style="position: relative;">
                         <label for="valor">Valor</label>
@@ -655,10 +655,11 @@
 
         function limparCamposSM() {
             campoMotorista.value = '';
+            campoEmbarcador.value = '';
             campoPlacaCavalo.value = '';
             campoPlacaCarreta.value = '';
             campoRota.value = '';
-            [campoMotorista, campoPlacaCavalo, campoPlacaCarreta, campoRota].forEach(el => {
+            [campoMotorista, campoEmbarcador, campoPlacaCavalo, campoPlacaCarreta, campoRota].forEach(el => {
                 el.classList.remove('autofilled');
             });
             if (!campoVeiculo.value.trim() || campoVeiculo.value.trim() === '=') {
